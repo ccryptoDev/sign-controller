@@ -45,7 +45,7 @@ services:
   php:
     build:
       context: ./dockerfiles
-      dockerfile: php.dockerfile
+      dockerfile: php.root.dockerfile
       args:
         - UID=${UID:-1000}
         - GID=${GID:-1000}
