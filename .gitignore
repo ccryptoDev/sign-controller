@@ -1,0 +1,24 @@
+src/node_modules
+src/node_modules__
+src/public/hot
+src/public/storage
+src/storage/*.key
+src/vendor
+
+.env
+.env.backup
+.phpunit.result.cache
+src/.phpunit.result.cache
+
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+
+src/npm-debug.log
+src/yarn-error.log
+
+/.idea
+/.vscode
+.DS_Store
+# composer.lock
+# *.htaccess*
