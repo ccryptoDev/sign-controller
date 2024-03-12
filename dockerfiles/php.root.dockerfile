@@ -1,5 +1,9 @@
 FROM php:8-fpm-alpine
 
+# Install MySQL client
+RUN apk update && \
+    apk add --no-cache mysql-client
+    
 RUN mkdir -p /var/www/html
 
 WORKDIR /var/www/html
