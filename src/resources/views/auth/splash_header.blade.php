@@ -29,13 +29,13 @@
             <!--begin::Aside-->
             <div class="d-flex overflow-hidden">
                 <!--begin: Aside Container-->
-                <div class="d-flex flex-column-fluid flex-column justify-content-between py-5 px-3 py-lg-10 px-lg-3">
+                <div class="d-flex flex-column-fluid flex-column justify-content-between py-10 px-3 py-lg-10 px-lg-3">
                     <!--begin::Logo-->
-                    <a href="#" class="text-center pt-4">
+                    <a href="#" class="text-center pt-16">
                        <img src="/assets/media/logos/logo_new.png" id = "splash-header-logo-image" class="w3-animate-fading splash-header-logo-image" alt="" /> 
                     </a>
                     <!--end::Logo-->
 
                     <!--begin::Aside body-->
-                    <div class="d-flex flex-column-fluid flex-column px-3 px-lg-10">
+                    <div class="d-flex flex-column-fluid flex-column pt-6 px-7 px-lg-10">
                         <!--begin::Signin-->
