@@ -7,6 +7,7 @@ use App\Http\Controllers\SignController;
 use App\Http\Controllers\FontController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\SocketController;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,10 @@ use App\Http\Controllers\SocketController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    // return redirect()->route('login');
     // return view('welcome');
+    // dd(Hash::make("1234!@"));
+    return view('/auth/splash');
 });
 
 Route::get('/login', [AuthController::class, 'login_view'])->name('login');

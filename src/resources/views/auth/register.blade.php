@@ -68,7 +68,7 @@
 
             <!--begin::Form group-->
             <div class="form-group d-flex flex-wrap flex-center pb-lg-0 pb-3">
-                <button type="button" id="kt_login_signup_submit"
+                <button type="submit" id="kt_login_signup_submit"
                     class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mx-4">Submit</button>
                 <a type="button" id="kt_login_signup_cancel"
                     href="{{route('login')}}"

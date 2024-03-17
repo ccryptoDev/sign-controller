@@ -1,0 +1,30 @@
+    .ellipse-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    .ellipse-border {
+        width: 260px;
+        height: 48px;
+        border: 2px solid black;
+        border-radius: 20% / 12%; /* horizontal radius (50%) / vertical radius (25%) */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .color-blue {
+        color: blue;
+    }
+    .italic {
+        font-style: italic;
+    }
+    .font-size-12pt {
+        font-size: 12pt;
+    }
+    .font-size-13pt {
+        font-size: 13pt;
+    }
+    .login-header-logo-image {
+        width: 160px; 
+        height: 60px;         
+    }

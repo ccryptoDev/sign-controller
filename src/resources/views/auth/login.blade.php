@@ -1,5 +1,5 @@
 @include('auth.header')
-    <div class="login-form login-signin py-11">
+    <div class="login-form login-signin py-2">
         <!--begin::Form-->
         <form class="form" id="kt_login_signin_form" action="/login" method="POST">
             @csrf
@@ -18,17 +18,17 @@
             <!--begin::Title-->
             <div class="text-center pb-8">
                 <h2 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Sign In</h2>
-                <span class="text-muted font-weight-bold font-size-h4">Or <a href="{{route('register')}}"
+                <!-- <span class="text-muted font-weight-bold font-size-h4">Or <a href="{{route('register')}}"
                         class="text-primary font-weight-bolder" id="kt_login_signup">Create An
-                        Account</a></span>
+                        Account</a></span> -->
             </div>
             <!--end::Title-->
 
             <!--begin::Form group-->
             <div class="form-group">
-                <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+                <label class="font-size-h6 font-weight-bolder text-dark">User ID or email</label>
                 <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-                    type="email" name="email" autocomplete="off" required value="{{old('email')}}"/>
+                    type="text" name="username_or_email" autocomplete="off" required value="{{old('username_or_email')}}"/>
             </div>
             <!--end::Form group-->
 
