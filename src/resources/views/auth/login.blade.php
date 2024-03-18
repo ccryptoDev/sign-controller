@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label class="font-size-h6 font-weight-bolder text-dark">User ID or email</label>
                 <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-                    type="text" name="username_or_email" autocomplete="off" required value="{{old('username_or_email')}}"/>
+                    type="text" name="username_or_email" autocomplete="off" required oninput="setEmailTouched()" value="{{old('username_or_email')}}"/>
             </div>
             <!--end::Form group-->
 
@@ -45,7 +45,7 @@
                 </div>
 
                 <input class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
-                    type="password" name="password" autocomplete="off" required/>
+                    type="password" name="password" autocomplete="off" required oninput="setPasswordTouched()" />
             </div>
             <!--end::Form group-->
 
