@@ -6,6 +6,8 @@ use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class RedirectIfAuthenticated
 {
@@ -29,4 +31,20 @@ class RedirectIfAuthenticated
         
         return $next($request);
     }
+
+    // public function handle($request, Closure $next, $guard = null)
+    // {
+    //     if (Auth::guard($guard)->check()) {
+
+    //         $sessionTimeout = config('session.timeout_lifetime');
+
+    //         if (time() - Session::get('login_time') > $sessionTimeout ) {
+    //             Auth::guard('web')->logout();
+    //             return redirect()->route('login')->with('session_expired', 'Your session has expired. Please login again.');
+    //             // return redirect() ->route('logout');
+    //         }
+    //     }
+
+    //     return $next($request);
+    // }   
 }

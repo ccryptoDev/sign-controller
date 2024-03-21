@@ -9,6 +9,9 @@ use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\SocketController;
 use Illuminate\Support\Facades\Hash;
 
+use App\Http\Controllers\MainMenuController;
+use App\Http\Controllers\MessageMenuController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,10 +57,13 @@ Route::post('get-current-playlist', [SocketController::class, 'get_current_playl
 
 Route::get('tom-test', [SocketController::class, 'TomTest']);
 
+// check per min
+Route::post('/keep-alive', [AuthController::class, 'keepAlive']);
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
-    'verified'
+    'verified', 'session.timeout'
 ])->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     // Font Editor
@@ -73,12 +79,17 @@ Route::middleware([
     // Change Password
     Route::get('change-password', [UserController::class, 'change_password'])->name('change-password');
     Route::post('update-password', [UserController::class, 'update_password'])->name('update-password');
+
     // Manage Users
     Route::get('manage-users', [ManageUserController::class, 'view_management'])->name('user-management');
     Route::post('list-management', [ManageUserController::class, 'list_users']);
     Route::post('new-user', [ManageUserController::class, 'create_new_user']);
     Route::post('update-user', [ManageUserController::class, 'update_user']);
     Route::get('delete-user/{id}', [ManageUserController::class, 'delete_user']);
+
+    //Main Menu
+    Route::get('main-menu', [MainMenuController::class, 'index']) ->name('main-menu');
+    Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
 
     // Socket Connection
 });

@@ -70,4 +70,5 @@ class UserController extends Controller
         // return Auth::
         return back()->withSuccess("Success");
     }
+
 }

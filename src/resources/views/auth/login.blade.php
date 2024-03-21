@@ -16,8 +16,8 @@
                 </div>
             @endif
             <!--begin::Title-->
-            <div class="text-center pb-8">
-                <h2 class="font-weight-bolder text-dark font-size-h2 font-size-h1-lg">Sign In</h2>
+            <div class="text-center pt-8 pb-8">
+                <h2 class="font-weight-bolder text-dark page-title">Sign In</h2>
                 <!-- <span class="text-muted font-weight-bold font-size-h4">Or <a href="{{route('register')}}"
                         class="text-primary font-weight-bolder" id="kt_login_signup">Create An
                         Account</a></span> -->

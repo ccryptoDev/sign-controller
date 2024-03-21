@@ -16,6 +16,35 @@
     <link href="/assets/css/header_custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/assets/media/logos/logo-letter-13.png" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+    .container {
+      display: flex;
+      align-items: center;
+      /* justify-content: flex-start; */
+      justify-content: center;
+      padding: 0 auto;
+      /* margin: auto 0; /* Horizontally center the container */
+      /* padding: auto 0; */ 
+      /* width: 80%; /* Adjust as needed */
+      /* height: 100vh;   */
+    }
+
+    .image-container {
+      flex: 0 0 auto;
+      margin-right: 20px; /* Adjust as needed */
+    }
+
+    .text-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .text-container p {
+      margin: 0;
+      line-height: 1.5; /* Adjust line height as needed */
+    }
+    </style>
     
 </head>
 

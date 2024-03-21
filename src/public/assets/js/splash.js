@@ -18,7 +18,7 @@ function doAction() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(doAction, 1000 * 60 * 1); 
+    setTimeout(doAction, 1000 * 60 * 5); 
 
     if (window.location.pathname == '/') {
         document.body.addEventListener('click', function() {

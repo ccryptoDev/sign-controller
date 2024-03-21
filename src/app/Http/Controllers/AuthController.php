@@ -20,8 +20,9 @@ class AuthController extends Controller
 {
     public function login_view(Request $request) {
         if (Auth::check()) {
-            return redirect()->intended('sign-editor');
-            return redirect()->back();
+            // return redirect()->intended('sign-editor');
+            return redirect()->intended('main-menu');
+            // return redirect()->back();
         }
         return view('auth.login');
     }
@@ -117,7 +118,9 @@ class AuthController extends Controller
     
         if (Auth::guard('user')->attempt($credentials)) {
             // dd("ddsfdsfa1");
-            $request->session()->regenerate();            
+            $request->session()->regenerate();   
+            $request->session()->put('login_time', time()); 
+            // dd(now());        
             if($field == 'email') {
                 $user = User::where('email', $request->input('username_or_email'))->first();
             }                
@@ -127,9 +130,12 @@ class AuthController extends Controller
                 
             // dd($user);
             Auth::login($user);
-            return redirect()->intended('sign-editor');
+            // return redirect()->intended('sign-editor');
+             return redirect()->intended('main-menu');
+            // return redirect()->intended('message-menu');
         } else if (Auth::guard('admin')->attempt($credentials)){
             // dd("ddsfdsfa2");
+            dd(now());
             $request->session()->regenerate();
             if($field == 'email') {
                 $user = User::where('email', $request->input('username_or_email'))->first();
@@ -141,6 +147,7 @@ class AuthController extends Controller
             return redirect()->intended('sign-editor');
         } else if (Auth::guard('super')->attempt($credentials)){
             // dd("ddsfdsfa3");
+            
             $request->session()->regenerate();
             if($field == 'email') {
                 $user = User::where('email', $request->input('username_or_email'))->first();
@@ -245,6 +252,12 @@ class AuthController extends Controller
     
         $request->session()->regenerateToken();
     
-        return redirect('/');
+        return redirect('/login');
+    }
+
+    public function keepAlive(Request $request)
+    {
+        $request->session()->put('last_activity', now());
+        return response()->json(['status' => 'success']);
     }
 }
