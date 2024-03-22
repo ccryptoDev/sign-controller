@@ -5,13 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Laravel\Facades\Image;
 
-// require_once __DIR__ . '/../../../../vendor/thiagoalessio/tesseract_ocr/src/TesseractOCR.php';
-use thiagoalessio\tesseractOCR\TesseractOCR;
-// use Intervention\Image\ImageManagerStatic as Image;
 
-class MessageMenuController extends Controller
+class LocalMessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,22 +21,7 @@ class MessageMenuController extends Controller
         // dd("time_interval", $timeArray['now'] - $timeArray['login_time']);
         // dd(session('login_time'));
 
-        return view('dashboard.messagemenu');
-    }
-
-    public function sendMessage(Request $request) {
-        $imagePath = public_path('assets/media/messages/SpeedLimit25.bmp');
-        $image = Image::read($imagePath);
-        $image->save('temp_image.png');
-
-        // Perform OCR using Tesseract OCR
-        // $text = (new TesseractOCR('temp_image.png'))
-        //     ->run();
-
-        // unlink('temp_image.png');
-
-        // return view('dashboard.message', ['text' => $text]);
-        return view('dashboard.message', ['text' => __DIR__]);
+        return view('dashboard.localmessagemenu');
     }
 
     /**
