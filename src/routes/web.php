@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Http\Controllers\MainMenuController;
 use App\Http\Controllers\MessageMenuController;
-use App\Http\Controllers\LocalMessageController;
+use App\Http\Controllers\MessageSignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,10 +90,8 @@ Route::middleware([
 
     //Main Menu
     Route::get('main-menu', [MainMenuController::class, 'index']) ->name('main-menu');
-
-    // Message Menu
     Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
-    Route::get('send-message', [MessageMenuController::class, 'sendMessage']) ->name('send-message');
-    Route::get('local-message', [LocalMessageController::class, 'index']) ->name('local-message');
+    Route::get('message-sign', [MessageSignController::class, 'index']) ->name('message-sign');
+
     // Socket Connection
 });

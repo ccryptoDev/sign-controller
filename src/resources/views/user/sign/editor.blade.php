@@ -224,10 +224,10 @@
 <script src="/js/charToLed.js"></script>
 <script>
     let blank = 2;
-    let total = 9;
+    let total = 10;
     var layers = 3;
     var p = 1;
-    for(let i = 0; i < 28; i++) {
+    for(let i = 1; i < 31; i++) {
         if(i > total * p) {
             p++;
         }
@@ -238,7 +238,7 @@
         }
         for(j = 0; j < 60; j++) {
             var line_0 = document.createElement('div');
-            line_0.className = i + "_"+j+" light off";
+            line_0.className = (i - 1) + "_" + j + " light off";
             $col.append(line_0);
         }
     }
@@ -319,15 +319,21 @@
             return flatten;
         }
         $("#inputBox").on('keyup', function(e){
+            clearLights();
             var value = $("#inputBox").val();
             if(value != '' ) {
-                clearLights();
-                myMessage = textToLED(this.value);
-                var newArrayVal = drawMessage(myMessage);
-                for(var j = 0; j < newArrayVal.length; j++) {
-                    for(var i = 0; i < 7; i++) {
-                        setLight(i, j, newArrayVal[i][j])
-                    }
+                var msg = value.split('\n');
+                var layer = msg.length;
+                for (let i = 0; i < layer; i++) {
+                    myMessage = textToLED(msg[i]);
+                    var newArrayVal = drawMessage(myMessage, i);
+                    // if (newArrayVal !== undefined) {
+                    //     for(var j = 0; j < newArrayVal.length; j++) {
+                    //         for(var i = 0; i < 7; i++) {
+                    //             setLight(i, j, newArrayVal[i][j])
+                    //         }
+                    //     }
+                    // }
                 }
             }
         });
@@ -341,15 +347,15 @@
             }
         }
 
-        function drawMessage(messageArray){
+        function drawMessage(messageArray, line){
             var messageLength = messageArray.length;
             var totalScrollLength = 60 + messageLength;        
             if(messageLength>0){        
-                for(var col=0;col<messageLength;col++){
-                    for(var row=0;row<7;row++){
+                for (var col = 0; col < messageLength; col++) {
+                    for (var row = 0; row < 7; row++) {
                         var offsetCol = 0 + col;
-                        if(offsetCol<60 || offsetCol >= 0){
-                            setLight(row,offsetCol,messageArray[col][row]);
+                        if (offsetCol < 60 || offsetCol >= 0) {
+                            setLight(line * 10 + row, offsetCol, messageArray[col][row]);
                         }                
                     }
                 }
@@ -766,16 +772,18 @@
         // Erase colors from the grid
 
         // clear.on('click', function(){
-        document.getElementById('clearGrid').addEventListener('click', function() {
-            // gridCanvas.classList.toggle('rotateCanvas'); // rotate the Design Canvas div
-            let tiles = grid.getElementsByTagName('td');
-            // grid.children().children().removeAttr("style");
-            for(let i = 0; i <= tiles.length; i++) {
-                if(tiles[i]) {
-                    tiles[i].style.backgroundColor = 'transparent';
+        if (document.getElementById('clearGrid') !== null) {
+            document.getElementById('clearGrid').addEventListener('click', function() {
+                // gridCanvas.classList.toggle('rotateCanvas'); // rotate the Design Canvas div
+                let tiles = grid.getElementsByTagName('td');
+                // grid.children().children().removeAttr("style");
+                for(let i = 0; i <= tiles.length; i++) {
+                    if(tiles[i]) {
+                        tiles[i].style.backgroundColor = 'transparent';
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // set the mode to PAINT or ERASE
         $(".btn-mode").on('click', function() {
@@ -784,12 +792,15 @@
             })
             $(this).addClass('btn-danger');
         })
+
         // $('button').on('click', function(event) {
-        document.getElementById('mode').addEventListener('click', function(event) {
-            gridTileMode = event.target.className.indexOf('paint') >=0 ? PAINT : ERASE;
-            // $('.paintOrErase').text(' ' + gridTileMode);
-            tileMode.innerHTML = ' ' + gridTileMode;
-        });
+        if (document.getElementById('mode') !== null) {
+            document.getElementById('mode').addEventListener('click', function(event) {
+                gridTileMode = event.target.className.indexOf('paint') >=0 ? PAINT : ERASE;
+                // $('.paintOrErase').text(' ' + gridTileMode);
+                tileMode.innerHTML = ' ' + gridTileMode;
+            });
+        }
 
     });
 </script>

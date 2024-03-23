@@ -26,7 +26,10 @@
             <!--end::Content-->
         </div>
         <!--end::Login-->
+        
     </div>
+
+    
     <!--end::Main-->
     <script>
         var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
@@ -96,6 +99,7 @@
     <script src="/assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
     <script src="/assets/js/scripts.bundle.js"></script>
     <script src="/assets/js/splash.js"></script>
+    
     <!-- {{-- <script src="/assets/js/pages/custom/login/login-general.js"></script> --}} -->
 </body>
 

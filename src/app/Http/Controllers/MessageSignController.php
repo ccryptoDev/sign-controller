@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
-class MessageMenuController extends Controller
+class MessageSignController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,8 +21,16 @@ class MessageMenuController extends Controller
         // $timeArray['login_time'] = Session::get('login_time');
         // dd("time_interval", $timeArray['now'] - $timeArray['login_time']);
         // dd(session('login_time'));
+        $images = collect(Storage::disk('public')->files('assets/media/signmessage'))->map(function ($item) {
+            return basename($item);
+        });
+        // dd("dfsdfafasf");
+        // dd(Storage::disk('public') ->files('assets/media/signmessage'));
+        // dd("imagesList", $images);
 
-        return view('dashboard.messagemenu');
+        // dd($images);
+
+        return view('dashboard.messagesign', compact('images'));
     }
 
     /**
