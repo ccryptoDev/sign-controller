@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="menu-item"> 
-                    <a href="{{route('sign-editor')}}">System Settings</a>
+                    <a href="#">System Settings</a>
                 </div>
                 <div class="menu-item"> 
                     <a href="{{route('logout')}}">Logout</a>
