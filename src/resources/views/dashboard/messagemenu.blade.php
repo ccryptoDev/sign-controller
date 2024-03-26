@@ -25,7 +25,7 @@
                     <a href="{{route('message-sign')}}">Send a Message to the Sign</a>
                 </div>
                 <div class="menu-item"> 
-                    <a href="{{route('sign-editor')}}">Edit a Message</a>
+                    <a href="{{route('edit-message')}}">Edit a Message</a>
                 </div>
                 <div class="menu-item"> 
                     <a href="#">Copy a Message</a>
