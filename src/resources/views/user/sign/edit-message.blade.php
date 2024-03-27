@@ -179,17 +179,21 @@
                         <div class="card-title">
                             <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="clearMessage">New</button>
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Edit</button>
+                            
+                            <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="createMessage">Save & Exit</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createAndSend>Save & Send</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Cancel & Exit</button>
+                        </div>
+                        <div class="card-title">
                             <select class="form-control selectpicker d-inline mr-3" id="edit-mode" data-style="btn-success">
                                 <option value="0">3-Line Mode</option>
                                 <option value="1">Dot-Type</option>
                             </select>
-                            <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="createMessage">Save & Exit</button>
-                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Save & Send</button>
-                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Cancel & Exit</button>
                             <div class="gridControl">
                                 <form id="sizePicker" name="gridSize">
                                 </form>
                             </div>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
                         </div>
                     </div>
                     <div class="card-body text-center" style="overflow:scroll">  
@@ -290,8 +294,10 @@
 
 </div>
 @include('user.footer')
-<script src="/js/slider.js"></script>
+<!-- <script src="/js/slider.js"></script> -->
 <script src="/js/charToLed.js"></script>
+<script src="/js/canvastobmp.min.js"></script>
+<script src="/js/html2canvas.min.js"></script>
 <script>
     let blank = 2;
     let total = 10;
@@ -319,61 +325,61 @@
     // drawGrid();
     $(document.fonts).ready(function(){
         // Change Bright ness
-        $("#changeBright").on('click', function() {
-            var slider = document.getElementById('kt_nouislider_2');
-            changeBrightness(slider.noUiSlider.get());
-        })
-        function changeBrightness(bright) {
-            KTApp.blockPage();
-            $.ajax({
-                url : '/change-brightness',
-                type : "POST",
-                data : {
-                    bright: bright,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success : function(res){
-                    if(res['success'] == true) {
-                        toastr.success('Success');
-                    } else {
-                        toastr.error(res['message']);
-                    }
-                    KTApp.unblockPage();
-                },
-                error: function() {
-                    toastr.error("Change brightness failed");
-                    KTApp.unblockPage();
-                }
-            });
-        }
-        getCurrentBright();
-        function getCurrentBright() {
-            var slider = document.getElementById('kt_nouislider_2');
-            KTApp.block('#kt_nouislider_2', {
-                overlayColor: 'red',
-                opacity: 0.1,
-                state: 'primary'
-            });
-            $.ajax({
-                url : '/get-brightness',
-                type : "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success : function(res){
-                    if(res['success'] == true) {
-                        slider.noUiSlider.set(res['bright']);
-                    }
-                    KTApp.unblock('#kt_nouislider_2');
-                },
-                error: function() {
-                    toastr.error("Get brightness failed");
-                    KTApp.unblock('#kt_nouislider_2');
-                }
-            });
-        }
+        // $("#changeBright").on('click', function() {
+        //     var slider = document.getElementById('kt_nouislider_2');
+        //     changeBrightness(slider.noUiSlider.get());
+        // })
+        // function changeBrightness(bright) {
+        //     KTApp.blockPage();
+        //     $.ajax({
+        //         url : '/change-brightness',
+        //         type : "POST",
+        //         data : {
+        //             bright: bright,
+        //         },
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success : function(res){
+        //             if(res['success'] == true) {
+        //                 toastr.success('Success');
+        //             } else {
+        //                 toastr.error(res['message']);
+        //             }
+        //             KTApp.unblockPage();
+        //         },
+        //         error: function() {
+        //             toastr.error("Change brightness failed");
+        //             KTApp.unblockPage();
+        //         }
+        //     });
+        // }
+        // getCurrentBright();
+        // function getCurrentBright() {
+        //     var slider = document.getElementById('kt_nouislider_2');
+        //     KTApp.block('#kt_nouislider_2', {
+        //         overlayColor: 'red',
+        //         opacity: 0.1,
+        //         state: 'primary'
+        //     });
+        //     $.ajax({
+        //         url : '/get-brightness',
+        //         type : "POST",
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success : function(res){
+        //             if(res['success'] == true) {
+        //                 slider.noUiSlider.set(res['bright']);
+        //             }
+        //             KTApp.unblock('#kt_nouislider_2');
+        //         },
+        //         error: function() {
+        //             toastr.error("Get brightness failed");
+        //             KTApp.unblock('#kt_nouislider_2');
+        //         }
+        //     });
+        // }
         // 
         function clearLights(){
             var lightsOn = $('.on');
@@ -394,6 +400,8 @@
         }
 
         function justifyAlignment(layer) {
+
+            if (!messages[layer]) return;
 
             const emptyLetter = [false, false, false, false, false, false, false];
   
@@ -436,11 +444,12 @@
         $("#inputBox").on('keyup', function(e){
             clearLights();
             var value = $("#inputBox").val();
+            messages = [];
+            
             if(value != '' ) {
                 var msg = value.split('\n');
                 var layer = msg.length;
 
-                messages = [];
                 for (let i = 0; i < layer; i++) {
                     myMessage = textToLED(msg[i]);
                     
@@ -644,12 +653,19 @@
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBoard();
-            
-            // $("#canvas_bg").removeClass('d-none');
-            $("#canvas").removeClass('d-none');
-            $("#ledContainer").removeClass('d-none');
-            $("#inputBox").removeClass('d-none');
-            $("#gridCanvas").addClass('d-none');
+            if($("#edit-mode").val() == 0) {
+                // $("#canvas_bg").removeClass('d-none');
+                $("#canvas").removeClass('d-none');
+                $("#ledContainer").removeClass('d-none');
+                $("#inputBox").removeClass('d-none');
+                $("#gridCanvas").addClass('d-none');
+            } else {
+                $("#gridCanvas").removeClass('d-none');
+                $("#ledContainer").addClass('d-none');
+                $("#inputBox").addClass('d-none');
+                $("#canvas").addClass('d-none');
+                // $("#canvas_bg").addClass('d-none');
+            }
 
         }
 
@@ -741,6 +757,36 @@
                 text: 'You won"t be able to revert this!',
                 icon: "question",
                 showCancelButton: true,
+                confirmButtonText: "Yes, create message!",
+                customClass: {
+                    confirmButton: "btn-danger",
+                },
+            }).then(function(result) {
+                if (result.value) {
+                    
+                    if ($("#edit-mode").val() == 0) {
+                        CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
+                            console.log(url);
+                        })
+                    } else {
+                        html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
+                            CanvasToBMP.toDataURL(canvas, function (url) {
+                                console.log(url);
+                            })
+                        });
+                    }
+                }
+            });
+        })
+
+        // $('#createGrid').on('click', function makeGrid(event) {gridSize
+        $("#createGrid").on("click", function() {
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: 'You won"t be able to revert this!',
+                icon: "question",
+                showCancelButton: true,
                 confirmButtonText: "Yes, create new one!",
                 customClass: {
                     confirmButton: "btn-danger",
@@ -775,7 +821,7 @@
             let tableRows = '';
             let r = 1;
             
-            var selectedMode = 0;
+            var selectedMode = $("#edit-mode").val();
             var blank = 3;
             var j = 1;
             while (r <= rows) {
@@ -816,7 +862,6 @@
             });
             grid.addEventListener("touchmove", function(event) {
                 event.preventDefault();
-                console.log(event.target);
                 paintEraseTiles(event.target)
             });
 
@@ -1033,6 +1078,19 @@
 
             $("#inputBox").val('\n\n');
             clearLights();
+            
+            messages = [];
+
+            var trs = $("#pixelCanvas").first().children().children();
+            
+            for (let i = 0; i < trs.length; i++) {
+
+                var tds = trs[i].children
+                
+                for (let j = 0; j < tds.length; j++) {
+                    tds[j].style.backgroundColor = 'white';
+                }
+            }
         })
 
     });
