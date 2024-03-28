@@ -1,9 +1,9 @@
-var timeoutInMinutes = 5; 
+var timeoutInMinutes = 10; 
 var timeoutId;
 
 function startTimer() {
-    timeoutId = setTimeout(function() {
-        window.location.href = "{{ route('logout') }}"; 
+    timeoutId = setTimeout(function() {        
+		window.location.href = "/logout"; 
 	}, timeoutInMinutes * 60 * 1000); 
 }
 

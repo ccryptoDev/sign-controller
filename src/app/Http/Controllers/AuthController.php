@@ -19,10 +19,8 @@ use App\Notifications\ResetPassword;
 class AuthController extends Controller
 {
     public function login_view(Request $request) {
-        if (Auth::check()) {
-            // return redirect()->intended('sign-editor');
-            return redirect()->intended('main-menu');
-            // return redirect()->back();
+        if (Auth::check()) {            
+            return redirect()->intended('main-menu');            
         }
         return view('auth.login');
     }
@@ -33,65 +31,8 @@ class AuthController extends Controller
 
     public function forgot_password(Request $request) {
         return view('auth.forgot-password');
-    }
+    }   
     
-    // public function login_request(Request $request) {
-    //     // print_r(Hash::make("1234!@"));
-    //     // die();
-
-        
-
-    //     $messages = [
-    //         "email.required" => "Email is required",
-    //         "password.required" => "Password is required",
-    //     ];
-    //     $validator = Validator::make($request->all(), [
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ], $messages);
-    //     if ($validator->fails()) {
-    //         return back()->withErrors($validator)->withInput();
-    //     }
-    //     $credentials = $request->only('email', 'password');
-
-    //     // dd(attempt($credentials));
-
-        
-    //     if (Auth::guard('user')->attempt($credentials)) {
-           
-    //         $request->session()->regenerate();
-            
-    //         $user = User::where('email', $request->email)->first();
-    //         // var_dump(Auth::guard('user'));
-    //         // die();
-    //         // print_r($user);
-    //         // die();
-    //         Auth::login($user);
-            
-    //         return redirect()->intended('sign-editor');
-    //     } else if (Auth::guard('admin')->attempt($credentials)){
-            
-    //         $request->session()->regenerate();
-    //         // $user = User::where('email', $request->email)->first();
-    //         $user = User::where('email', $request->email)->first();
-    //         Auth::login($user);
-    //         return redirect()->intended('sign-editor');
-    //     } else if (Auth::guard('super')->attempt($credentials)){
-        
-    //         $request->session()->regenerate();
-    //         // $user = User::where('email', $request->email)->first();
-    //         $user = User::where('email', $request->email)->first();
-    //         Auth::login($user);
-    //         return redirect()->intended('sign-editor');
-    //         return redirect()->back();
-    //         return redirect()->route('dashboard');
-    //     }
-    //     else{
-    //         return back()->withInput()->withErrors([
-    //             'email' => 'The provided credentials do not match our records.',
-    //         ]);
-    //     }
-    // }
 
     public function login_request(Request $request) {
         $messages = [
@@ -189,12 +130,9 @@ class AuthController extends Controller
         $user->email = $request -> email;
         $user->password = Hash::make($request-> password);
         $user -> level = 2;
-
-        // var_dump($user);
-
-        // die();
+        
         $user->save(); 
-        // return back(); 
+        
         return redirect()->intended('login');
     }
 

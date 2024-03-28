@@ -81,6 +81,7 @@
 
 
 <script src="/assets/js/messagesign.js"></script>
+<script src="/assets/js/redirect.js"></script>
 </body>
 
 </html>

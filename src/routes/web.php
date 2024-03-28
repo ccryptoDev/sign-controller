@@ -42,7 +42,7 @@ Route::get('/reset-password/{token}', function ($token) {
 })->name('password.reset');
 Route::post('reset-password', [AuthController::class, 'reset_password'])->name('reset-password');
 
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Webserver Control
 Route::post('change-brightness', [SocketController::class, 'change_brightness']);
@@ -55,7 +55,6 @@ Route::post('send-specNumber', [SocketController::class, 'send_picture_specific_
 Route::post('read-information', [SocketController::class, 'read_information']);
 Route::post('swith-mode', [SocketController::class, 'swith_mode']);
 Route::post('get-current-playlist', [SocketController::class, 'get_current_playlist']);
-
 Route::get('tom-test', [SocketController::class, 'TomTest']);
 
 // check per min
@@ -75,6 +74,8 @@ Route::middleware([
     // Sign Editor
     Route::get('sign-editor', [SignController::class, 'sign_editor'])->name('sign-editor');
     Route::get('edit-message', [SignController::class, 'edit_message'])->name('edit-message');
+    Route::get('get-user-role', [SignController::class, 'get_user_role'])->name('get-user-role');
+    Route::post('save-message', [SignController::class, 'save_message'])->name('save-message');
     // Profile
     Route::get('/profile', [UserController::class, 'view_profile'])->name('profile');
     Route::post('profile', [UserController::class, 'update_profile'])->name('update-profile');

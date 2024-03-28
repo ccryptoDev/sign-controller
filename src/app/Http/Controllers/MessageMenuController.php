@@ -16,11 +16,7 @@ class MessageMenuController extends Controller
      */
     public function index()
     {
-        // $timeArray['now'] = time();
-        // $timeArray['login_time'] = Session::get('login_time');
-        // dd("time_interval", $timeArray['now'] - $timeArray['login_time']);
-        // dd(session('login_time'));
-
+        
         return view('dashboard.messagemenu');
     }
 
