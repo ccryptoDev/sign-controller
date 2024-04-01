@@ -158,7 +158,7 @@
     /* make adjustments for smaller devices */
 </style>
 
-<div class="d-flex flex-column justify-content-between px-8 py-lg-10 px-lg-24">
+<div class="d-flex flex-column justify-content-between px-8 py-10 px-lg-24">
     <!-- custom header  -->
     <div class="custom-header">
         <div class="page-logo">
@@ -185,7 +185,7 @@
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Edit</button>
                             
                             <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="createMessage">Save & Exit</button>
-                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createAndSend>Save & Send</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createAndSend">Save & Send</button>
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Cancel & Exit</button>
                         </div>
                         <div class="card-title">
@@ -389,7 +389,10 @@
             var lightsOn = $('.on');
             lightsOn.addClass('off');
             lightsOn.removeClass('on');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+        
         function textToLED(theWord){
             var theMessage = [];
             for(var i=0;i<theWord.length;i++){
@@ -587,12 +590,13 @@
         var j = 1;
         var rows = 3;
         function drawBoard(){
+            
             for (let x = 0; x < canvas.width; x += 10) {
                 ctx.moveTo(x, 0);
                 ctx.lineTo(x, canvas.height);
             }
             // Blank Space
-            ctx.fillStyle = "#A9A9A9";
+            ctx.fillStyle = "black";
             for(let j = 0; j < rows; j++) {
                 ctx.fillRect(0, 0 + (totalRow * j), canvas.width, blank);
             }
@@ -786,8 +790,8 @@
             // Get base64data of BMP
 
             if ($("#edit-mode").val() == 0) {
-                html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
-                    CanvasToBMP.toDataURL(canvas, function (url) {
+                // html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
+                    CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
                         
                         // generate the name of image
                         var value = $("#inputBox").val();
@@ -802,7 +806,7 @@
     
                         clearMessage();
                     })
-                })
+                // })
             } else {
                 html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
                     CanvasToBMP.toDataURL(canvas, function (url) {

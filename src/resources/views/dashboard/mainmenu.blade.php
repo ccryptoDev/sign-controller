@@ -1,13 +1,13 @@
 @include('dashboard.header')
     <!-- Aside Container -->
-    <div class="d-flex flex-column-fluid flex-column justify-content-between px-24 py-lg-10 px-lg-24">
+    <div class="d-flex flex-column-fluid flex-column justify-content-between px-24 py-10 px-lg-24">
         <div class="page-logo text-center">
             <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
         </div>
 
         <!--begin::Aside body-->
         <div class="d-flex flex-column-fluid flex-column page-container main-dashbaord">
-            <div class="text-center italic page-title">
+            <h2 class="text-center italic page-title">
                 Main Menu
             </div>
             <div class="qrcode-form">
@@ -29,8 +29,7 @@
                         <a href="#">Turn Sign On/Off</a>
                     </div>
                     <div class="sign-status">
-                        <p>Sign</p>
-                        <p class="status">ON</p>
+                        <span>Sign&nbsp;</span><span class="status"> ON</span>
                     </div>
                 </div>
                 <div class="menu-item"> 

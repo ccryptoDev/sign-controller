@@ -87,11 +87,13 @@
 }
 
 .login-header-logo-image {
-  width: 40%; 
+  /* width: 40%;  */
+  width: 160px;
+  height: 60px;
   margin: 2rem 0;     
 }
 .page-title {
-  font-size: 30px;
+  /* font-size: 30px; */
   font-weight: bold;
   padding: 0 0 2rem;
 }
@@ -122,10 +124,10 @@
 }
 .description p {
   margin: 0;
-  font-size: 20px;
+  font-size: 14px;
 }
 .description a {
-  font-size: 21px;
+  font-size: 16px;
   font-weight: bold;
   color: inherit;
   text-decoration: underline;
@@ -150,7 +152,8 @@
 .menu-item a {
   width: 100%;
   text-align: center;
-  font-size: 2.5rem;
+  /* font-size: 2.5rem; */
+  font-size: 20px;
   color: #fff;
   font-style: italic;
 }
@@ -161,13 +164,15 @@
   gap: 25px;
 }
 .custom-item .sign-status {
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
-  padding: 15px;
+  padding: 8px;
+  border: 2px solid #5757c7;
+  border-radius: 20% / 12%;
 }
-.sign-status p {
+.sign-status span {
   font-style: italic;
   margin: 0;
   font-size: 20px;
@@ -202,12 +207,12 @@
 }
 .custom-header .page-title h2 {
   margin: 0 auto 1rem;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: bold;
 }
 .custom-header .page-title p {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 19px;
   text-align: left;
 }
@@ -241,7 +246,7 @@
   justify-content: start;
   max-height: 400px;
   overflow-y: auto;
-  width: 50%;
+  /* width: 50%; */
   margin-top: 2rem;
 }
 

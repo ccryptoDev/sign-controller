@@ -240,6 +240,7 @@ class SocketController extends Controller {
         $response['result'] = bin2hex($reply);
         return $response;
     }
+    
     public function compress_image(Request $request) {
         // Compress Image
         $contents = File::get(base_path().'/public/images/99.bmp');
@@ -627,6 +628,76 @@ class SocketController extends Controller {
         $response['result'] = bin2hex($reply);
         $response['width'] = $width;
         $response['height'] = $height;
+        return $response;
+    }
+
+    public function send_image_socket(Request $request) {
+
+        $contents = File::get(base_path().'/public/assets/media/signmessage/'.$request->imageName);
+        list($width, $height) = getimagesize(base_path().'/public/assets/media/signmessage/'.$request->imageName);
+
+        $width = strval(dechex($width));
+        $height = strval(dechex($height));
+
+        if (strlen($width) % 2 === 1) $width = '0'.$width;
+        if (strlen($height) % 2 === 1) $height = '0'.$height;
+
+        $base64 = base64_encode($contents);
+        $hexData = bin2hex($base64);
+    
+        // // Data to be sent
+        $data1 =hex2bin('5948') .      // dword 5948H - Command Header
+            hex2bin('0101') .      // dword 0101H - Address Word
+            hex2bin('0103') .      // dword 020AH - Command Word
+            // hex2bin($length) .      // dword 0004H - Data Packet Length ('4 bytes')
+            // hex2bin($request['page_num']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            // hex2bin($request['width']) . 
+            // hex2bin($request['height']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            hex2bin('0004') .      // dword 0004H - Data Packet Length ('4 bytes')
+            hex2bin('00') .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            hex2bin($width) . 
+            hex2bin($height) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            hex2bin($hexData);
+
+        // echo $hexData.'\n';
+        echo hex2bin($hexData);
+        
+        // Calculate the Exclusive of all bytes in $Data1 and 7Fh
+        // Calculate XOR checksum of each byte with 0x7F
+        // $eccValue = 0x7F;
+        // $length = strlen($data1);
+        
+        // for ($i = 0; $i < $length; $i++) {
+        //     $byte = ord($data1[$i]); // Get the ASCII value of the byte
+        //     $eccValue ^= $byte; // XOR with the current byte
+        // }
+        
+        // // Create a new variable $data by concatenating $data1 and $eccValue
+        // $data = $data1 . chr($eccValue);        
+    
+        // Open a socket connection
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if ($socket === false) {
+            echo "socket_create() failed: " . socket_strerror(socket_last_error()) . "\n";
+        }
+        
+        // Connect to the server
+        $result = socket_connect($socket, $this->ip, $this->port);
+        if ($result === false) {
+            echo "socket_connect() failed: " . socket_strerror(socket_last_error($socket)) . "\n";
+        }
+
+        $res = socket_write($socket, $data, strlen($data));
+
+        // Reply
+        $reply = socket_read($socket, 1024);
+
+        // Close the connection
+        socket_close($socket);
+
+
+        $response['success'] = true;
+        $response['result'] = bin2hex($reply);
         return $response;
     }
 }

@@ -59,7 +59,7 @@
             <!--begin::Aside-->
             <div class="d-flex overflow-hidden">
                 <!--begin: Aside Container-->
-                <div class="d-flex flex-column-fluid flex-column justify-content-between py-5 px-24 py-lg-10 px-lg-24">
+                <div class="d-flex flex-column-fluid flex-column justify-content-between py-5 px-10 py-md-5 px-md-24 py-lg-10 px-lg-24">
                     <!--begin::Logo-->
                     <a href="#" class="text-center pt-4">
                        <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 

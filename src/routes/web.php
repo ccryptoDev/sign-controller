@@ -49,7 +49,7 @@ Route::post('change-brightness', [SocketController::class, 'change_brightness'])
 Route::post('get-brightness', [SocketController::class, 'get_brightness']);
 Route::post('send_img_playlist', [SocketController::class, 'send_img_playlist']);
 Route::get('send-image', [SocketController::class, 'compress_image']);
-Route::post('send-image', [SocketController::class, 'compress_image']);
+Route::post('send-image-socket', [SocketController::class, 'send_image_socket']);
 Route::post('get-currentNumber', [SocketController::class, 'get_current_number']);
 Route::post('send-specNumber', [SocketController::class, 'send_picture_specific_screen']);
 Route::post('read-information', [SocketController::class, 'read_information']);
@@ -94,6 +94,7 @@ Route::middleware([
     Route::get('main-menu', [MainMenuController::class, 'index']) ->name('main-menu');
     Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
     Route::get('message-sign', [MessageSignController::class, 'index']) ->name('message-sign');
+    Route::get('send-to-sign', [MessageSignController::class, 'send_to_sign']) -> name('send-to-sign');
 
     // Socket Connection
 });

@@ -33,6 +33,15 @@ class MessageSignController extends Controller
         return view('dashboard.messagesign', compact('images'));
     }
 
+    public function send_to_sign(Request $request) {
+
+        $images = collect(Storage::disk('public')->files('assets/media/signmessage'))->map(function ($item) {
+            return basename($item);
+        });
+        
+        return view('dashboard.send-to-sign', compact('images'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
