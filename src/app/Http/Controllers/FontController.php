@@ -19,7 +19,8 @@ class FontController extends Controller
     }
 
     public function save_font(Request $request) {
-        $exist = Fonts::where('letter', $request['letter'])->first();
+        // $exist = Fonts::where('letter', $request['letter'])->first();
+        $exist = Fonts::whereRaw('BINARY letter = ?', [$request['letter']])->first();
         if(isset($exist->id)) {
             Fonts::where('letter', $request['letter'])
                 ->update([
