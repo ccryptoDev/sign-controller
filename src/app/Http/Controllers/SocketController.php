@@ -123,7 +123,7 @@ class SocketController extends Controller {
         return $response;
     }
     public function TomTest (Request $request) {
-        echo 'April 4, 2024 - 123';
+        echo 'Change 2 April 4, 2024 - 123';
         return 'Testing';
     }
     
