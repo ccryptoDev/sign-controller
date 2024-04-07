@@ -1,6 +1,6 @@
 @include('dashboard.header')
     <!-- Aside Container -->
-    <div class="d-flex flex-column-fluid flex-column justify-content-between px-24 py-10 px-lg-24">
+    <div class="d-flex flex-column-fluid flex-column justify-content-between px-8 px-md-12 px-lg-24 py-10 px-lg-24">
         <div class="page-logo text-center">
             <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
         </div>

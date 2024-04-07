@@ -21,11 +21,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
-<body class="fluid bg-white">
+<!-- <body class="fluid bg-white"> -->
     <!-- full background -->
-    <div class="fluid bg-white">
+    <!-- <div class="fluid bg-white"> -->
         <!-- page outer -->
-        <div class="d-flex overflow-hidden">
+        <!-- <div class="d-flex overflow-hidden"> -->
 
         <!-- <head>
         <base href="../../../../">

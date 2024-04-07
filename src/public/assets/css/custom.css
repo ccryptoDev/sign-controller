@@ -1,9 +1,14 @@
 /* slick css */
+.slick-panel {
+  /* background-color: black; */
+}
+
 .slick {  
   width: 80%;
   margin: 0px auto 0px auto;
   padding-top: 20px;
   padding-bottom: 20px;
+  background-color: black;
 }
 
 .slick span {
@@ -15,12 +20,12 @@
   /* line-height: 100px; */
   position: relative;
   text-align: center;
-  border: solid 2px rgb(12, 12, 12);
-  border-radius: 8px;
+  /* border: solid 2px rgb(12, 12, 12);
+  border-radius: 8px; */
   
   transform: translate(0, 0) scale(.4);
   transition: all .4s ease;
-  opacity: .5;    
+  /* opacity: .5;     */
 } 
 
 .slick img {
@@ -30,18 +35,23 @@
 
 
 .slick-slide.lt2 span {
-  transform: translate(10%, 0) scale(.6);
+  /* transform: translate(10%, 0) scale(.6); */
+  transform: scale(.6);
 }
 .slick-slide.lt1 span {
-  opacity: .7;
-  transform: translate(5%, 0) scale(.8);
+  /* opacity: .7; */
+  transform: scale(.8);
 }
 .slick-slide.gt1 span {
-  opacity: .7;
-  transform: translate(-5%, 0) scale(.8);
+  /* opacity: .7; */
+  transform: scale(.8);
 }
 .slick-slide.gt2 span {
-  transform: translate(-10%, 0) scale(.6);
+  transform: scale(.6);
+}
+.slick-slide span {
+  border: solid 2px white;
+  /* border-radius: 8px; */
 }
 .slick-slide.slick-center span {
   z-index: 1;
@@ -49,8 +59,6 @@
   opacity: 1;
   color: #0a0a0a;
   text-align: center;
-  border: solid 4px rgb(52, 9, 172);
-  border-radius: 8px;
 }
 
 
@@ -69,12 +77,21 @@
   z-index: 100;
 }
 
+.slick-prev {
+  left: 10px !important;
+}
+
+.slick-next {
+  right: 10px !important;
+}
+
 .slick .slick-prev {
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 15px 15px 15px 0;
-  border-color: transparent #000000 transparent transparent;
+  border-color: transparent white transparent transparent;
+  /* rgb(52, 9, 172) */
   left: 0;
 }
 .slick .slick-next {
@@ -82,14 +99,14 @@
   height: 0;
   border-style: solid;
   border-width: 15px 0 15px 15px;
-  border-color: transparent transparent transparent #000000;
+  border-color: transparent transparent transparent white;
   right: 0;
 }
 
 .login-header-logo-image {
   /* width: 40%;  */
-  width: 160px;
-  height: 60px;
+  width: 120px;
+  /* height: 60px; */
   margin: 2rem 0;     
 }
 .page-title {
@@ -109,6 +126,8 @@
 .font-size-13pt {
   font-size: 13pt;
 } 
+
+/* QRCODE FORM */
 .qrcode-form {
   width: 100%;
   display: flex;
@@ -122,6 +141,8 @@
 .qrcode-form .description {
   font-style: italic;
 }
+
+
 .description p {
   margin: 0;
   font-size: 14px;
@@ -196,8 +217,8 @@
   width: 30%;
 }
 .custom-header .page-logo img {
-  width: 100%;
-  margin: 0;
+  /* width: 100%; */
+  /* margin: 0; */
 }
 .custom-header .page-title {
   display: flex;
@@ -212,14 +233,14 @@
 }
 .custom-header .page-title p {
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 19px;
   text-align: left;
 }
 .custom-header .qrcode-form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: end;
   gap: 10px;
   width: 30%;
   margin: 0;
@@ -227,11 +248,11 @@
 .custom-header .qrcode-form a {
   text-decoration: none;
   color: #a00d0d;
-  font-size: 17px;
+  font-size: 10px;
   font-weight: bold;
 }
 .custom-header .qrcode-form img {
-  width: 70%;
+  width: 70px;
 }
 .fluid {
   width: 100%;
@@ -239,21 +260,23 @@
 
 .thumbnail-list {
   list-style: none;
-  /* padding: 20px 0px 10px; */
+  padding-left: 0;
+  margin: 20px 0;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
   max-height: 400px;
   overflow-y: auto;
-  /* width: 50%; */
+  width: 100%;
   margin-top: 2rem;
+  background-color: black;
 }
 
 .thumbnail-list li {
   width: calc(25% - 10px); 
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: 5px;
+  border: 2px solid white;
 }
 
 .thumbnail-list span {    
@@ -269,7 +292,7 @@
   cursor: pointer;
   
   transition: all .4s ease;
-  opacity: .5; 
+  /* opacity: .5;  */
   width: 100%;
   
 }
@@ -299,6 +322,34 @@
   text-align: center;
 }
 
+@media (max-width: 576px) {
+  .qrcode-form {
+    display: block;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  .qrcode-form img {
+    width: 70px;
+    margin-bottom: 5px;
+  }
 
+  .qrcode-form .description a, p {
+    font-size: 12px;
+  }
 
+  .main-menu {
+    gap: 1rem;
+  }
 
+  .menu-item {
+    height: 40px;
+  }
+
+  .menu-item a {
+    font-size: 16px;
+  }
+
+  .custom-item .sign-status {
+    padding: 4px;
+  }
+}
