@@ -341,13 +341,13 @@
         }
     }
 
-    addBlankRow(3, 0);
-    addBlackRow(10, 3);
-    addBlankRow(2, 13);
-    addBlackRow(10, 15);
-    addBlankRow(2, 25);
-    addBlackRow(10, 27);
-    addBlankRow(3, 37);
+    addBlankRow(2, 0);
+    addBlackRow(10, 2);
+    addBlankRow(3, 11);
+    addBlackRow(10, 14);
+    addBlankRow(3, 25);
+    addBlackRow(10, 28);
+    addBlankRow(2, 38);
 
     // drawGrid();
     $(document.fonts).ready(function(){
@@ -418,9 +418,9 @@
         
         function textToLED(theWord){
             var theMessage = [];
-            for(var i = 0; i < theWord.length; i++){
-                theMessage.push(charToLED(theWord.charAt(i)));
-                theMessage.push(charToLED());
+            for (var i = 0; i < theWord.length; i++) {
+                theMessage.push( transposeArray(charToLED(theWord.charAt(i))) );
+                theMessage.push( charToLED() );
             }
         
             var flatten = [];
@@ -473,6 +473,10 @@
             }
         }
 
+        function transposeArray(array) {
+            return array[0].map((_, colIndex) => array.map(row => row[colIndex]));
+        }
+
         $("#inputBox").on('keyup', function(e){
             clearLights();
             var value = $("#inputBox").val();
@@ -508,8 +512,8 @@
             console.log(messageArray);
             console.log(layer);
 
-            var offsetRow = layer === 0 ? 3 : layer === 1 ? 5 : 7;
-            offsetRow ++;
+            var offsetRow = layer === 0 ? 2 : layer === 1 ? 4 : 8;
+            // offsetRow ++;
 
             var messageLength = messageArray.length;
             var totalScrollLength = canvasWidth + messageLength;
@@ -677,6 +681,7 @@
             value = $(this).val();
             drawText();
         })
+
         // Text Alignment
         $(".text-alignment .btn").on('click', function() {
             $(".text-alignment .btn").each(function(){
@@ -686,7 +691,8 @@
             line = value.split("\n").length - 1;
             alignmentList[line] = $(this).data('alignment');
             drawText();
-        })
+        });
+        
         var changeMode = function() {
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);

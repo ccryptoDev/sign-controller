@@ -29,23 +29,23 @@
         <div class="d-flex flex-column-fluid flex-column px-4 px-md-16 page-container message-menu">
             <div class="main-menu">
                 <div class="menu-item"> 
-                    <a href="{{route('send-to-sign')}}">Send a Message to the Sign</a>
+                    <a href="{{route('send-to-sign')}}">Send a Message</a>
                 </div>
                 <div class="menu-item"> 
                     <a href="{{route('edit-message')}}">Edit a Message</a>
                 </div>
-                <div class="menu-item">
+                <!-- <div class="menu-item">
                     <a href="#">Copy a Message</a>
-                </div>
+                </div> -->
                 <div class="menu-item"> 
                     <a href="#">Delete a Message</a>
                 </div>
-                <div class="menu-item"> 
+                <!-- <div class="menu-item"> 
                     <a href="#">Upload a Message</a>
                 </div>
                 <div class="menu-item"> 
                     <a href="#">Download a Message</a>
-                </div>
+                </div> -->
                 <div class="menu-item"> 
                     <a href="{{route('main-menu')}}">Return to Previous Screen</a>
                 </div>

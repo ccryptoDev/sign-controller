@@ -42,6 +42,10 @@ class MessageSignController extends Controller
         return view('dashboard.send-to-sign', compact('images'));
     }
 
+    public function deleteMessage() {
+        return view('dashboard.on-develop');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

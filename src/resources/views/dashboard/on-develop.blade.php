@@ -28,25 +28,10 @@
         <!--begin::Aside body-->
         <div class="d-flex flex-column-fluid flex-column px-4 px-md-16 page-container message-menu">
             <div class="main-menu">
+                <h4>Coming Soon</h4>
+                <p>This page is still on Development.</p>
                 <div class="menu-item"> 
-                    <a href="{{route('message-menu')}}">Messages</a>
-                </div>
-                <div class="menu-item"> 
-                    <a href="{{route('schedules')}}">Schedules</a>
-                </div>
-                <div class="custom-item">
-                    <div class="menu-item"> 
-                        <a href="{{route('turn-sign')}}">Turn Sign On/Off</a>
-                    </div>
-                    <div class="sign-status">
-                        <span>Sign&nbsp;</span><span class="status"> ON</span>
-                    </div>
-                </div>
-                <div class="menu-item"> 
-                    <a href="{{route('system-settings')}}">System Settings</a>
-                </div>
-                <div class="menu-item"> 
-                    <a href="{{route('logout')}}">Logout</a>
+                    <a href="{{route('main-menu')}}">Return to Previous Screen</a>
                 </div>
             </div>
         </div>

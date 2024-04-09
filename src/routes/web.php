@@ -92,9 +92,13 @@ Route::middleware([
 
     //Main Menu
     Route::get('main-menu', [MainMenuController::class, 'index']) ->name('main-menu');
+    Route::get('system-settings', [MainMenuController::class, 'settings']) ->name('system-settings');
+    Route::get('schedules', [MainMenuController::class, 'schedules']) ->name('schedules');
+    Route::get('turn-sign', [MainMenuController::class, 'turnSign']) ->name('turn-sign');
     Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
     Route::get('message-sign', [MessageSignController::class, 'index']) ->name('message-sign');
     Route::get('send-to-sign', [MessageSignController::class, 'send_to_sign']) -> name('send-to-sign');
+    Route::get('delete-message', [MessageSignController::class, 'deleteMessage']) -> name('delete-message');
 
     // Socket Connection
 });

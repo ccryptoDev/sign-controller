@@ -18,6 +18,23 @@ class MainMenuController extends Controller
     }
 
     /**
+     * Display a settings menu 
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function settings() {
+        return view('dashboard.on-develop');
+    }
+
+    public function schedules() {
+        return view('dashboard.on-develop');
+    }
+
+    public function turnSign() {
+        return view('dashboard.on-develop');
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
