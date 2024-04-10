@@ -160,11 +160,11 @@
 
 <div class="d-flex flex-column justify-content-between px-8 py-10 px-lg-24">
     <!-- custom header  -->
-    <div class="custom-header px-4 px-md-16">
+    <div class="custom-header">
         <div class="page-logo">
             <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
         </div>
-        <div class="d-none d-sm-block text-center italic page-title">
+        <div class="text-center italic page-title">
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
@@ -173,13 +173,6 @@
             <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
         </div>
     </div>
-
-    <div class="px-4">
-        <div class="d-block d-sm-none text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
-        </div>
-    </div>  
     <!-- end: custom-header -->
 
     <div class="container">
@@ -191,8 +184,6 @@
                             <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="clearMessage">New</button>
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Edit</button>
                             
-                        </div>
-                        <div class="card-title">
                             <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="createMessage">Save & Exit</button>
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createAndSend">Save & Send</button>
                             <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Cancel & Exit</button>
@@ -219,7 +210,7 @@
                             </div>
                         </div> -->
                         <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
-                        <textarea class="form-control" id="inputBox" rows="3" placeholder="Please enter text"></textarea>
+                        <textarea class="form-control" id="inputBox" rows="3"></textarea>
 
                         <!-- Alignment -->
                         <div class="card-toolbar d-flex justify-content-between mt-5">
@@ -312,42 +303,28 @@
 <script src="/js/canvastobmp.min.js"></script>
 <script src="/js/html2canvas.min.js"></script>
 <script>
-    const canvasWidth = 56;
+    let blank = 2;
+    let total = 10;
+    var p = 1;
 
     var messages = [];
     let alignments = [0,0,0];
-    
-    const lightOff = function (rowNum, col) {
-        
-        for(j = 0; j < canvasWidth; j++) {
+
+    for(let i = 1; i < 31; i++) {
+        if(i > total * p) {
+            p++;
+        }
+        if(i < total * p - blank) {
+            var $col = $('<div class="col-md-12 d-flex"/>').appendTo('#wrapperLed');
+        } else {
+            var $col = $('<div class="col-md-12 d-flex blank"/>').appendTo('#wrapperLed');
+        }
+        for(j = 0; j < 60; j++) {
             var line_0 = document.createElement('div');
-            line_0.className = (rowNum) + "_" + j + " light off";
-            col.append(line_0);
+            line_0.className = (i - 1) + "_" + j + " light off";
+            $col.append(line_0);
         }
     }
-    
-    const addBlankRow = function (length, previousRowNum) {
-
-        for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center blank"/>').appendTo('#wrapperLed');
-            lightOff(previousRowNum + i, col);
-        }
-    }
-    
-    const addBlackRow = function (length, previousRowNum) {
-        for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center"/>').appendTo('#wrapperLed');
-            lightOff(previousRowNum + i, col);
-        }
-    }
-
-    addBlankRow(2, 0);
-    addBlackRow(10, 2);
-    addBlankRow(3, 11);
-    addBlackRow(10, 14);
-    addBlankRow(3, 25);
-    addBlackRow(10, 28);
-    addBlankRow(2, 38);
 
     // drawGrid();
     $(document.fonts).ready(function(){
@@ -418,9 +395,9 @@
         
         function textToLED(theWord){
             var theMessage = [];
-            for (var i = 0; i < theWord.length; i++) {
-                theMessage.push( transposeArray(charToLED(theWord.charAt(i))) );
-                theMessage.push( charToLED() );
+            for(var i=0;i<theWord.length;i++){
+                theMessage.push(charToLED(theWord.charAt(i)));
+                theMessage.push(charToLED());
             }
         
             var flatten = [];
@@ -433,15 +410,13 @@
 
             if (!messages[layer]) return;
 
-            const emptyLetter = [false, false, false, false, false, false, false, false, false, false];
+            const emptyLetter = [false, false, false, false, false, false, false];
   
             if (alignments[layer] === 0) {
 
                 var emptyLetters = [], afterEmptyLetters = [];
 
-                emptyLetters.push(emptyLetter);
-
-                for (let j = 0; j < canvasWidth - messages[layer].length; j++) {
+                for (let j = 0; j < 60 - messages[layer].length; j++) {
                     emptyLetters.push(emptyLetter);
                 }
 
@@ -453,9 +428,9 @@
                 let upwordLength;
                 
                 if (alignments[layer] === 1) 
-                    upwordLength = (canvasWidth - messages[layer].length) / 2;
+                    upwordLength = (60 - messages[layer].length) / 2;
                 else 
-                    upwordLength = canvasWidth - messages[layer].length - 1;
+                    upwordLength = 60 - messages[layer].length;
 
                 var emptyLetters = [], afterEmptyLetters = [];
                 for (let j = 0; j < upwordLength; j++) {
@@ -464,17 +439,13 @@
 
                 emptyLetters = emptyLetters.concat(messages[layer]);
 
-                for (let j = 0; j < canvasWidth - emptyLetters.length; j++) {
+                for (let j = 0; j < 60 - emptyLetters.length; j++) {
                     afterEmptyLetters.push(emptyLetter);
                 }
                 emptyLetters = emptyLetters.concat(afterEmptyLetters);
                 drawMessage(emptyLetters, layer);
                 
             }
-        }
-
-        function transposeArray(array) {
-            return array[0].map((_, colIndex) => array.map(row => row[colIndex]));
         }
 
         $("#inputBox").on('keyup', function(e){
@@ -487,12 +458,18 @@
                 var layer = msg.length;
 
                 for (let i = 0; i < layer; i++) {
-                    console.log('layer ', i);
-
                     myMessage = textToLED(msg[i]);
+                    
+                    // var newArrayVal = drawMessage(myMessage, i);
                     messages.push(myMessage);
+                    // if (newArrayVal !== undefined) {
+                    //     for(var j = 0; j < newArrayVal.length; j++) {
+                    //         for(var i = 0; i < 7; i++) {
+                    //             setLight(i, j, newArrayVal[i][j])
+                    //         }
+                    //     }
+                    // }
                     justifyAlignment(i);
-
                 }
 
             }
@@ -507,24 +484,17 @@
             }
         }
 
-        function drawMessage(messageArray, layer){
-
-            console.log(messageArray);
-            console.log(layer);
-
-            var offsetRow = layer === 0 ? 2 : layer === 1 ? 4 : 8;
-            // offsetRow ++;
+        function drawMessage(messageArray, line){
 
             var messageLength = messageArray.length;
-            var totalScrollLength = canvasWidth + messageLength;
-
-            if(messageLength > 0) {
+            var totalScrollLength = 60 + messageLength;        
+            if(messageLength > 0){        
                 for (var col = 0; col < messageLength; col++) {
-                    for (var row = 0; row < 10; row++) {
+                    for (var row = 0; row < 7; row++) {
                         var offsetCol = 0 + col;
-                        if (offsetCol < canvasWidth || offsetCol >= 0) {
-                            setLight(offsetRow + layer * 10 + row, offsetCol, messageArray[col][row]);
-                        }
+                        if (offsetCol < 60 || offsetCol >= 0) {
+                            setLight(line * 10 + row, offsetCol, messageArray[col][row]);
+                        }                
                     }
                 }
             }
@@ -567,16 +537,12 @@
             // lineHeight = ctx.measureText('M').width;
             // ctx.textBaseline = "middle";
             // ctx.fontKerning = "none";
-
-            console.log('drawtext value: ', value);
             if(value) {
                 var newArray = value.split("\n");
                 newArray.map((item, index) => {
-
                     const alignment = alignmentList[index];
                     ctx.textAlign = alignment;
                     ctx.color = "black";
-
                     if(alignment == 'left') {
                         ctx.fillText(item, 10, 130 * (index + 1));
                     } else if(alignment == 'center') {
@@ -593,7 +559,6 @@
                 }
             }
         }
-        
         function handleClick(e) {
             // if(!isDown) {
             //     return;
@@ -682,7 +647,6 @@
             value = $(this).val();
             drawText();
         })
-
         // Text Alignment
         $(".text-alignment .btn").on('click', function() {
             $(".text-alignment .btn").each(function(){
@@ -692,8 +656,7 @@
             line = value.split("\n").length - 1;
             alignmentList[line] = $(this).data('alignment');
             drawText();
-        });
-        
+        })
         var changeMode = function() {
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
