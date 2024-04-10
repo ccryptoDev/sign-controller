@@ -11,7 +11,7 @@
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
         <div class="qrcode-form">
-            <a href="#">Click for HELP</a>
+            <!-- <a href="#">Click for HELP</a> -->
             <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
         </div>
     </div>
@@ -26,14 +26,21 @@
 </div>
 
 <div class="fluid bg-white">
-    <div id="slickPanel" class="slick-panel">
-        <!-- @foreach ($images as $image)
-        <div>
-            <span>
-                <img src="{{ asset('assets/media/signmessage/' . $image) }}" alt="image" />
-            </span>
+    <div class="slider-panel px-8">
+        <div class="send-button d-flex">
+            <button 
+                class="btn" 
+                type="button" 
+                id="send"
+            >
+                <span>Open</span>
+                <span>this</span>
+                <span>Item</span>
+            </button>
         </div>
-        @endforeach -->
+        <div id="slickPanel" class="slick-panel">
+
+        </div>
     </div>
 
     <!-- search form -->
@@ -86,16 +93,11 @@
             </ul>               
         </div>
     </div>
-
-    <div class="d-flex flex-column-fluid flex-column px-16 page-container message-menu">
-        <div class="main-menu">
-            <div class="">            
-                <button class="btn btn-danger d-inline my-10" type="button" id="send">Send</button>
-            </div>
-        </div>
-    </div>
 </div>
 
+@include('dashboard.footer')
+
+<script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
 <script src="/assets/js/messagesign.js"></script>
 <!-- <script src="/assets/js/redirect.js"></script> -->
 <script>
@@ -104,12 +106,30 @@
     images = images.map((image, index) => ({ id: index, name: image }) );
     // console.log(images);
     var firstIndex = 0, secondIndex = 0;
-    var firstSelectedImages = [], secondSelectedImages = [];
+    var firstSelectedImages = images, secondSelectedImages = [];
 
     $("#send").on("click", function () {
         event.preventDefault();
 
-        if (firstSelectedImages[firstIndex] && firstSelectedImages[firstIndex].id && images[firstSelectedImages[firstIndex].id]) {
+        if (firstSelectedImages[firstIndex]) {
+            
+            console.log('selected image ID: ', firstSelectedImages[firstIndex].id);
+            console.log('selected image Name: ', firstSelectedImages[firstIndex].name);
+
+            Swal.fire({
+                title: "Send a message to Sign",
+                text: 'Are you sure to send the current selected message to Sign?',
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, I am sure",
+                customClass: {
+                    confirmButton: "btn-danger",
+                },
+            }).then(function(result) {
+                console.log(result.isConfirmed);
+            });
+
+            return true;
 
             $.ajax({
                 url : '/send-image-socket',
@@ -161,7 +181,7 @@
         $("#slickPanel").html('<div class="slick" id="slick"></div>');
         for (var i = 0; i < firstSelectedImages.length; i++) {
 
-            var component = `<div><span><img src="{{ asset('assets/media/signmessage/${firstSelectedImages[i].name}') }}" alt="image" /></span></div>`;
+            var component = `<div><span><img src="{{ asset('assets/media/signmessage/${firstSelectedImages[i].name}') }}"` + firstSelectedImages[i].id + `  alt="image" /></span></div>`;
             $("#slick").append(component);
 
         }
@@ -180,7 +200,7 @@
         $("#thumbnail-list").html('');
         secondSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value));
         for (var i = 0; i < secondSelectedImages.length; i++) {
-            var component = `<li><span><img src="{{ asset('assets/media/signmessage/${ secondSelectedImages[i].name }' ) }}" alt="image" /></span></li>`;
+            var component = `<li><span><img src="{{ asset('assets/media/signmessage/${ secondSelectedImages[i].name }' ) }}"` + secondSelectedImages[i].id + `  alt="image" /></span></li>`;
             $("#thumbnail-list").append(component);
         }
 
@@ -204,11 +224,12 @@
     // Load a slider with all the messages
     $("#slickPanel").html('<div class="slick" id="slick"></div>');
     for (var i = 0; i < images.length; i++) {
-        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" alt="image" /></span></div>`;
+        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id=` + images[i].id + ` alt="image" /></span></div>`;
         $("#slick").append(component);
     }
 
 </script>
+
 </body>
 
 </html>

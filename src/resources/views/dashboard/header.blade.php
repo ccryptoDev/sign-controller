@@ -16,8 +16,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css">
     <link href="/assets/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/assets/media/logos/logo-letter-13.png" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script> -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
                 

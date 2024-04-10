@@ -1,11 +1,12 @@
 /* slick css */
 .slick-panel {
+  width: 80%;
   /* background-color: black; */
 }
 
 .slick {  
-  width: 80%;
-  margin: 0px auto 0px auto;
+  width: 100%;
+  margin: 0px auto;
   padding-top: 20px;
   padding-bottom: 20px;
   /* background-color: black; */
@@ -59,6 +60,8 @@
   opacity: 1;
   color: #0a0a0a;
   text-align: center;
+  border: 5px solid blue;
+  padding: 2px;
 }
 
 
@@ -253,51 +256,23 @@
   width: 100%;
 }
 
-.thumbnail-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 20px 0;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  max-height: 400px;
-  overflow-y: auto;
-  width: 100%;
-  margin-top: 2rem;
-  /* background-color: black; */
-}
-
-.thumbnail-list li {
-  width: calc(25% - 10px); 
-  margin: 5px;
-  border: 2px solid white;
-}
-
-.thumbnail-list span {    
-  display: block;
-  background: #f4f5f6;
-  color: #fff;
-  font-size: 36px;
-  
-  position: relative;
-  text-align: center;
-  border: solid 2px rgb(12, 12, 12);
-  border-radius: 8px;
-  cursor: pointer;
-  
-  transition: all .4s ease;
-  /* opacity: .5;  */
-  width: 100%;
-  
-}
-
-.thumbnail-list img {
-  width: 100%;
-  height: 100%;
-}
-
 /* Send a sign */
+.slider-panel {
+  display: flex;
+  align-items: center;
+}
+.slider-panel .send-button {
+  width: 20%;
+}
+.send-button button {
+  background: #5c5cdc;
+  color: #fff;
+  font-size: 18px;
+  width: 70%;
+}
+.send-button button span {
+  display: block
+}
 .search-form {
   display: flex;
   flex-direction: column;
@@ -322,6 +297,42 @@
   width: 70%;
   height: 50px;
 }
+.thumbnail-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  max-height: 400px;
+  overflow-y: auto;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.thumbnail-list li {
+  width: calc(25% - 10px); 
+  margin: 5px;
+  border: 2px solid white;
+}
+
+.thumbnail-list li.active {
+  border: 5px solid blue;
+  padding: 5px;
+}
+
+.thumbnail-list span {    
+  display: block;
+  border: solid 2px rgb(12, 12, 12);
+  cursor: pointer;
+  transition: all .4s ease;
+}
+
+.thumbnail-list img {
+  width: 100%;
+}
+
 .visible-hidden {
   visibility: hidden;
 }

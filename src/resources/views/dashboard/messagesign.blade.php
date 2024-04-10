@@ -16,7 +16,7 @@
                         middle image in the bluebox to choose</p>
                 </div>
                 <div class="qrcode-form">
-                    <a href="#">Click for HELP</a>
+                    <!-- <a href="#">Click for HELP</a> -->
                     <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
                 </div>
             </div>

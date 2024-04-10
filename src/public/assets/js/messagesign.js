@@ -69,6 +69,9 @@ const slickFunction = function () {
     }
 
     firstIndex = next;
+    
+    // highlisten the same item for thumbnail list
+    highlightSelectedItem(next);
 
     if (firstSelectedImages.length > 0) {
 
@@ -82,6 +85,16 @@ const slickFunction = function () {
   });
 }
 
+const highlightSelectedItem = function(index) {
+  if (document.querySelectorAll('#thumbnail-list li').length) {
+    document.querySelectorAll('#thumbnail-list li').forEach(function(item) {
+      item.classList.remove('active');
+    });
+    const selectedItem = document.querySelectorAll('#thumbnail-list li')[index];
+    selectedItem.classList.add('active');
+  }
+}
+
 const addClassFunction = function () {
   const thumbnails = document.querySelectorAll('.thumbnail-list span');
   
@@ -89,6 +102,10 @@ const addClassFunction = function () {
     thumbnail.addEventListener('click', () => {
       // console.log('Clicked thumbnail index:', index); index is secondIndex
       const id = secondSelectedImages[index].id;
+
+      // highlighten the selected Item in a list
+      highlightSelectedItem(index);
+
       for (let i = 0; i < firstSelectedImages.length; i++) {
         if (firstSelectedImages[i].id === id) {
           
@@ -100,10 +117,10 @@ const addClassFunction = function () {
         }
       }
      
-      secondIndex = index;
+      firstIndex = index;
 
       if (secondSelectedImages.length > 0) {
-          var name = secondSelectedImages[secondIndex].name;
+          var name = secondSelectedImages[firstIndex].name;
           // .split(".bmp")[0].split("_").join(" ");
           $("#information").val(name);
       } else {

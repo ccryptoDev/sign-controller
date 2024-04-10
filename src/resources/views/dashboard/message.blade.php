@@ -12,7 +12,7 @@
                 <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
             </div>
             <div class="qrcode-form">
-                <a href="#">Click for HELP</a>
+                <!-- <a href="#">Click for HELP</a> -->
                 <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
             </div>
         </div>
