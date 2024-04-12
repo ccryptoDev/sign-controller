@@ -150,8 +150,8 @@ class SocketController extends Controller {
     }
 
     public function lzocompress($DataToCompress)  {
-        $tempdatafile= $this->UniqueFileName() ; 
-        $tempcompressedfile= $this->UniqueFileName() ; 
+        $tempdatafile= "/tmp/lzop_" . this->UniqueFileName() . ".tmp" ; 
+        $tempcompressedfile= "/tmp/lzop_" . this->UniqueFileName() . ".tmp"  ; 
 
         // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
@@ -167,6 +167,8 @@ class SocketController extends Controller {
       
         // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
+
+        echo exec("pwd") ; 
       
         // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
