@@ -170,7 +170,7 @@ class SocketController extends Controller {
 
         echo exec("pwd") ; 
         echo exec("ls -la /tmp/") ;
-        sleep (20) ;
+        // sleep (20) ;
         $compressedData = "" ;
         goto exitit ;
       
