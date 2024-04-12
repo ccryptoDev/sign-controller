@@ -169,7 +169,7 @@ class SocketController extends Controller {
         shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
 
         echo exec("pwd") ; 
-        return "k"
+        exit 
       
         // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
