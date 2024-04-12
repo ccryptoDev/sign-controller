@@ -139,7 +139,7 @@ class SocketController extends Controller {
         echo '____Original Data-' . $data ."<br>\n"; 
         echo '__Compressed Data-' . bin2hex($compressedData) . "<br>\n";
         echo '------------------------------' ."<br>\n";
-        $decompressedData = exec("echo '$compressedData' | lzop -d -c");
+       // $decompressedData = exec("echo '$compressedData' | lzop -d -c");
        // echo '__Compressed Data-' ;
        // echo  $compressedData ; 
        // echo 'Decompressed Data-' ;
