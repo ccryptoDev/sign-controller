@@ -126,7 +126,7 @@ class SocketController extends Controller {
     }
     public function TomTest (Request $request) {
         echo '2024-04-11 update'."<br>\n";
-        echo '------------------------------' ."<br>\n";
+       
         $big_data = 'holy mackerel mackerel mackerel';
         $compressedData = exec("echo '$big_data' | lzop -c");
         echo '------------------------------' ."<br>\n";
@@ -136,13 +136,13 @@ class SocketController extends Controller {
         echo $big_data ; 
         echo '__Compressed Data-' ;
         echo $compressedData ; 
-        echo '------------------------------' ;
+        echo '------------------------------' ."<br>\n";
        // $decompressedData = exec("echo '$compressedData' | lzop -d -c");
        // echo '__Compressed Data-' ;
        // echo  $compressedData ; 
        // echo 'Decompressed Data-' ;
        // echo  $decompressedData ;
-        echo '------------------------------' ;
+       echo '------------------------------' ."<br>\n";
         
         echo '4567' ;
         return 'Testing';
