@@ -155,7 +155,7 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-    Public function lzo_compress($DataToCompress)  {
+    public function lzo_compress($DataToCompress)  {
         $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
       
