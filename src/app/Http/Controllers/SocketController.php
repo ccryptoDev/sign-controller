@@ -127,12 +127,16 @@ class SocketController extends Controller {
     public function TomTest (Request $request) {
         echo '2024-04-11 update'."<br>\n";
        
-        $big_data = 'holy mackerel mackerel mackerel';
-        $compressedData = exec("echo '$big_data' | lzop -c");
+        $data = 'holy mackerel mackerel mackerel';
+        $compressedData = exec("echo '$data' | lzop -c");
+        $compressedData = exec("echo '$data' | lzop -c 2>&1", $output, $return_var);
+        if ($return_var !== 0) {
+            echo "Compression failed with error code $return_var. Output: " . implode("\n", $output);
+        }
         echo '------------------------------' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
         echo '------------------------------' ."<br>\n";
-        echo '____Original Data-' . $big_data ."<br>\n"; 
+        echo '____Original Data-' . $data ."<br>\n"; 
         echo '__Compressed Data-' . bin2hex($compressedData) . "<br>\n";
         echo '------------------------------' ."<br>\n";
         $decompressedData = exec("echo '$compressedData' | lzop -d -c");
