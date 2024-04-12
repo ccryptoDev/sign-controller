@@ -137,11 +137,11 @@ class SocketController extends Controller {
         echo '__Compressed Data-' ;
         echo $compressedData ; 
         echo '------------------------------' ;
-        $decompressedData = exec("echo '$compressedData' | lzop -d -c");
-        echo '__Compressed Data-' ;
-        echo  $compressedData ; 
-        echo 'Decompressed Data-' ;
-        echo  $decompressedData ;
+       // $decompressedData = exec("echo '$compressedData' | lzop -d -c");
+       // echo '__Compressed Data-' ;
+       // echo  $compressedData ; 
+       // echo 'Decompressed Data-' ;
+       // echo  $decompressedData ;
         echo '------------------------------' ;
         
         echo '4567' ;
