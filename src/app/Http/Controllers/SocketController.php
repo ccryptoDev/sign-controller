@@ -154,8 +154,8 @@ class SocketController extends Controller {
   //  }
 
 //    Public function lzocompress($DataToCompress)  {
-        $tempdatafile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
-        $tempcompressedfile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
+        $tempdatafile = "/tmp/lzop_" . UniqueFileName("") . ".tmp" ;
+        $tempcompressedfile = "/tmp/lzop_" . UniqueFileName("") . ".tmp" ;
       
         // Debuging Code
         //   echo $tempdatafile . "<br>\n" ;
