@@ -150,7 +150,7 @@ class SocketController extends Controller {
     }
 
     public function lzotry($dataToCompress) {
-        return "I like puppies"
+        return "I like puppies" ;
     }
 
     Public function lzocompress($DataToCompress)  {
