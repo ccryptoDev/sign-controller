@@ -126,7 +126,12 @@ class SocketController extends Controller {
     }
     public function TomTest (Request $request) {
         echo '1234!!--updated__1';
-        echo lzo_compress("i like puppies") ;
+        $big_data = 'holy mackerel mackerel mackerel';
+        $small_data = lzo_compress($big_data);
+        echo 'Big Data: ' ;
+        echo $big_data ;
+        echo 'Small Data' ;
+        echo $small_data ;
         echo '4567' ;
         return 'Testing';
     }
