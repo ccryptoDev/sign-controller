@@ -169,7 +169,7 @@ class SocketController extends Controller {
         echo shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
 
         echo exec("pwd") ; 
-        echo exec("ls -la /tmp/")
+        echo exec("ls -la /tmp/") ;
         sleep (20) ;
         goto exitit ;
       
