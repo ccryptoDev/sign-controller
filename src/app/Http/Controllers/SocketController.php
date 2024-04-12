@@ -211,7 +211,11 @@ class SocketController extends Controller {
       
       }
       
-    public function UniqueFileName() {
+    public function UniqueFileName () {
+      return "sldkfjlskdfjasdklfjalskdfj"
+    }
+
+    public function Unique() {
         $s = strtoupper(md5(uniqid(rand(),true)));
         $guidText =
             substr($s,0,8) . '-' .
