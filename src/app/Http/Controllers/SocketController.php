@@ -125,19 +125,20 @@ class SocketController extends Controller {
         return $response;
     }
     public function TomTest (Request $request) {
-        echo '1234!!--updated__1';
+        echo '2024-04-11 update';
+        echo '------------------------------' ;
         $big_data = 'holy mackerel mackerel mackerel';
         $compressedData = exec("echo '$big_data' | lzop -c");
-        echo '------------------------------'
-        echo '  Compression test            '
-        echo '------------------------------'
+        echo '------------------------------' ;
+        echo '  Compression test            ' ;
+        echo '------------------------------' ;
         echo '____Original Data-' . big_data$ ;
         echo '__Compressed Data-' . $compressedData ; 
-        echo '------------------------------'
+        echo '------------------------------' ;
         $decompressedData = exec("echo '$compressedData' | lzop -d -c");
         echo '__Compressed Data-' . $compressedData ; 
         echo 'Decompressed Data-' . $decompressedData ;
-        echo '------------------------------'
+        echo '------------------------------' ;
         
         echo '4567' ;
         return 'Testing';
