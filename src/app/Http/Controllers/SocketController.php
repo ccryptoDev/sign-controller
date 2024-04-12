@@ -140,20 +140,91 @@ class SocketController extends Controller {
         echo '------------------------------' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
         echo '------------------------------' ."<br>\n";
-        echo '____Original Data-' . $data ."<br>\n"; 
-        echo '__Compressed Data-' . bin2hex($compressedData) . "<br>\n";
-        echo '------------------------------' ."<br>\n";
-       // $decompressedData = exec("echo '$compressedData' | lzop -d -c");
-       // echo '__Compressed Data-' ;
-       // echo  $compressedData ; 
-       // echo 'Decompressed Data-' ;
-       // echo  $decompressedData ;
-       echo '------------------------------' ."<br>\n";
         
-        echo '4567' ;
-        return 'Testing';
+        $data = "Data¸2°Use!" ;
+        $compressed   = lzo_compress($data) ;
+        $decompressed = lzo_decompress($compressed) ;
+      
+      // Output the compressed data
+        echo "_________Original Data:<br>\n " . $data . "<br>\n";
+        echo "___Original Data (hex):<br>\n " . bin2hex($data) . "<br>\n";
+        echo "_Compressed Data (hex):<br>\n " . bin2hex($compressed) . "<br>\n";
+        echo "Decompressed Data(hex):<br>\n " . bin2hex($decompressed) . "<br>\n";
+        echo "_____Decompressed Data:<br>\n " . $decompressed . "<br>\n";
+      
+        return 'Tested';
+    }
+
+    Public function lzo_compress($DataToCompress)  {
+        $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
+        $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
+      
+      // Debuging Code
+      //   echo $tempdatafile . "<br>\n" ;
+      //   echo $tempcompressedfile . "<br>\n" ;
+      //   echo "<br>\n" ;
+      
+      
+      // Make a file with the DATA to compress:
+        file_put_contents($tempdatafile,$DataToCompress) ;
+      
+      // use the Command line lzop, to open the file, compress, write to another file:
+        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
+      
+      // Read back in the compressed data:
+        $compressedData = file_get_contents($tempcompressedfile) ;
+      
+       // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+        unlink($tempdatafile);
+        unlink($tempcompressedfile);
+      
+          return $compressedData   ;
+      }
+      
+    public function lzo_decompress($DataToDecompress) {
+        echo "lll" ;
+        $tempfiletodecompress = "/tmp/lzop_" . uniquid() . ".tmp" ;
+        $tempdecompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
+      
+      // Debuging Code
+      //   echo $tempdatafile . "<br>\n" ;
+      //   echo $tempcompressedfile . "<br>\n" ;
+      //   echo "<br>\n" ;
+      
+      
+      // Make a file with the DATA to compress:
+      
+         file_put_contents($tempfiletodecompress,$DataToDecompress) ;
+      
+      // use the Command line lzop, to open the file, compress, write to another file:
+        shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
+      
+      // Read back in the compressed data:
+      
+        $Decompressed =  file_get_contents($tempdecompressedfile) ;
+      
+      // ////// "kll" ; // file_get_contents(tempdecompressedfile$) ;
+      
+       // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+        unlink($tempfiletodecompress);
+        unlink($tempdecompressedfile);
+      
+        return $Decompressed ;
+      
+      }
+      
+    Public function uniquid() {
+        $s = strtoupper(md5(uniqid(rand(),true)));
+        $guidText =
+            substr($s,0,8) . '-' .
+            substr($s,8,4) . '-' .
+            substr($s,12,4). '-' .
+            substr($s,16,4). '-' .
+            substr($s,20);
+        return $guidText;
     }
     
+
     public function get_brightness(Request $request) {
         // IP address and port
         $ip = $this->ip;
