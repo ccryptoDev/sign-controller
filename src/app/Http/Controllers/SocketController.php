@@ -136,7 +136,7 @@ class SocketController extends Controller {
         echo '------------------------------' ."<br>\n";
         
         $data = "Data¸2°Use!" ;
-        $compressed   =  $this->lzotry($data) ;
+        $compressed   =  $this->lzocompress($data) ;
         // $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
@@ -149,13 +149,9 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-    public function lzotry($dataToCompress) {
-    //    return "I like puppies" ;
-  //  }
-
-//    Public function lzocompress($DataToCompress)  {
-        $tempdatafile= $this->UFN() ; 
-        $tempcompressedfile= $this->UFN() ; 
+    public function lzocompress($DataToCompress)  {
+        $tempdatafile= $this->UniqueFileName() ; 
+        $tempcompressedfile= $this->UniqueFileName() ; 
 
         // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
@@ -184,8 +180,8 @@ class SocketController extends Controller {
       
     public function lzodecompress($DataToDecompress) {
         echo "lll" ;
-        $tempfiletodecompress = "/tmp/lzop_" . UFN() . ".tmp" ;
-        $tempdecompressedfile = "/tmp/lzop_" . UFN() . ".tmp" ;
+        $tempfiletodecompress = "/tmp/lzop_" . this->UniqueFileName() . ".tmp" ;
+        $tempdecompressedfile = "/tmp/lzop_" . this->UniqueFileName() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
@@ -214,11 +210,8 @@ class SocketController extends Controller {
       
       }
       
-    public function UFN() {
-        Return "lskdfjalsdkfsdfjkl" ;
-    }
-
-    public function Unique() {
+    
+    public function UniqueFileName() {
         $s = strtoupper(md5(uniqid(rand(),true)));
         $guidText =
             substr($s,0,8) . '-' .
