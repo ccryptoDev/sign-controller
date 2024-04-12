@@ -129,14 +129,7 @@ class SocketController extends Controller {
        
         $data = 'holy mackerel mackerel mackerel';
         $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
-        //$compressedData = exec("echo '$data' | lzop -c 2>&1", $output, $return_var);
-        //echo $output . "<br>\n" ; 
-        //echo $return_var . "<br>\n" ; 
-        //echo $compressedData . "<br>\n" ; 
-        
-        //if ($return_var !== 0) {
-        //    echo "Compression failed with error code $return_var. Output: " . implode("\n", $output);
-        //}
+       
         echo '------------------------------' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
         echo '------------------------------' ."<br>\n";
