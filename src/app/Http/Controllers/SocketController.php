@@ -154,8 +154,8 @@ class SocketController extends Controller {
   //  }
 
 //    Public function lzocompress($DataToCompress)  {
-        $tempdatafile = "/tmp/lzop_" . UniqueFileName("") . ".tmp" ;
-        $tempcompressedfile = "/tmp/lzop_" . UniqueFileName("") . ".tmp" ;
+        $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
+        $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // 
         // Debuging Code
         //   echo $tempdatafile . "<br>\n" ;
@@ -211,8 +211,8 @@ class SocketController extends Controller {
       
       }
       
-    public function UniqueFileName($FileName) {
-      return "sldkfjlskdfjasdklfjalskdfj" ;
+    public function UFN() {
+        Return "lskdfjalsdkfsdfjkl" ;
     }
 
     public function Unique() {
