@@ -126,8 +126,8 @@ class SocketController extends Controller {
     }
     public function TomTest (Request $request) {
         echo '1234!!--updated__1';
-        echo lzo_compress("i like puppies")
-        echo '4567'
+        echo lzo_compress("i like puppies") ;
+        echo '4567' ;
         return 'Testing';
     }
     
