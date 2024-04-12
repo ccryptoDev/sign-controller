@@ -129,9 +129,9 @@ class SocketController extends Controller {
         echo '------------------------------' ;
         $big_data = 'holy mackerel mackerel mackerel';
         $compressedData = exec("echo '$big_data' | lzop -c");
-        echo '------------------------------' ;
-        echo '  Compression test            ' ;
-        echo '------------------------------' ;
+        echo '------------------------------' , PHP_EOL ;
+        echo '  Compression test            ' , PHP_EOL ;
+        echo '------------------------------' , PHP_EOL ;
         echo '____Original Data-' ;
         echo $big_data ; 
         echo '__Compressed Data-' ;
