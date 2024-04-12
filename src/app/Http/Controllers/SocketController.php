@@ -211,7 +211,7 @@ class SocketController extends Controller {
       
       }
       
-    public function UniqueFileName () {
+    public function UniqueFileName($FileName) {
       return "sldkfjlskdfjasdklfjalskdfj" ;
     }
 
