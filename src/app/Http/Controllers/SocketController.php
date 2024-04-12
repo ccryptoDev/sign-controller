@@ -125,8 +125,8 @@ class SocketController extends Controller {
         return $response;
     }
     public function TomTest (Request $request) {
-        echo '2024-04-11 update';
-        echo '------------------------------' ;
+        echo '2024-04-11 update'."<br>\n";
+        echo '------------------------------' ."<br>\n";
         $big_data = 'holy mackerel mackerel mackerel';
         $compressedData = exec("echo '$big_data' | lzop -c");
         echo '------------------------------' ."<br>\n";
