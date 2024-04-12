@@ -124,6 +124,7 @@ class SocketController extends Controller {
         $response['result'] = bin2hex($reply);
         return $response;
     }
+
     public function TomTest (Request $request) {
         echo '2024-04-11 update'."<br>\n";
        
@@ -135,8 +136,8 @@ class SocketController extends Controller {
         echo '------------------------------' ."<br>\n";
         
         $data = "Data¸2°Use!" ;
-        $compressed   = lzo_compress($data) ;
-        $decompressed = lzo_decompress($compressed) ;
+        $compressed   =  $this->lzo_compress($data) ;
+        $decompressed = $this->lzo_decompress($compressed) ;
       
       // Output the compressed data
         echo "_________Original Data:<br>\n " . $data . "<br>\n";
@@ -148,36 +149,36 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-    public function lzo_compress($DataToCompress)  {
+    Public function lzo_compress($DataToCompress)  {
         $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
       
-      // Debuging Code
-      //   echo $tempdatafile . "<br>\n" ;
-      //   echo $tempcompressedfile . "<br>\n" ;
-      //   echo "<br>\n" ;
+        // Debuging Code
+        //   echo $tempdatafile . "<br>\n" ;
+        //   echo $tempcompressedfile . "<br>\n" ;
+        //   echo "<br>\n" ;
       
       
-      // Make a file with the DATA to compress:
+        // Make a file with the DATA to compress:
         file_put_contents($tempdatafile,$DataToCompress) ;
       
-      // use the Command line lzop, to open the file, compress, write to another file:
+        // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
       
-      // Read back in the compressed data:
+        // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
       
-       // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+        // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
         unlink($tempdatafile);
         unlink($tempcompressedfile);
       
-          return $compressedData   ;
-      }
+        return $compressedData   ;
+    }
       
     public function lzo_decompress($DataToDecompress) {
         echo "lll" ;
-        $tempfiletodecompress = "/tmp/lzop_" . uniquid() . ".tmp" ;
-        $tempdecompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
+        $tempfiletodecompress = "/tmp/lzop_" . $this->uniquid() . ".tmp" ;
+        $tempdecompressedfile = "/tmp/lzop_" . $this->uniquid() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
