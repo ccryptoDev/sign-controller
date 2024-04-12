@@ -166,9 +166,11 @@ class SocketController extends Controller {
         file_put_contents($tempdatafile,$DataToCompress) ;
       
         // use the Command line lzop, to open the file, compress, write to another file:
-        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
+        echo shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
 
         echo exec("pwd") ; 
+        echo exec("ls -la /tmp/")
+        sleep (20) ;
         goto exitit ;
       
         // Read back in the compressed data:
@@ -179,7 +181,7 @@ class SocketController extends Controller {
         unlink($tempcompressedfile);
 
       exitit: 
-      
+
         return $compressedData   ;
     }
       
