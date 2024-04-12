@@ -150,10 +150,10 @@ class SocketController extends Controller {
     }
 
     public function lzotry($dataToCompress) {
-        return "I like puppies" ;
-    }
+    //    return "I like puppies" ;
+  //  }
 
-    Public function lzocompress($DataToCompress)  {
+//    Public function lzocompress($DataToCompress)  {
         $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
       
