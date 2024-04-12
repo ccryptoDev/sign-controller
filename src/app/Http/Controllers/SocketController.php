@@ -135,8 +135,8 @@ class SocketController extends Controller {
         echo '------------------------------' ."<br>\n";
         
         $data = "Data¸2°Use!" ;
-        $compressed   = lzo_compress($data) ;
-        $decompressed = lzo_decompress($compressed) ;
+        $compressed   = lzocompress($data) ;
+        $decompressed = lzocompress($compressed) ;
       
       // Output the compressed data
         echo "_________Original Data:<br>\n " . $data . "<br>\n";
@@ -148,7 +148,7 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-    public function lzo_compress($DataToCompress)  {
+    public function lzocompress($DataToCompress)  {
         $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
       
@@ -174,7 +174,7 @@ class SocketController extends Controller {
           return $compressedData   ;
       }
       
-    public function lzo_decompress($DataToDecompress) {
+    public function lzodecompress($DataToDecompress) {
         echo "lll" ;
         $tempfiletodecompress = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempdecompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
