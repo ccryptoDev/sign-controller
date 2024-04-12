@@ -211,7 +211,7 @@ class SocketController extends Controller {
       
       }
       
-    public function UFN() {
+    public function UFN($sdatafilename) {
         Return "lskdfjalsdkfsdfjkl" ;
     }
 
