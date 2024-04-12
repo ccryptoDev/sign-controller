@@ -154,8 +154,8 @@ class SocketController extends Controller {
   //  }
 
 //    Public function lzocompress($DataToCompress)  {
-        $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
-        $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
+        $tempdatafile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
+        $tempcompressedfile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
       
         // Debuging Code
         //   echo $tempdatafile . "<br>\n" ;
@@ -181,8 +181,8 @@ class SocketController extends Controller {
       
     public function lzodecompress($DataToDecompress) {
         echo "lll" ;
-        $tempfiletodecompress = "/tmp/lzop_" . $this->uniquid() . ".tmp" ;
-        $tempdecompressedfile = "/tmp/lzop_" . $this->uniquid() . ".tmp" ;
+        $tempfiletodecompress = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
+        $tempdecompressedfile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
@@ -211,7 +211,7 @@ class SocketController extends Controller {
       
       }
       
-    Public function uniquid() {
+    public function UniqueFileName() {
         $s = strtoupper(md5(uniqid(rand(),true)));
         $guidText =
             substr($s,0,8) . '-' .
