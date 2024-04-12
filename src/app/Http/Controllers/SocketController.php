@@ -154,8 +154,11 @@ class SocketController extends Controller {
   //  }
 
 //    Public function lzocompress($DataToCompress)  {
-        $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
-        $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
+        $tempdatafile=UFN() ; 
+        $tempcompressedfile=UFN() ; 
+
+        // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
+        // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // 
         // Debuging Code
         //   echo $tempdatafile . "<br>\n" ;
@@ -181,8 +184,8 @@ class SocketController extends Controller {
       
     public function lzodecompress($DataToDecompress) {
         echo "lll" ;
-        $tempfiletodecompress = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
-        $tempdecompressedfile = "/tmp/lzop_" . UniqueFileName() . ".tmp" ;
+        $tempfiletodecompress = "/tmp/lzop_" . UFN() . ".tmp" ;
+        $tempdecompressedfile = "/tmp/lzop_" . UFN() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
@@ -211,7 +214,7 @@ class SocketController extends Controller {
       
       }
       
-    public function UFN($sdatafilename) {
+    public function UFN() {
         Return "lskdfjalsdkfsdfjkl" ;
     }
 
