@@ -136,13 +136,8 @@ class SocketController extends Controller {
         echo '------------------------------' ."<br>\n";
         
         $data = "Data¸2°Use!" ;
-<<<<<<< HEAD
-        $compressed   = lzocompress($data) ;
-        $decompressed = lzocompress($compressed) ;
-=======
-        $compressed   =  $this->lzo_compress($data) ;
-        $decompressed = $this->lzo_decompress($compressed) ;
->>>>>>> b6349a6ae51c58793f8c9a0dd9c8fe77ac8ec002
+        $compressed   =  $this->lzocompress($data) ;
+        $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
         echo "_________Original Data:<br>\n " . $data . "<br>\n";
@@ -154,11 +149,7 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-<<<<<<< HEAD
-    public function lzocompress($DataToCompress)  {
-=======
-    Public function lzo_compress($DataToCompress)  {
->>>>>>> b6349a6ae51c58793f8c9a0dd9c8fe77ac8ec002
+    Public function lzocompress($DataToCompress)  {
         $tempdatafile = "/tmp/lzop_" . uniquid() . ".tmp" ;
         $tempcompressedfile = "/tmp/lzop_" . uniquid() . ".tmp" ;
       
