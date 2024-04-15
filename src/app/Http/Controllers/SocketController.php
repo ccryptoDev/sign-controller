@@ -201,8 +201,8 @@ class SocketController extends Controller {
       
          file_put_contents($tempfiletodecompress,$DataToDecompress) ;
       
-         exec("ls -la $tempdecompressedfile")
-        exec("sleep 10")
+         exec("ls -la $tempdecompressedfile") ;
+         shell_exec("sleep 10") ;
 
       // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
