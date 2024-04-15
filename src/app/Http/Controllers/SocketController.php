@@ -187,7 +187,7 @@ class SocketController extends Controller {
     }
       
     public function lzodecompress($DataToDecompress) {
-        echo "lll" ;
+        echo "lll<br>\n<br>\n" ;
         $tempfiletodecompress = "/tmp/lzop_" . $this->UniqueFileName() . ".tmp" ;
         $tempdecompressedfile = "/tmp/lzop_" . $this->UniqueFileName() . ".tmp" ;
       
@@ -202,19 +202,19 @@ class SocketController extends Controller {
          file_put_contents($tempfiletodecompress,$DataToDecompress) ;
       
       // use the Command line lzop, to open the file, compress, write to another file:
-        shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
-      
+        Return=shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
+        echo Return 
       // Read back in the compressed data:
       
-        $Decompressed =  file_get_contents($tempdecompressedfile) ;
+       // $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
       // ////// "kll" ; // file_get_contents(tempdecompressedfile$) ;
       
        // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-        unlink($tempfiletodecompress);
-        unlink($tempdecompressedfile);
+        // unlink($tempfiletodecompress);
+        // unlink($tempdecompressedfile);
       
-        return $Decompressed ;
+        return "$ Decompressed" ;
       
       }
       
