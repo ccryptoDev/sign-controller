@@ -137,7 +137,7 @@ class SocketController extends Controller {
         
         $data = "Data¸2°Use!" ;
         $compressed   =  $this->lzocompress($data) ;
-        // $decompressed = $this->lzodecompress($compressed) ;
+        $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
         echo "_________Original Data:<br>\n " . $data . "<br>\n";
