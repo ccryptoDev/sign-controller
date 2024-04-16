@@ -29,7 +29,7 @@
         <div class="d-flex flex-column-fluid flex-column px-4 px-md-16 page-container message-menu">
             <div class="main-menu">
                 <div class="menu-item"> 
-                    <a href="{{route('message-menu')}}">Messages</a>
+                    <a href="{{route('send-to-sign')}}">Messages</a>
                 </div>
                 <div class="menu-item"> 
                     <a href="{{route('schedules')}}">Schedules</a>

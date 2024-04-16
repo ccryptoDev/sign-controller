@@ -73,7 +73,7 @@ Route::middleware([
     Route::post('upload-font', [FontController::class, 'upload_font']);
     // Sign Editor
     Route::get('sign-editor', [SignController::class, 'sign_editor'])->name('sign-editor');
-    Route::get('edit-message', [SignController::class, 'edit_message'])->name('edit-message');
+    Route::get('edit-message/{id}', [SignController::class, 'edit_message'])->name('edit-message');
     Route::get('get-user-role', [SignController::class, 'get_user_role'])->name('get-user-role');
     Route::post('save-message', [SignController::class, 'save_message'])->name('save-message');
     // Profile

@@ -17,6 +17,7 @@
         <link href="/assets/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css"/>
         <link href="/assets/css/custom.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/css/message.css" rel="stylesheet" type="text/css" />
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="/assets/media/logos/logo-letter-13.png"/>
     </head>

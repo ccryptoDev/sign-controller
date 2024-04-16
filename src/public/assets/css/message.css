@@ -1,0 +1,228 @@
+table,
+tr,
+td {
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  background-color: white;
+  margin: 0 auto;
+}
+
+.disabled {
+  background-color: #ddd;
+  border-width: 0;
+}
+
+.disabled td {
+  border-width: 0;
+}
+
+tr {
+  height: 20px;
+}
+
+td {
+  width: 20px;
+}
+
+p {
+  margin: 1em 0 1em;
+}
+
+.gridSizeLabel {
+  font-size: 18px;
+}
+
+#paintBtn {
+  margin-right: 10px;
+}
+
+
+/* text fly in effect */
+
+/* .flyItIn {
+    animation: flyin 1s ease forwards;
+    opacity: 0;
+    transform: scale(2);
+    filter: blur(4px);
+}
+
+@keyframes flyin {
+    to {
+        filter: blur(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.flyItIn2 {
+    animation: flyin2 1s ease forwards;
+    opacity: 0;
+    transform: scale(2);
+    filter: blur(4px);
+}
+
+@keyframes flyin2 {
+    to {
+        filter: blur(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+} */
+
+/* rotates the Design Canvas div */
+
+.rotationTime {
+  -webkit-transition: all 4s linear;
+  -moz-transition: all 4s linear;
+  -ms-transition: all 4s linear;
+  -o-transition: all 4s linear;
+  transition: all 4s linear;
+}
+
+.rotateCanvas {
+  -webkit-transform: rotateX(360deg) rotateY(360deg);
+  -moz-transform: rotateX(360deg) rotateY(360deg);
+  -ms-transform: rotateX(360deg) rotateY(360deg);
+  -o-transform: rotateX(360deg) rotateY(360deg);
+  transform: rotateX(360deg) rotateY(360deg);
+}
+
+@font-face {
+  font-family: 'FFFFORWA';
+  src: url('/fonts/london-underground-platform-pis.otf');
+}
+
+#canvas {
+  display: none;
+  border: 1px solid #ddd;
+}
+
+#ledContainer {
+  max-width: 100%;
+  position: relative;
+  /* height: 150px; */
+  width: 100%;
+  flex-flow: column wrap;
+  overflow: hidden;
+  margin: auto;
+}
+
+#wrapperLed {
+  margin: 50px auto;
+  /* border: 1px solid #ddd; */
+  padding-bottom: 20px;
+  /* position: absolute; */
+  left: 0;
+}
+
+.light {
+  width: 10px;
+  height: 10px;
+  margin: 1px 1px;
+  text-align: center;
+  font-size: 15px;
+  float: left;
+}
+
+.off {
+  background-color: #1a1a1a;
+}
+
+.on {
+  background-color: yellow;
+}
+
+label {
+  margin-top: 15px;
+  color: #FFF;
+  font-family: sans-serif;
+  display: block;
+  text-align: center;
+}
+
+.blank div{
+  background: #ddd;
+}
+
+.swal2-label {
+  color: black !important;
+}
+
+.message-inform-form,
+.messages,
+.mode,
+.action-group {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+}
+.message-inform {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-top: 5px;
+}
+.message-inform div {
+  width: 75%;
+  display: flex;
+  gap: 7px;
+}
+.message-inform div input#message_name {
+  width: 80%;
+}
+.message-inform div input#message_ID {
+  width: 20%;
+}
+.message-inform label {
+  margin: 0;
+  font-style: italic;
+  color: blue;
+  width: 25%;
+  text-align: right;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-top: 8px;
+}
+.message .align-wrapper {
+  width: 25%;
+  text-align: right;
+}
+.message .message-input {
+  width: 75%;
+}
+
+.mode, 
+.action-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mode button {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0.5rem 3rem;
+}
+.action-group {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+.action-group button {
+  font-size: 15px;
+}
+.action-group button a {
+  color: #fff;
+}
+@media (max-width: 800px) {
+  #wrapperLed {
+    margin: 0 auto 50px;
+  }
+}

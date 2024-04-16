@@ -1,15 +1,12 @@
 /* slick css */
 .slick-panel {
-  width: 80%;
+  width: 100%;
   /* background-color: black; */
 }
 
 .slick {  
-  width: 100%;
-  margin: 0px auto;
-  padding-top: 20px;
+  padding-top: 2rem;
   padding-bottom: 20px;
-  /* background-color: black; */
 }
 
 .slick span {
@@ -258,20 +255,23 @@
 
 /* Send a sign */
 .slider-panel {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
+  width: 100%;
 }
-.slider-panel .send-button {
-  width: 20%;
+.send-button {
+  /* width: 20%; */
+  gap: 1rem;
 }
 .send-button button {
-  background: #5c5cdc;
   color: #fff;
-  font-size: 18px;
-  width: 70%;
+  font-size: 16px;
 }
 .send-button button span {
-  display: block
+  display: block;
+}
+.send-button button a {
+  color: #fff;
 }
 .search-form {
   display: flex;
