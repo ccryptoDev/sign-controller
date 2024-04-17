@@ -207,16 +207,16 @@ function charToLED(theChar){
             break;
         case 'O' :
             theLed = [
-                        [false,false,false,false,false,false],
                         [false,false,true,true,false,false],
+                        [false,true,true,true,true,false],
                         [false,true,false,false,true,false],
+                        [true,true,false,false,true,true],
+                        [true,false,false,false,false,true],
+                        [true,false,false,false,false,true],
+                        [true,true,false,false,true,true],
                         [false,true,false,false,true,false],
-                        [false,false,true,true,false,false],
-                        [false,false,false,false,false,false],
-                        [false,false,false,false,false,false],
-                        [false,false,false,false,false,false],
-                        [false,false,false,false,false,false],
-                        [false,false,false,false,false,false]
+                        [false,true,true,true,true,false],
+                        [false,false,true,true,false,false]
                     ];
             break;
         case 'P' :
@@ -476,13 +476,13 @@ function charToLED(theChar){
                         [true,false,false,false,false,false],
                         [true,false,false,false,false,false],
                         [true,false,false,false,false,false],
-                        [true,false,false,false,true,true],
-                        [true,false,false,true,true,false],
-                        [true,false,true,true,false,false],
-                        [true,true,true,true,false,false],
-                        [true,false,true,true,false,false],
-                        [true,false,false,true,true,false],
-                        [true,false,false,false,true,true]
+                        [true,false,false,false,false,false],
+                        [true,false,true,true,true,false],
+                        [true,true,true,false,true,true],
+                        [true,false,false,false,false,true],
+                        [true,false,false,false,false,true],
+                        [true,false,false,false,false,true],
+                        [true,false,false,false,false,true]
                     ];
             break;
         case 'i' :
@@ -1122,16 +1122,16 @@ function charToLED(theChar){
             break;
         case '{' :
             theLed = [
-                        [false,false,true,true,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,false,false,true,false],
-                        [false,false,true,true,true,false] 
+                        [false,false,false,true,true,true],
+                        [false,false,true,true,false,false],
+                        [false,false,true,false,false,false],
+                        [false,false,true,true,false,false],
+                        [true,true,true,false,false,false],
+                        [true,true,true,false,false,false],
+                        [false,false,true,true,false,false],
+                        [false,false,true,false,false,false],
+                        [false,false,true,true,false,false],
+                        [false,false,false,false,true,true]
                     ];
             break;
         case '}' :
