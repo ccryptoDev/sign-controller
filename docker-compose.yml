@@ -20,6 +20,7 @@ services:
       - php
       - redis
       - mysql
+      - phpmyadmin
       - mailhog
     networks:
       - laravel
