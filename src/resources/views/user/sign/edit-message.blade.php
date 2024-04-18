@@ -37,6 +37,7 @@
                                 id="message_name" 
                                 placeholder="Input the message name"
                                 value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
+                                {{ isset($message_data['no']) && $message_data['no'] > 0 ? 'disabled' : '' }}
                             >
                             <input class="form-control text-center"
                                 name="message_ID"
@@ -167,7 +168,11 @@
 
                 <div class="action-group"> <!-- actions -->
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
-                    <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
+                    @if(isset($message_data['no']) && $message_data['no'] > 0)
+                        <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
+                    @else 
+                        <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
+                    @endif
                     <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
                     <button class="btn btn-primary" type="button" id="clearMessage">Clear</button>
                     <button class="btn btn-primary" type="button" id="exit">
@@ -219,6 +224,7 @@
     let drawMode = 0; // 3-line mode
 
     var messages = [];
+    var isSaveCopy = false;
 
     if (mode == 'edit') {
         if (messageData.message1 !== null) {
@@ -556,6 +562,7 @@
         var blank = 30;
         var j = 1;
         var rows = 3;
+
         function drawBoard(){
             
             for (let x = 0; x < canvas.width; x += 10) {
@@ -758,6 +765,26 @@
         const gridCanvas = document.getElementById('gridCanvas');
         let gridTileMode = PAINT // controls paint or erase of grid cells (td's)
 
+        var checkCanvas = function() {
+            var canvasLED = document.getElementById('canvas');
+            var ctx = canvasLED.getContext('2d');
+            var width = canvasLED.width;
+            var height = canvasLED.height;
+
+            var imageData = ctx.getImageData(0, 0, width, height);
+            var data = imageData.data;
+
+            var isEmpty = true;
+            for (var i = 0; i < data.length; i += 4) {
+                if (data[i + 3] !== 0) {
+                    isEmpty = false;
+                    break;
+                }
+            }
+
+            return isEmpty;
+        }
+
         var saveMessageCall = function (range, base64Image, imageType) {
             const [msg1 = [], msg2 = [], msg3 = []] = messages;
             const msg = getMessage();
@@ -767,6 +794,7 @@
                 type : "POST",
                 data : {
                     mode: parseInt(message_ID, 10) ? 'edit' : 'create',
+                    saveMode: isSaveCopy ? 'saveAcopy' : 'save',
                     range: range,
                     base64Image: base64Image,
                     imageID: message_ID,
@@ -783,8 +811,22 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success : function(res){
-                    if (res.success){
-                        toastr.success('Saved the message successfully!');
+                    if (res.success) {
+                        if (isSaveCopy) {
+                            var newMessageId = res.newID;
+                            var newMessageURL = '{{ url('/edit-message/') }}' + '/' + newMessageId;
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Copy of a message done successfully!',
+                                timer: 2000,
+                                timerProgressBar: true,
+                                onClose: function() {
+                                    window.location.href = newMessageURL;
+                                }
+                            });
+                        } else {
+                            toastr.success('Saved the message successfully!');
+                        }
                     }
                     else {
                         toastr.error("Something went wrong, please try again.");    
@@ -802,11 +844,13 @@
 
             if (drawMode == 0) { // 3-line mode
                 // html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
+                    drawText();
+
                     CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
-    
                         saveMessageCall(range, url, 'bmp');
                         // clearMessage();
                     });
+
                 // })
             } else {
                 html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
@@ -823,143 +867,143 @@
             
         }
 
-        // $('#saveMessage').on('click', function makeGrid(event) {gridSize
+        // Get user role
+        var getUserRole = async function() {
+            try {
+                var res = await $.ajax({
+                    url: '/get-user-role',
+                    type: "GET"
+                });
+
+                console.log(res);
+
+                if (res.success) {
+                    return res.role;
+                } else {
+                    throw new Error("Please try to login again!");
+                }
+            } catch (err) {
+                throw new Error("An error occurred while getting permissions. Please refresh!");
+            }
+        }
+
+        // Stuffs before saving
+        var beforeSave = async function() {
+            try {
+                var role = await getUserRole();
+
+                // step1: check if message is empty
+                if (!getMessage().length) {
+                    Swal.fire({
+                        text: 'Please edit the message',
+                        icon: "error",
+                        confirmButtonText: "Confirm",
+                        customClass: {
+                            confirmButton: "btn-danger",
+                        },
+                    }).then(function(result) {
+                        return;
+                    });
+
+                    return;
+                }
+
+                // step 2: check if message name is defined
+                if (message_name == '') {
+                    Swal.fire({
+                        text: 'The `Name` field is required!',
+                        icon: "error",
+                        confirmButtonText: "Confirm",
+                        customClass: {
+                            confirmButton: "btn-danger",
+                        },
+                    }).then(function(result) {
+                        return;
+                    });
+
+                    return;
+                }
+
+                if (!checkAlphanumeric(message_name)) {
+                    Swal.fire({
+                        text: 'The Name should only contain alphanumeric characters.',
+                        icon: "error",
+                        confirmButtonText: "Confirm",
+                        customClass: {
+                            confirmButton: "btn-danger",
+                        },
+                    }).then(function(result) {
+                        return;
+                    });
+
+                    return;
+                }
+
+                if (message_ID > 0 && !isSaveCopy) { // in case of edit
+                    Swal.fire({
+                        text: 'It will update the original one. Are you sure?',
+                        icon: "success",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes",
+                        customClass: {
+                            confirmButton: "btn-danger",
+                        },
+                    }).then(function(result) {
+                        if (result.isConfirmed) {
+                            saveMessage([0, 0]);
+                        } else {
+                            return;
+                        }
+                    });
+                } else { // in case of create or save a copy
+                    if (role === 0) {
+                        saveMessage([1, 999]);
+                    } else {
+                        const inputOptions = role === 1 ? { "0": "User", "1": "Company"} : { "0": "User", "1": "Company", "2": "INEX" };
+
+                        const { value: option } = await Swal.fire({
+                            title: "Select the local storage to save",
+                            showCancelButton: true,
+                            confirmButtonText: "OK",
+                            customClass: {
+                                confirmButton: "btn-danger",
+                            },
+                            input: "radio",
+                            inputOptions,
+                            inputValidator: (value) => {
+                                if (!value) {
+                                    return "You need to choose at least one."
+                                }
+                            }
+                        });
+
+                        if (option) {
+                            var range = [1, 999];   // user
+                            if (option === "1") range = [1000, 1999];   // Admin
+                            if (option === '2') range = [2000, 2999];   // SuperAdmin
+
+                            saveMessage(range);
+                        }
+                    }
+                }
+            } catch (error) {
+                toastr.error(error.message);
+            }
+        }
+
+        // Save Or Update
         $("#saveMessage").on("click", function() {
             event.preventDefault();
-            
-            // get user role
-            $.ajax({
-                url : '/get-user-role',
-                type : "GET",
-                success : async function(res){
-                    console.log(res);
-                    if (res["success"]){
-                        var role = res["role"];
+            beforeSave();
+        });
 
-                        // open Fire modal
-                        if (role === 0) { //user
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: 'You won"t be able to revert this!',
-                                icon: "question",
-                                showCancelButton: true,
-                                confirmButtonText: "Yes, create message!",
-                                customClass: {
-                                    confirmButton: "btn-danger",
-                                },
-                            }).then(function(result) {
-                                // Only one option = user
-                                if (result.value) {
-                                    saveMessage([1, 999])
-                                }
-                            });
-                        } else { //admin
-                            // step1: check if message is empty
-                            if (!getMessage().length) {
-                                Swal.fire({
-                                    text: 'Please edit the message',
-                                    icon: "error",
-                                    confirmButtonText: "Confirm",
-                                    customClass: {
-                                        confirmButton: "btn-danger",
-                                    },
-                                }).then(function(result) {
-                                    return;
-                                });
+        // Save A Copy
+        $('#saveAcopy').on("click", function() {
+            event.preventDefault();
+            isSaveCopy = true;
+            beforeSave();
+        });
 
-                                return;
-                            }
-
-                            // step 2: check if message name is defined
-                            if (message_name == '') {
-                                Swal.fire({
-                                    text: 'The `Name` field is required!',
-                                    icon: "error",
-                                    confirmButtonText: "Confirm",
-                                    customClass: {
-                                        confirmButton: "btn-danger",
-                                    },
-                                }).then(function(result) {
-                                    return;
-                                });
-
-                                return;
-                            }
-
-                            if (!checkAlphanumeric(message_name)) {
-                                Swal.fire({
-                                    text: 'The Name should only contain alphanumeric characters.',
-                                    icon: "error",
-                                    confirmButtonText: "Confirm",
-                                    customClass: {
-                                        confirmButton: "btn-danger",
-                                    },
-                                }).then(function(result) {
-                                    return;
-                                });
-
-                                return;
-                            }
-
-                            if (message_ID > 0) { // in case of edit
-                                Swal.fire({
-                                    text: 'It will update the original one. Are you sure?',
-                                    icon: "success",
-                                    showCancelButton: true,
-                                    confirmButtonText: "Yes",
-                                    customClass: {
-                                        confirmButton: "btn-danger",
-                                    },
-                                }).then(function(result) {
-                                    if (result.isConfirmed) {
-                                        saveMessage([0, 0]);
-                                    } else {
-                                        return;
-                                    }
-                                });
-                            } else { // in case of create
-                                const inputOptions = role === 1 ? { "0": "User", "1": "Company"} : { "0": "User", "1": "Company", "2": "INEX" };
-
-                                const { value: option } = await Swal.fire({
-                                    title: "Select the local storage to save",
-                                    showCancelButton: true,
-                                    confirmButtonText: "OK",
-                                    customClass: {
-                                        confirmButton: "btn-danger",
-                                    },
-                                    input: "radio",
-                                    inputOptions,
-                                    inputValidator: (value) => {
-                                        if (!value) {
-                                            return "You need to choose at least one."
-                                        }
-                                    }
-                                });
-
-                                if (option) {
-                                    
-                                    var range = [1, 999];
-                                    if (option === "1") range = [1000, 1999];
-                                    if (option === '2') range = [2000, 2999];
-
-                                    saveMessage(range);
-                                }
-                            }
-                        }
-
-                    }
-                    else{
-                        toastr.error("Please try to login");
-                    }
-                },
-                error : function(err){
-                    toastr.error("Please refresh your browser");
-                }
-            })
-
-        })
-
-        // $('#createGrid').on('click', function makeGrid(event) {gridSize
         $("#createGrid").on("click", function() {
             event.preventDefault();
             Swal.fire({
@@ -977,7 +1021,8 @@
                     makeGrid();
                 }
             });
-        })
+        });
+
         var makeGrid = function () {
             // changeMode();
             // prevent page refreshing when clicking submit

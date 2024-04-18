@@ -184,6 +184,9 @@ label {
   width: 25%;
   text-align: right;
 }
+.form-control:disabled {
+  cursor: not-allowed;
+}
 
 .message {
   display: flex;

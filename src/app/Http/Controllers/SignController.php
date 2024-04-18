@@ -67,9 +67,7 @@ class SignController extends Controller
 
     public function save_message(Request $request) {
 
-        if ($request->mode == 'create') { // in case of CREATING new MESSAGE
-            // save an image into the local storage
-            Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $request->imageName . "." . $request->imageType);
+        if ($request->mode == 'create' || $request->saveMode == 'saveAcopy') { // in case of CREATING new MESSAGE
             
             // get max value for imageNo
             $existedNo = Image::where("no", ">=", $request["range"][0])->where("no", "<=", $request["range"][1])->max("no");
@@ -94,10 +92,33 @@ class SignController extends Controller
             $image->message = $request->msg;
             $image->three_line_alignment = $request->three_line_alignment;
 
-            $image->save(); 
-            
-            $response["success"] = true;
+            try {
+                $image->save();
+                $createdImage = $image->fresh();
+
+                // if ($request->saveMode == 'saveAcopy') {
+
+                $fileName = $request->imageName . "." . $request->imageType;
+                // if same fileName exists
+                if (Storage::disk("public")->exists("assets/media/signmessage/$fileName")) {
+                    $fileName = $request->imageName . '_copy.' . $request->imageType;
+                    // Copy the file
+                    // Storage::disk("public")->copy("assets/media/signmessage/$fileName", "assets/media/signmessage/$copyFilename");
+                }
+
+                // } else {
+                    // save an image into the local storage
+                
+                Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $fileName);
+                
+                $response["success"] = true;
+                $response["newID"] = $createdImage->no;
+            } catch (\Exception $e) {
+                $response["success"] = false;
+            }
+
             return $response;
+
         } else if ($request->mode == 'edit') { // in case of EDITING the existed MESSAGE
             // Get the existing image by ID
             $image = Image::where('no', $request->imageID)->first();
@@ -109,14 +130,6 @@ class SignController extends Controller
                 return $response;
             }
 
-            // Replace the image in the local storage if a new image was sent in the request
-            if ($request->base64Image) {
-                Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $request->imageName . "." . $request->imageType);
-                // Update image details
-                $image->name = $request->imageName . "." . $request->imageType;
-                $image->path = "public/assets/media/signmessage";
-            }
-
             // Update other data in the image record
             $image->type = $request->imageType;
             $image->keywords = $request->imageKeywords;
@@ -126,10 +139,22 @@ class SignController extends Controller
             $image->message = $request->msg;
             $image->three_line_alignment = $request->three_line_alignment;
 
-            $image->save();
+            try {
+                $image->save();
 
-            // Return a success response
-            $response["success"] = true;
+                // Replace the image in the local storage if a new image was sent in the request
+                if ($request->base64Image) {
+                    Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $request->imageName . "." . $request->imageType);
+                    // Update image details
+                    $image->name = $request->imageName . "." . $request->imageType;
+                    $image->path = "public/assets/media/signmessage";
+                }
+                $response["success"] = true;
+                
+            } catch (\Exception $e) {
+                $response["success"] = false;
+            }
+
             return $response;
         }
     }
