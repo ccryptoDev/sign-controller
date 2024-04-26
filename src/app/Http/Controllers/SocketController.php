@@ -129,7 +129,7 @@ class SocketController extends Controller {
         echo '2024-04-11 update'."<br>\n";
        
         $data = 'holy mackerel mackerel mackerel';
-        // $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
+         $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
        
         echo '------------------------------' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
