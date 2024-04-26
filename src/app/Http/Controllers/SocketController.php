@@ -182,9 +182,9 @@ class SocketController extends Controller {
         unlink($tempcompressedfile);
 
       exitit: 
-        echo "LZOCOMPRESS<br>\n"
+        echo "LZOCOMPRESS<br>\n" ;
         echo $compressedData ;  
-        echo "<br>\n"
+        echo "LZOCOMPRESS<br>\n" ;
         return $compressedData   ;
     }
       
