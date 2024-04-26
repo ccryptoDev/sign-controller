@@ -129,15 +129,15 @@ class SocketController extends Controller {
         echo '2024-04-11 update'."<br>\n";
        
         $data = 'holy mackerel mackerel mackerel';
-        $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
+        // $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
        
         echo '------------------------------' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
         echo '------------------------------' ."<br>\n";
         
         $data = "Data¸2°Use!" ;
-        $compressed   =  $this->lzocompress($data) ;
-        $decompressed = $this->lzodecompress($compressed) ;
+        //$compressed   =  $this->lzocompress($data) ;
+        //$decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
         echo "_________Original Data:<br>\n " . $data . "<br>\n";
@@ -201,8 +201,8 @@ class SocketController extends Controller {
       
          file_put_contents($tempfiletodecompress,$DataToDecompress) ;
       
-         exec("ls -la $tempdecompressedfile") ;
-         shell_exec("sleep 10") ;
+        // exec("ls -la $tempdecompressedfile") ;
+        // shell_exec("sleep 10") ;
 
       // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
