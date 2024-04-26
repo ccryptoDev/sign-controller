@@ -26,49 +26,46 @@
 
     <div class="container">
         <div class="row">
-            <div class="card card-custom card-stretch">
-
-                <div class="card-header flex-column message-inform-form"> <!-- mesage name and keywords -->
-                    <div class="message-inform"> <!-- name -->
-                        <label for="message-name">Name</label>
-                        <div>
-                            <input class="form-control" 
-                                name="message_name" 
-                                id="message_name" 
-                                placeholder="Input the message name"
-                                value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
-                                {{ isset($message_data['no']) && $message_data['no'] > 0 ? 'disabled' : '' }}
-                            >
-                            <input class="form-control text-center"
-                                name="message_ID"
-                                id="message_ID"
-                                value="{{ isset($message_data['no']) ? $message_data['no'] : '' }}"
-                                disabled
-                            >
+            <div class="col-lg-12">
+                <div class="card card-custom card-stretch">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="clearMessage">New</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Edit</button>
+                            
                         </div>
-                    </div> <!-- end: name -->
-                    <div class="message-inform"> <!-- keywords -->
-                        <label for="message-keywords">Keywords</label>
-                        <div>
-                            <input class="form-control" 
-                                name="message_keywords" 
-                                id="message_keywords" 
-                                placeholder="Insert a space for multiple keywords"
-                                value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
-                            >
+                        <div class="card-title">
+                            <button class="btn btn-danger mt-0 d-inline mr-3" type="button" id="createMessage">Save & Exit</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createAndSend">Save & Send</button>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button">Cancel & Exit</button>
                         </div>
-                    </div> <!-- end: keywords -->
-                </div> <!-- end: message name and keywords -->
+                        <div class="card-title">
+                            <select class="form-control selectpicker d-inline mr-3" id="edit-mode" data-style="btn-success">
+                                <option value="0">3-Line Mode</option>
+                                <option value="1">Dot-Type</option>
+                            </select>
+                            <div class="gridControl">
+                                <form id="sizePicker" name="gridSize">
+                                </form>
+                            </div>
+                            <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
+                        </div>
+                    </div>
+                    <div class="card-body text-center">  
+                        <!-- <div class="row align-items-center mb-6">
+                            <div class="col-8">
+                                <div id="kt_nouislider_2" class="nouislider nouislider-handle-danger"></div>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-info btn-block" type="button" id="changeBright">Change Brightness</button>
+                            </div>
+                        </div> -->
+                        <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
+                        <textarea class="form-control" id="inputBox" rows="3" placeholder="Please enter text"></textarea>
 
-                <div class="mode"> <!-- mode -->
-                    <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
-                    <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
-                </div> <!-- end: mode -->
-
-                <div class="card-header flex-column messages"> <!-- message editbox -->
-                    <div class="message_1 message"> <!-- message 1 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                        <!-- Alignment -->
+                        <div class="card-toolbar d-flex justify-content-between mt-5">
+                            <div class="btn-group text-alignment mr-2" role="group" aria-label="Basic example">
                                 <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
                                     data-alignment="left"
                                     id="alignLeftFirst"
@@ -88,20 +85,7 @@
                                     <i class="fas fa-align-right"></i>
                                 </button>
                             </div>
-                        </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_1" 
-                                id="message_1" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 1 -->
-
-                    <div class="message_1 message"> <!-- message 2 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
+                            <div class="btn-group text-alignment mr-2" role="group" aria-label="Basic example">
                                 <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
                                     data-alignment="left"
                                     id="alignLeftSecond"
@@ -121,20 +105,7 @@
                                     <i class="fas fa-align-right"></i>
                                 </button>
                             </div>
-                        </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_2" 
-                                id="message_2" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 2 -->
-
-                    <div class="message_1 message"> <!-- message 3 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
+                            <div class="btn-group text-alignment mr-2" role="group" aria-label="Basic example">
                                 <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
                                     data-alignment="left"
                                     id="alignLeftThird"
@@ -154,53 +125,22 @@
                                     <i class="fas fa-align-right"></i>
                                 </button>
                             </div>
+                            <!-- <a class="btn btn-sm btn-icon btn-light mr-2 undo">
+                                <i class="flaticon2-left-arrow"></i>
+                            </a>
+                            <a class="btn btn-sm btn-icon btn-light mr-2 redo">
+                                <i class="flaticon2-right-arrow"></i>
+                            </a> -->
                         </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_3" 
-                                id="message_3" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
-                            >
+
+                        <div id="ledContainer">
+                            <div id='wrapperLed' class="row"></div>
                         </div>
-                    </div>  <!-- end: message 3 -->
-                </div> <!-- end: message editbox -->
-
-                <div class="action-group"> <!-- actions -->
-                    <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
-                    @if(isset($message_data['no']) && $message_data['no'] > 0)
-                        <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
-                    @else 
-                        <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
-                    @endif
-                    <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
-                    <button class="btn btn-primary" type="button" id="clearMessage">Clear</button>
-                    <button class="btn btn-primary" type="button" id="exit">
-                        <a href="{{ route('send-to-sign') }}">Exit</a>
-                    </button>
-                    <!-- <div class="card-title">
-                        <select class="form-control selectpicker d-inline mr-3" id="edit-mode" data-style="btn-success">
-                            <option value="0">3-Line Mode</option>
-                            <option value="1">Dot-Type</option>
-                        </select>
-                        <div class="gridControl">
-                            <form id="sizePicker" name="gridSize">
-                            </form>
+                        {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
+                        <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
+                        <div id="gridCanvas" class="gridCanvas rotationTime d-none">
+                            <table id="pixelCanvas" class="flyItIn2"></table>
                         </div>
-                        <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
-                    </div> -->
-                </div> <!-- actions -->
-
-                <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
-
-                <div class="card-body text-center">  
-                    <div id="ledContainer">
-                        <div id='wrapperLed' class="row"></div>
-                    </div>
-                    {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
-                    <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
-                    <div id="gridCanvas" class="gridCanvas rotationTime d-none">
-                        <table id="pixelCanvas" class="flyItIn2"></table>
                     </div>
                 </div>
             </div>
@@ -209,56 +149,16 @@
 
 </div>
 @include('user.footer')
-
+<!-- <script src="/js/slider.js"></script> -->
 <script src="/js/charToLed.js"></script>
 <script src="/js/canvastobmp.min.js"></script>
 <script src="/js/html2canvas.min.js"></script>
 <script>
-    const messageData = @json($message_data);
-    console.log(messageData);
-    const mode = "{{ $mode }}";
-    var alignmentList = ['left', 'left', 'left'];   // default ones
-    let alignments = [0,0,0];
-
     const canvasWidth = 56;
-    let drawMode = 0; // 3-line mode
 
     var messages = [];
-    var isSaveCopy = false;
-
-    if (mode == 'edit') {
-        if (messageData.message1 !== null) {
-            messages.push( messageData.message1.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                }) 
-            );
-        } else {
-            messages.push([]);
-        }
-        
-        if (messageData.message2 !== null) {
-            messages.push( 
-                messageData.message2.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                })
-            );
-        } else {
-            messages.push([]);
-        }
-
-        if (messageData.message3 !== null) {
-            messages.push( 
-                messageData.message3.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                })
-            );
-        } else {
-            messages.push([]);
-        }
-
-        alignmentList = messageData.three_line_alignment;
-    }
-
+    let alignments = [0,0,0];
+    
     const lightOff = function (rowNum, col) {
         
         for(j = 0; j < canvasWidth; j++) {
@@ -293,33 +193,63 @@
 
     // drawGrid();
     $(document.fonts).ready(function(){
-        // assign alignments after loading
-        if (mode == 'edit') {
-            alignmentList.forEach(function(alignment, index) {
-                switch (alignment) {
-                    case 'left':
-                        alignments[index] = 0;
-                        
-                        break;
-                    case 'center':
-                        alignments[index] = 1;
-                        break;
-                    case 'right':
-                        alignments[index] = 2;
-                        break;
-                    default:
-                        break;
-                }
-                justifyAlignment(index);
-            });
-            
-            $('.btn-group').each(function(index) {
-                let alignmentIndex = alignments[index];
-                $(this).find('button').removeClass('bg-dark');
-                $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
-            });
-        }
-        
+        // Change Bright ness
+        // $("#changeBright").on('click', function() {
+        //     var slider = document.getElementById('kt_nouislider_2');
+        //     changeBrightness(slider.noUiSlider.get());
+        // })
+        // function changeBrightness(bright) {
+        //     KTApp.blockPage();
+        //     $.ajax({
+        //         url : '/change-brightness',
+        //         type : "POST",
+        //         data : {
+        //             bright: bright,
+        //         },
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success : function(res){
+        //             if(res['success'] == true) {
+        //                 toastr.success('Success');
+        //             } else {
+        //                 toastr.error(res['message']);
+        //             }
+        //             KTApp.unblockPage();
+        //         },
+        //         error: function() {
+        //             toastr.error("Change brightness failed");
+        //             KTApp.unblockPage();
+        //         }
+        //     });
+        // }
+        // getCurrentBright();
+        // function getCurrentBright() {
+        //     var slider = document.getElementById('kt_nouislider_2');
+        //     KTApp.block('#kt_nouislider_2', {
+        //         overlayColor: 'red',
+        //         opacity: 0.1,
+        //         state: 'primary'
+        //     });
+        //     $.ajax({
+        //         url : '/get-brightness',
+        //         type : "POST",
+        //         headers: {
+        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //         },
+        //         success : function(res){
+        //             if(res['success'] == true) {
+        //                 slider.noUiSlider.set(res['bright']);
+        //             }
+        //             KTApp.unblock('#kt_nouislider_2');
+        //         },
+        //         error: function() {
+        //             toastr.error("Get brightness failed");
+        //             KTApp.unblock('#kt_nouislider_2');
+        //         }
+        //     });
+        // }
+        // 
         function clearLights(){
             var lightsOn = $('.on');
             lightsOn.addClass('off');
@@ -389,31 +319,7 @@
             return array[0].map((_, colIndex) => array.map(row => row[colIndex]));
         }
 
-        // Get messages from editor
-        function getMessage() {
-            let temp = [];
-            $('.message-input input').each(function() {
-                temp.push($(this).val());
-            });
-
-            return temp;
-        }
-
-        // tpying in editor
-        $('.message-input input').on('keyup', function(e) {
-            let temp = getMessage();
-            clearLights();
-            messages = [];
-
-            let layer = temp.length;
-            for (let i = 0; i < layer; i++) {
-                letters = textToLED(temp[i]);
-                messages.push(letters);
-                justifyAlignment(i);
-            }
-        });
-
-        $("#inputBox").on('keyup', function(e) {
+        $("#inputBox").on('keyup', function(e){
             clearLights();
             var value = $("#inputBox").val();
             messages = [];
@@ -445,8 +351,8 @@
 
         function drawMessage(messageArray, layer){
 
-            // console.log(messageArray);
-            // console.log(layer);
+            console.log(messageArray);
+            console.log(layer);
 
             var offsetRow = layer === 0 ? 2 : layer === 1 ? 4 : 8;
             // offsetRow ++;
@@ -472,7 +378,7 @@
         var undo_lists = [];
         var redo_lists = [];
         var undo_flag = false;
-
+        var alignmentList = ['center', 'center', 'center'];
         // const canvas_bg = document.getElementById('canvas_bg');
         // const ctx_bg = canvas_bg.getContext("2d");
         // const bWidth = $('.card-body').width() * 0.8;
@@ -495,7 +401,6 @@
         // canvas.addEventListener('touchmove', handleClick);
         var line = 0;
         var x = canvas.width / 2;
-
         function drawText () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBoard()
@@ -505,11 +410,10 @@
             // ctx.textBaseline = "middle";
             // ctx.fontKerning = "none";
 
-            console.log('drawtext value: ', getMessage());
-
-            const currentMsg = getMessage();
-            if (currentMsg.length) {
-                currentMsg.map((item, index) => {
+            console.log('drawtext value: ', value);
+            if(value) {
+                var newArray = value.split("\n");
+                newArray.map((item, index) => {
 
                     const alignment = alignmentList[index];
                     ctx.textAlign = alignment;
@@ -562,7 +466,6 @@
         var blank = 30;
         var j = 1;
         var rows = 3;
-
         function drawBoard(){
             
             for (let x = 0; x < canvas.width; x += 10) {
@@ -628,41 +531,16 @@
                 $(this).removeClass('active');
             })
             $(this).addClass('active');
-            // line = value.split("\n").length - 1;
-            line = Number($(this).parent().data('layer')) - 1;
+            line = value.split("\n").length - 1;
             alignmentList[line] = $(this).data('alignment');
             drawText();
-        });
-
-        // Switch the mode
-        $('.mode .btn').on('click', function(e) {
-            let whichMode = e.target.id;
-            if (whichMode == 'line-mode') {
-                if ($(this).hasClass('btn-secondary')) $(this).removeClass('btn-secondary');
-                if (!$(this).hasClass('btn-primary')) $(this).addClass('btn-primary');
-
-                if ($('#dot-mode').hasClass('btn-primary')) $('#dot-mode').removeClass('btn-primary');
-                if (!$('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').addClass('btn-secondary');
-                drawMode = 0;
-            } else {
-                if ($(this).hasClass('btn-secondary')) $(this).removeClass('btn-secondary');
-                if (!$(this).hasClass('btn-primary')) $(this).addClass('btn-primary');
-
-                if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
-                if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
-                drawMode = 1;
-            }
-
-            changeMode();
-            makeGrid();
         });
         
         var changeMode = function() {
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBoard();
-
-            if(drawMode == 0) { // 3-line mode
+            if($("#edit-mode").val() == 0) {
                 // $("#canvas_bg").removeClass('d-none');
                 $("#canvas").removeClass('d-none');
                 $("#ledContainer").removeClass('d-none');
@@ -675,10 +553,10 @@
                 $("#canvas").addClass('d-none');
                 // $("#canvas_bg").addClass('d-none');
             }
+
         }
 
         changeMode();
-
         var undoFunction = function () {
             if(undo_lists.length >= 0 && undo_lists[undo_lists.length - 1]) {
                 undo_flag = true;
@@ -713,34 +591,27 @@
         })
 
 
-        $(document).on('keyup', function(e) {
-            if (e.target.id == 'message_name' || e.target.id == 'message_keywords')
-                return;
-
-            // if( e.which === 91 && e.ctrlKey){
-            //     undoFunction();
-            // }
-            // else if( e.which === 90 && e.ctrlKey ){
-            //     undoFunction();
-            // } else if( e.which === 89 && e.ctrlKey ){
-            //     redoAction();
-            // } else if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || e.which == 32){
-            //     value += e.key;
-            //     drawText();
-            // } else if(e.keyCode == 13) {
-            //     var newArray = value.split("\n");
-            //     if(newArray.length >= 3) {
-            //         return false;
-            //     }
-            //     value += "\n";
-            //     line ++;
-            //     drawText();
-            // }
-            
-            // call this function whenever message is changed.
-            drawText();
+        $(document).on('keydown', function(e) {
+            if( e.which === 91 && e.ctrlKey){
+                undoFunction();
+            }
+            else if( e.which === 90 && e.ctrlKey ){
+                undoFunction();
+            } else if( e.which === 89 && e.ctrlKey ){
+                redoAction();
+            } else if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 65 && e.keyCode <= 90) || e.which == 32){
+                value += e.key;
+                drawText();
+            } else if(e.keyCode == 13) {
+                var newArray = value.split("\n");
+                if(newArray.length >= 3) {
+                    return false;
+                }
+                value += "\n";
+                line ++;
+                drawText();
+            }
         });
-
         // Grid Control
         $(".btn-toggle").on("click", function() {
             $(".gridContainer").toggle();
@@ -765,92 +636,55 @@
         const gridCanvas = document.getElementById('gridCanvas');
         let gridTileMode = PAINT // controls paint or erase of grid cells (td's)
 
-        var checkCanvas = function() {
-            var canvasLED = document.getElementById('canvas');
-            var ctx = canvasLED.getContext('2d');
-            var width = canvasLED.width;
-            var height = canvasLED.height;
-
-            var imageData = ctx.getImageData(0, 0, width, height);
-            var data = imageData.data;
-
-            var isEmpty = true;
-            for (var i = 0; i < data.length; i += 4) {
-                if (data[i + 3] !== 0) {
-                    isEmpty = false;
-                    break;
-                }
-            }
-
-            return isEmpty;
-        }
-
-        var saveMessageCall = function (range, base64Image, imageType) {
-            const [msg1 = [], msg2 = [], msg3 = []] = messages;
-            const msg = getMessage();
-
+        var saveMessageCall = function (range, base64Image, imageName, imageType, imageKeywords) {
             $.ajax({
                 url : '/save-message',
                 type : "POST",
                 data : {
-                    mode: parseInt(message_ID, 10) ? 'edit' : 'create',
-                    saveMode: isSaveCopy ? 'saveAcopy' : 'save',
                     range: range,
                     base64Image: base64Image,
-                    imageID: message_ID,
-                    imageName: message_name,
+                    imageName: imageName,
                     imageType: imageType,
-                    imageKeywords: message_keywords,
-                    msg1: msg1,
-                    msg2: msg2,
-                    msg3: msg3,
-                    msg: msg,
-                    three_line_alignment: alignmentList // e.g ['center', 'left', 'right']
+                    imageKeywords: imageKeywords
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success : function(res){
-                    if (res.success) {
-                        if (isSaveCopy) {
-                            var newMessageId = res.newID;
-                            var newMessageURL = '{{ url('/edit-message/') }}' + '/' + newMessageId;
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Copy of a message done successfully!',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                onClose: function() {
-                                    window.location.href = newMessageURL;
-                                }
-                            });
-                        } else {
-                            toastr.success('Saved the message successfully!');
-                        }
+                    if (res.success){
+                        toastr.success('Saved the message successfully!');
                     }
-                    else {
+                    else{
                         toastr.error("Something went wrong, please try again.");    
                     }
                 },
                 error : function(err){
                     toastr.error("Please refresh your browser");
                 }
-            });
+            })
         }
 
         var saveMessage = function (range) {           
     
             // Get base64data of BMP
 
-            if (drawMode == 0) { // 3-line mode
+            if ($("#edit-mode").val() == 0) {
                 // html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
-                    drawText();
-
                     CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
-                        saveMessageCall(range, url, 'bmp');
-                        // clearMessage();
-                    });
-
+                        
+                        // generate the name of image
+                        var value = $("#inputBox").val();
+                        var imageName = 'empty', imageType = 'bmp', imageKeywords = ''; // [userID]_[imageName]_[timestamp] will be sent to server
+                        
+                        if(value != '' ) {
+                            imageName = value.split('\n').join('_');
+                            imageKeywords = value.split('\n').join(', ');
+                        }
+    
+                        saveMessageCall(range, url, imageName, imageType, imageKeywords);
+    
+                        clearMessage();
+                    })
                 // })
             } else {
                 html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
@@ -867,143 +701,74 @@
             
         }
 
-        // Get user role
-        var getUserRole = async function() {
-            try {
-                var res = await $.ajax({
-                    url: '/get-user-role',
-                    type: "GET"
-                });
+        // $('#createMessage').on('click', function makeGrid(event) {gridSize
+        $("#createMessage").on("click", function() {
+            event.preventDefault();
+            
+            // get user role
+            $.ajax({
+                url : '/get-user-role',
+                type : "GET",
+                success : async function(res){
+                    console.log(res);
+                    if (res["success"]){
+                        var role = res["role"];
 
-                console.log(res);
-
-                if (res.success) {
-                    return res.role;
-                } else {
-                    throw new Error("Please try to login again!");
-                }
-            } catch (err) {
-                throw new Error("An error occurred while getting permissions. Please refresh!");
-            }
-        }
-
-        // Stuffs before saving
-        var beforeSave = async function() {
-            try {
-                var role = await getUserRole();
-
-                // step1: check if message is empty
-                if (!getMessage().length) {
-                    Swal.fire({
-                        text: 'Please edit the message',
-                        icon: "error",
-                        confirmButtonText: "Confirm",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        return;
-                    });
-
-                    return;
-                }
-
-                // step 2: check if message name is defined
-                if (message_name == '') {
-                    Swal.fire({
-                        text: 'The `Name` field is required!',
-                        icon: "error",
-                        confirmButtonText: "Confirm",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        return;
-                    });
-
-                    return;
-                }
-
-                if (!checkAlphanumeric(message_name)) {
-                    Swal.fire({
-                        text: 'The Name should only contain alphanumeric characters.',
-                        icon: "error",
-                        confirmButtonText: "Confirm",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        return;
-                    });
-
-                    return;
-                }
-
-                if (message_ID > 0 && !isSaveCopy) { // in case of edit
-                    Swal.fire({
-                        text: 'It will update the original one. Are you sure?',
-                        icon: "success",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        if (result.isConfirmed) {
-                            saveMessage([0, 0]);
-                        } else {
-                            return;
-                        }
-                    });
-                } else { // in case of create or save a copy
-                    if (role === 0) {
-                        saveMessage([1, 999]);
-                    } else {
-                        const inputOptions = role === 1 ? { "0": "User", "1": "Company"} : { "0": "User", "1": "Company", "2": "INEX" };
-
-                        const { value: option } = await Swal.fire({
-                            title: "Select the local storage to save",
-                            showCancelButton: true,
-                            confirmButtonText: "OK",
-                            customClass: {
-                                confirmButton: "btn-danger",
-                            },
-                            input: "radio",
-                            inputOptions,
-                            inputValidator: (value) => {
-                                if (!value) {
-                                    return "You need to choose at least one."
+                        // open Fire modal
+                        if (role === 0) { //user
+                            Swal.fire({
+                                title: "Are you sure?",
+                                text: 'You won"t be able to revert this!',
+                                icon: "question",
+                                showCancelButton: true,
+                                confirmButtonText: "Yes, create message!",
+                                customClass: {
+                                    confirmButton: "btn-danger",
+                                },
+                            }).then(function(result) {
+                                // Only one option = user
+                                if (result.value) {
+                                    saveMessage([1, 999])
                                 }
+                            });
+                        } else { //admin
+
+                            const inputOptions = role === 1 ? { "0": "User", "1": "Company"} : { "0": "User", "1": "Company", "2": "INEX" };
+
+                            const { value: option } = await Swal.fire({
+                                title: "Select your preferred option",
+                                input: "radio",
+                                inputOptions,
+                                inputValidator: (value) => {
+                                    if (!value) {
+                                        return "You need to choose at least one."
+                                    }
+                                }
+                            });
+
+                            if (option) {
+                                
+                                var range = [1, 999];
+                                if (option === "1") range = [1000, 1999];
+                                if (option === '2') range = [2000, 2999];
+
+                                saveMessage(range);
                             }
-                        });
-
-                        if (option) {
-                            var range = [1, 999];   // user
-                            if (option === "1") range = [1000, 1999];   // Admin
-                            if (option === '2') range = [2000, 2999];   // SuperAdmin
-
-                            saveMessage(range);
                         }
+
                     }
+                    else{
+                        toastr.error("Please try to login");
+                    }
+                },
+                error : function(err){
+                    toastr.error("Please refresh your browser");
                 }
-            } catch (error) {
-                toastr.error(error.message);
-            }
-        }
+            })
 
-        // Save Or Update
-        $("#saveMessage").on("click", function() {
-            event.preventDefault();
-            beforeSave();
-        });
+        })
 
-        // Save A Copy
-        $('#saveAcopy').on("click", function() {
-            event.preventDefault();
-            isSaveCopy = true;
-            beforeSave();
-        });
-
+        // $('#createGrid').on('click', function makeGrid(event) {gridSize
         $("#createGrid").on("click", function() {
             event.preventDefault();
             Swal.fire({
@@ -1021,8 +786,7 @@
                     makeGrid();
                 }
             });
-        });
-
+        })
         var makeGrid = function () {
             // changeMode();
             // prevent page refreshing when clicking submit
@@ -1046,7 +810,7 @@
             let tableRows = '';
             let r = 1;
             
-            var selectedMode = drawMode;
+            var selectedMode = $("#edit-mode").val();
             var blank = 3;
             var j = 1;
             while (r <= rows) {
@@ -1301,10 +1065,7 @@
 
         var clearMessage = function () {
             
-            // $("#inputBox").val('\n\n');
-            $('.message-input input').each(function() {
-                $(this).val('');
-            });
+            $("#inputBox").val('\n\n');
             clearLights();
             
             messages = [];
@@ -1327,22 +1088,5 @@
             clearMessage();
         })
 
-        // message name
-        let message_name = $('#message_name').val();
-        $('#message_name').on('keyup', function(e) {
-            message_name = e.target.value;
-        });
-
-        // let message_keywords = $('#message_keywords').val().split(' ');
-        let message_keywords = $('#message_keywords').val();
-        $('#message_keywords').on('keyup', function(e) {
-            message_keywords = e.target.value;
-        });
-        let message_ID = $('#message_ID').val();
-
-        function checkAlphanumeric(message) {
-            var pattern = /^[a-zA-Z0-9]+$/;
-            return pattern.test(message);
-        }
     });
 </script>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddImagenoToImagesTable extends Migration
+class AddMessageToImagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +14,7 @@ class AddImagenoToImagesTable extends Migration
     public function up()
     {
         Schema::table('images', function (Blueprint $table) {
-            //
-            $table->integer("no")->after("id");
+            $table->json('message')->nullable();
         });
     }
 
@@ -27,8 +26,7 @@ class AddImagenoToImagesTable extends Migration
     public function down()
     {
         Schema::table('images', function (Blueprint $table) {
-            //
-            $table->dropColumn("no");
+            $table->dropColumn('message');
         });
     }
 }

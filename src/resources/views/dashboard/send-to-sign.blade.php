@@ -26,18 +26,29 @@
 </div>
 
 <div class="fluid bg-white">
+    <div class="send-button d-flex justify-content-center">
+        <button class="btn btn-primary" type="button" id="send">Send</button>
+        <button class="btn btn-primary" type="button" id="edit">
+            Edit
+        </button>
+        <button class="btn btn-primary" type="button" id="create">
+            <a href="{{ route('edit-message', ['id' => 0]) }}">Create New</a>
+        </button>
+        <button class="btn btn-primary" type="button" id="exit">
+            <a href="{{ route('main-menu') }}">Exit</a>
+        </button>
+        <!-- <button 
+            class="btn" 
+            type="button" 
+            id="send"
+        >
+            <span>Open</span>
+            <span>this</span>
+            <span>Item</span>
+        </button> -->
+    </div>
+
     <div class="slider-panel px-8">
-        <div class="send-button d-flex">
-            <button 
-                class="btn" 
-                type="button" 
-                id="send"
-            >
-                <span>Open</span>
-                <span>this</span>
-                <span>Item</span>
-            </button>
-        </div>
         <div id="slickPanel" class="slick-panel">
 
         </div>
@@ -102,14 +113,39 @@
 <!-- <script src="/assets/js/redirect.js"></script> -->
 <script>
     
-    var images = {!! json_encode($images) !!};
-    images = images.map((image, index) => ({ id: index, name: image }) );
-    // console.log(images);
+    // var images = {!! json_encode($images) !!};
+    var images = @json($images);
+
+    images = images.map((image, index) => (
+        { 
+            id: index,
+            number: image.no, 
+            name: image.name,  
+            path: image.path,
+            keywords: image.keywords
+        }
+    ));
+
+    console.log(images);
+
     var firstIndex = 0, secondIndex = 0;
     var firstSelectedImages = images, secondSelectedImages = [];
 
+    $('#edit').on('click', function() {
+        var messageId = firstSelectedImages[firstIndex].number;
+
+        // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
+        // editUrl = editUrl.replace(':id', messageId);
+
+        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageId;
+        window.location.href = editUrl;
+    });
+
     $("#send").on("click", function () {
         event.preventDefault();
+
+        console.log('selected message: ', firstSelectedImages[firstIndex]);
+        return; 
 
         if (firstSelectedImages[firstIndex]) {
             
@@ -141,11 +177,11 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success : function(res){
-                    if (res.success){
+                    if (res.success) {
                         console.log(res);
                         // toastr.success('Saved the message successfully!');
                     }
-                    else{
+                    else {
                         // toastr.error("Something went wrong, please try again.");    
                     }
                 },
@@ -181,7 +217,7 @@
         $("#slickPanel").html('<div class="slick" id="slick"></div>');
         for (var i = 0; i < firstSelectedImages.length; i++) {
 
-            var component = `<div><span><img src="{{ asset('assets/media/signmessage/${firstSelectedImages[i].name}') }}"` + firstSelectedImages[i].id + `  alt="image" /></span></div>`;
+            var component = `<div><span><img src="{{ asset('assets/media/signmessage/${firstSelectedImages[i].name}') }}" data-slide-no="` + firstSelectedImages[i].id + `" data-id="` + firstSelectedImages[i].number + `"  alt="image" /></span></div>`;
             $("#slick").append(component);
 
         }
@@ -200,7 +236,7 @@
         $("#thumbnail-list").html('');
         secondSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value));
         for (var i = 0; i < secondSelectedImages.length; i++) {
-            var component = `<li><span><img src="{{ asset('assets/media/signmessage/${ secondSelectedImages[i].name }' ) }}"` + secondSelectedImages[i].id + `  alt="image" /></span></li>`;
+            var component = `<li><span><img src="{{ asset('assets/media/signmessage/${ secondSelectedImages[i].name }' ) }}" data-slide-no="` + secondSelectedImages[i].id + `" data-id="` + secondSelectedImages[i].number + `"  alt="image" /></span></li>`;
             $("#thumbnail-list").append(component);
         }
 
@@ -208,7 +244,7 @@
         // secondSearch();
     });
 
-    $("#secondSearch").on('keyup', function(e){
+    $("#secondSearch").on('keyup', function(e) {
         secondSearch();        
 
         secondIndex = 0;
@@ -224,7 +260,8 @@
     // Load a slider with all the messages
     $("#slickPanel").html('<div class="slick" id="slick"></div>');
     for (var i = 0; i < images.length; i++) {
-        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id=` + images[i].id + ` alt="image" /></span></div>`;
+        // var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id="${images[i].id}" alt="image" /></span></div>`;
+        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-slide-no="${images[i].id}" data-id="${images[i].number}" alt="image" /></span></div>`;
         $("#slick").append(component);
     }
 

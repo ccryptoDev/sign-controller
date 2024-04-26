@@ -1,4 +1,5 @@
 const slickFunction = function () {
+  let lastClickTime = 0;
   $('.slick')
     .on('init', () => {
       $('.slick-slide[data-slick-index="-2"]').addClass('lt2');
@@ -73,16 +74,24 @@ const slickFunction = function () {
     // highlisten the same item for thumbnail list
     highlightSelectedItem(next);
 
-    if (firstSelectedImages.length > 0) {
-
-      var name = firstSelectedImages[firstIndex].name;
-      $("#information").val(name);
-
-    } else {
-        $("#information").val("");
-    }
+    // dislay the name of selected Image
+    displayMessageName(firstSelectedImages);
 
   });
+
+  $('.slick').on('click', '.slick-slide', function() {
+    var slideIndex = $(this).attr('data-slick-index');
+    var slide_no = $(this).find('span img').data('slide-no');
+    firstIndex = slide_no;
+
+    // move slider to the clicked one
+    $('.slick').slick('slickGoTo', slideIndex);
+  });
+
+  // Bind double-click event to slides
+  // $('.slick').on('dblclick', '.slick-slide', function() {
+  //   console.log('Double-clicked slide:', $(this).attr('data-slick-index'));
+  // });
 }
 
 const highlightSelectedItem = function(index) {
@@ -92,6 +101,15 @@ const highlightSelectedItem = function(index) {
     });
     const selectedItem = document.querySelectorAll('#thumbnail-list li')[index];
     selectedItem.classList.add('active');
+  }
+}
+
+const displayMessageName = function(imageList) {
+  if (imageList.length > 0) {
+    var name = imageList[firstIndex].name;
+    $("#information").val(name);
+  } else {
+    $("#information").val("");
   }
 }
 
@@ -118,14 +136,8 @@ const addClassFunction = function () {
       }
      
       firstIndex = index;
-
-      if (secondSelectedImages.length > 0) {
-          var name = secondSelectedImages[firstIndex].name;
-          // .split(".bmp")[0].split("_").join(" ");
-          $("#information").val(name);
-      } else {
-          $("#information").val("");
-      }
+      // display the selected Image
+      displayMessageName(secondSelectedImages);
 
     });
   });
