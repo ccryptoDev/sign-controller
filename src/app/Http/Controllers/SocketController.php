@@ -140,11 +140,11 @@ class SocketController extends Controller {
         $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
-        echo "_________Original Data:<br>\n " . $data . "<br>\n";
-        echo "___Original Data (hex):<br>\n " . bin2hex($data) . "<br>\n";
-        echo "_Compressed Data (hex):<br>\n " . bin2hex($compressed) . "<br>\n";
+        echo "Original Data:<br>\n " . $data . "<br>\n";
+        echo "Original Data (hex):<br>\n " . bin2hex($data) . "<br>\n";
+        echo "Compressed Data (hex):<br>\n " . bin2hex($compressed) . "<br>\n";
         echo "Decompressed Data(hex):<br>\n " . bin2hex($decompressed) . "<br>\n";
-        echo "_____Decompressed Data:<br>\n " . $decompressed . "<br>\n";
+        echo "Decompressed Data:<br>\n " . $decompressed . "<br>\n";
       
         return 'Tested';
     }
@@ -182,7 +182,9 @@ class SocketController extends Controller {
         unlink($tempcompressedfile);
 
       exitit: 
-
+        echo "LZOCOMPRESS<br>\n"
+        echo $compressedData ;  
+        echo "<br>\n"
         return $compressedData   ;
     }
       
