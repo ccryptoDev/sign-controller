@@ -170,13 +170,13 @@ class SocketController extends Controller {
              // Testing LOGS 
              //  echo exec("ls -la > tom.curpwd"); 
              
-        shell_exec("rm /usr/bin/lsop --help ") ;
+        shell_exec("rm /usr/bin/lzop --help ") ;
         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
       
             // Testing LOGS 
-        echo shell_exec("./lzop --help > tom.lzlog"); 
+        echo shell_exec("lzop --help > tom.lzlog"); 
         
 
         // use the Command line lzop, to open the file, compress, write to another file:
