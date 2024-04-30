@@ -135,7 +135,7 @@ class SocketController extends Controller {
         echo '  Compression test            ' ."<br>\n";
         echo '------------------------------' ."<br>\n";
         
-        $data = "Data¸2°Use!" ;
+        $data = "Data,2°Use!" ;
         $compressed   =  $this->lzocompress($data) ;
         $decompressed = $this->lzodecompress($compressed) ;
       
@@ -150,8 +150,8 @@ class SocketController extends Controller {
     }
 
     public function lzocompress($DataToCompress)  {
-        $tempdatafile= "/tmp/lzop_" . $this->UniqueFileName() . ".tmp" ; 
-        $tempcompressedfile= "/tmp/lzop_" . $this->UniqueFileName() . ".tmp"  ; 
+        $tempdatafile= "./tmp/lzop_" . $this->UniqueFileName() . ".tmp" ; 
+        $tempcompressedfile= "./tmp/lzop_" . $this->UniqueFileName() . ".tmp"  ; 
 
         // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
@@ -165,10 +165,15 @@ class SocketController extends Controller {
         // Make a file with the DATA to compress:
         file_put_contents($tempdatafile,$DataToCompress) ;
       
+        // Make a /tmp directory if one does not exist (Docker issues)
+        mkdir("./tmp");
+        echo shell_exec("ls -la ./tmp/ > Tom.mkdir");
+        
+
         // use the Command line lzop, to open the file, compress, write to another file:
         echo shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
         echo "/usr/bin/lzop $tempdatafile -o $tempcompressedfile";
-        echo shell_exec("ls -la /tmp/ > Tom.tmp");
+        echo shell_exec("ls -la ./tmp/ > Tom.tmp");
         echo shell_exec("ls -la > Tom.dir");
 
         echo exec("pwd") ; 
