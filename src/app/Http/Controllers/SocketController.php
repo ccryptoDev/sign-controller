@@ -173,7 +173,7 @@ class SocketController extends Controller {
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
       
-       echo shell_exec("lzop --help > tom.lzlog"); 
+       echo shell_exec("./lzop --help > tom.lzlog"); 
        // test
         
 
