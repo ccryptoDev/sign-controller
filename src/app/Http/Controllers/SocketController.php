@@ -181,8 +181,7 @@ class SocketController extends Controller {
         echo shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
         
         
-        echo shell_exec("ls -la ./tmp/ > tom.lzopcmd");
-        echo shell_exec("find ./ grep 'lzop' >> tom.lzopcmd");
+        echo shell_exec("ls -la ./lzop > tom.curr");
         
         shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
         shell_exec("/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
