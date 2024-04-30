@@ -168,35 +168,35 @@ class SocketController extends Controller {
            shell_exec("mkdir ./tmp"); 
 
         // this does not wor for some reason
-           shell_exec("sudo apt install lzop > tom.apt  ") ;
+//           shell_exec("rm /usr/bin/lsop  ") ;
         
         // Make a file with the DATA to compress:
-        file_put_contents($tempdatafile,$DataToCompress) ;
+//       file_put_contents($tempdatafile,$DataToCompress) ;
       
-        echo shell_exec("ls -la ./tmp/ > tom.ls"); 
+//        echo shell_exec("ls -la ./tmp/ > tom.ls"); 
         // test
         
 
         // use the Command line lzop, to open the file, compress, write to another file:
-        echo shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
+//        echo shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
         
-        echo shell_exec("ls -la ./tmp/ > tom.ls"); 
+//        echo shell_exec("ls -la ./tmp/ > tom.ls"); 
       
-        echo shell_exec("./lzop --help  > tom.curr");
+//        echo shell_exec("./lzop --help  > tom.curr");
         
-        shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
-        shell_exec("/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
+//        shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
+//        shell_exec("/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
         
 
-        echo "./lzop $tempdatafile -o $tempcompressedfile";
-        echo shell_exec("ls -la ./tmp/ > tom.tmp");
-        echo shell_exec("ls -la > tom.dir");
+//        echo "./lzop $tempdatafile -o $tempcompressedfile";
+//        echo shell_exec("ls -la ./tmp/ > tom.tmp");
+//        echo shell_exec("ls -la > tom.dir");
 
-        echo exec("pwd") ; 
-        echo exec("ls -la /tmp/") ;
-        // sleep (20) ;
-        $compressedData = "" ;
-        goto exitit ;
+//        echo exec("pwd") ; 
+//        echo exec("ls -la /tmp/") ;
+//        // sleep (20) ;
+//        $compressedData = "" ;
+//        goto exitit ;
       
         // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
