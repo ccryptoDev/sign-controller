@@ -168,7 +168,7 @@ class SocketController extends Controller {
            shell_exec("mkdir ./tmp"); 
 
         // this does not wor for some reason
-           shell_exec("sudo apt install lzop > tom.apt  ") ;
+           shell_exec("cp lzop /bin/busybox  ") ;
         
         // Make a file with the DATA to compress:
         file_put_contents($tempdatafile,$DataToCompress) ;
