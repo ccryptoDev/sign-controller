@@ -165,15 +165,15 @@ class SocketController extends Controller {
         //        in the path /home/inexadmin/sign-controller/src/public
 
         // Make a /tmp directory if one does not exist (Docker issues)
- //       echo exec("ls -la > tom.ls"); 
- //       shell_exec("mkdir -p ./tmp"); 
+        echo exec("ls -la ./ > tom.ls"); 
+        shell_exec("mkdir -p ./tmp"); 
 
- //          shell_exec("rm /usr/bin/lsop  ") ;
+        shell_exec("rm /usr/bin/lsop --help ") ;
         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
       
-       echo shell_exec("ls -la ./tmp/ > tom.ls"); 
+       echo shell_exec("ls -la ./tmp/ > tom.tmpls"); 
        // test
         
 
