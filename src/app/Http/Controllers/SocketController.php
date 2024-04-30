@@ -174,7 +174,7 @@ class SocketController extends Controller {
         echo shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
 
         shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
-        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile" > tom.lzoplog);
+        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
         
 
         echo "/usr/bin/lzop $tempdatafile -o $tempcompressedfile";
