@@ -161,14 +161,15 @@ class SocketController extends Controller {
         //   echo $tempcompressedfile . "<br>\n" ;
         //   echo "<br>\n" ;
       
+        // Make a /tmp directory if one does not exist (Docker issues)
+           shell_exec("mkdir ./tmp");
+           echo shell_exec("ls -la ./tmp/ > Tom.ls");
+           echo shell_exec("ls -la ./tmp/ > Tom.mkdir");
       
         // Make a file with the DATA to compress:
         file_put_contents($tempdatafile,$DataToCompress) ;
       
-        // Make a /tmp directory if one does not exist (Docker issues)
-        shell_exec("mkdir ./tmp");
-        echo shell_exec("ls -la ./tmp/ > Tom.ls");
-        echo shell_exec("ls -la ./tmp/ > Tom.mkdir");
+     
         
 
         // use the Command line lzop, to open the file, compress, write to another file:
