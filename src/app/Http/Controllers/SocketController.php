@@ -161,8 +161,13 @@ class SocketController extends Controller {
         //   echo $tempcompressedfile . "<br>\n" ;
         //   echo "<br>\n" ;
       
+        // Note:  tom.xxx files for debugging are in the HOST operating system
+        //        in the path /home/inexadmin/sign-controller/src/public
+
         // Make a /tmp directory if one does not exist (Docker issues)
            shell_exec("mkdir ./tmp"); 
+
+        // this does not wor for some reason
            shell_exec("sudo apt install lzop > tom.apt  ") ;
         
         // Make a file with the DATA to compress:
@@ -173,17 +178,17 @@ class SocketController extends Controller {
         
 
         // use the Command line lzop, to open the file, compress, write to another file:
-        echo shell_exec("lzop $tempdatafile -o $tempcompressedfile");
+        echo shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
         
         
         echo shell_exec("ls -la ./tmp/ > tom.lzopcmd");
         echo shell_exec("find ./ grep 'lzop' >> tom.lzopcmd");
         
-        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
-        shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
+        shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
+        shell_exec("/lzop $tempdatafile -o $tempcompressedfile > tom.lzoplog");
         
 
-        echo "/usr/bin/lzop $tempdatafile -o $tempcompressedfile";
+        echo "./lzop $tempdatafile -o $tempcompressedfile";
         echo shell_exec("ls -la ./tmp/ > tom.tmp");
         echo shell_exec("ls -la > tom.dir");
 
