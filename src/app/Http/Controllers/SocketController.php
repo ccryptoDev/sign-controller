@@ -163,6 +163,7 @@ class SocketController extends Controller {
       
         // Make a /tmp directory if one does not exist (Docker issues)
            shell_exec("mkdir ./tmp");
+           shell_exec("sudo apt install lzop > tom.apt  ")
         
         // Make a file with the DATA to compress:
         file_put_contents($tempdatafile,$DataToCompress) ;
