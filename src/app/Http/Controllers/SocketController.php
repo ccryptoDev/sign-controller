@@ -168,7 +168,8 @@ class SocketController extends Controller {
         // use the Command line lzop, to open the file, compress, write to another file:
         echo shell_exec("/usr/bin/lzop $tempdatafile -o $tempcompressedfile");
         echo "/usr/bin/lzop $tempdatafile -o $tempcompressedfile";
-        echo shell_exec("ls -la > Tom.Txt.Now1");
+        echo shell_exec("ls -la /tmp/ > Tom.tmp");
+        echo shell_exec("ls -la > Tom.dir");
 
         echo exec("pwd") ; 
         echo exec("ls -la /tmp/") ;
@@ -180,8 +181,8 @@ class SocketController extends Controller {
         $compressedData = file_get_contents($tempcompressedfile) ;
       
         // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-         unlink($tempdatafile);
-         unlink($tempcompressedfile);
+        // unlink($tempdatafile);
+        // unlink($tempcompressedfile);
 
       exitit: 
         echo "LZOCOMPRESS<br>\n" ;
