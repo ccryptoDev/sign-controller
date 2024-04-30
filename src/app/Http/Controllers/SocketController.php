@@ -165,7 +165,7 @@ class SocketController extends Controller {
         //        in the path /home/inexadmin/sign-controller/src/public
 
         // Make a /tmp directory if one does not exist (Docker issues)
-        echo shell_exec("ls -la > tom.ls"); 
+        echo exec("ls -la > tom.ls"); 
         shell_exec("mkdir -p ./tmp"); 
 
  //          shell_exec("rm /usr/bin/lsop  ") ;
