@@ -166,7 +166,8 @@ class SocketController extends Controller {
         file_put_contents($tempdatafile,$DataToCompress) ;
       
         // Make a /tmp directory if one does not exist (Docker issues)
-        mkdir("./tmp");
+        shell_exec("mkdir ./tmp");
+        echo shell_exec("ls -la ./tmp/ > Tom.ls");
         echo shell_exec("ls -la ./tmp/ > Tom.mkdir");
         
 
