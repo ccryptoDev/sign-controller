@@ -126,6 +126,11 @@ class SocketController extends Controller {
     }
 
     public function TomTest (Request $request) {
+        // Update linux by:
+        //   cd /home/linuxadmin/sign-controller
+        //   git pull origin main
+        //
+        
         echo '2024-04-11 update'."<br>\n";
        
         $data = 'holy mackerel mackerel mackerel';
