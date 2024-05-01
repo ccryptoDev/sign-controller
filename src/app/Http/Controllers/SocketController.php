@@ -155,7 +155,7 @@ class SocketController extends Controller {
     public function lzocompress($DataToCompress)  {
         $NewTempFile = $this->UniqueFileName() ;
         $tempdatafile= "lzopcompressin_" . $NewTempFile . ".tmp" ;
-        $tempcompressedfile= "lzopcompressin_" . $NewTempFile . ".tmo.lzo" ; 
+        $tempcompressedfile= "lzopcompressin_" . $NewTempFile . ".tmp.lzo" ; 
 
         // 
         // Debuging Code
@@ -211,7 +211,7 @@ class SocketController extends Controller {
         shell_exec("echo -la $tempcompressedfile* > tom.tempcmd");
         shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
         sleep(5) ;
-        $compressedData = file_get_contents(".\" . "$tempcompressedfile") ;
+        $compressedData = file_get_contents(".\" . $tempcompressedfile ) ;
 
         echo '------------------------------' ."<br>\n";
         echo "tempcompressedfile: <br>\n" ; 
