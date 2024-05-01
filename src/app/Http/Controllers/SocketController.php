@@ -154,8 +154,8 @@ class SocketController extends Controller {
 
     public function lzocompress($DataToCompress)  {
         $NewTempFile = $this->UniqueFileName() ;
-        $tempdatafile= "lzopcompressin_" . $NewTempFile . ".tmp" ;
-        $tempcompressedfile= "lzopcompressin_" . $NewTempFile . ".tmp.lzo" ; 
+        $tempdatafile= "lzopcompress_" . $NewTempFile . ".tmp" ;
+        $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ; 
 
              
         // Note:  tom.xxx files for debugging are in the HOST operating system
@@ -240,8 +240,8 @@ class SocketController extends Controller {
     public function lzodecompress($DataToDecompress) {
         echo "lll<br>\n<br>\n" ;
         $NewTempFile = $this->UniqueFileName() ; 
-        $tempfiletodecompress = "lzopdecompressin_" . $NewTempFile . ".tmp.lzo" ;
-        $tempdecompressedfile = "lzopdecompressout_" . $NewTempFile . ".tmp" ;
+        $tempfiletodecompress = "lzopdecompress_" . $NewTempFile . ".tmp.lzo" ;
+        $tempdecompressedfile = "lzopdecompress_" . $NewTempFile . ".tmp" ;
 
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
@@ -272,8 +272,6 @@ class SocketController extends Controller {
         echo "tempdecompressedfile: <br>\n" ; 
         echo "$tempdecompressedfile <br>\n" ; 
         echo "<br>\n" ; 
-        
-
         
         
       // Read back in the compressed data:
