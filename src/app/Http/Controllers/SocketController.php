@@ -182,6 +182,7 @@ class SocketController extends Controller {
         // use the Command line lzop, to open the file, compress, write to another file:
       //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
       //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
+        shell_exec ("echo lll > tom2.txt") ;
         shell_exec("lzop -1f $tempdatafile ");
       //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
       //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
