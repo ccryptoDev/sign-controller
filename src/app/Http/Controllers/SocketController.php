@@ -210,8 +210,8 @@ class SocketController extends Controller {
         // Read back in the compressed data:
         shell_exec("echo -la $tempcompressedfile* > tom.tempcmd");
         shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
-        sleep(5) ;
-        $compressedData = file_get_contents(".\" . $tempcompressedfile ) ;
+        
+        $compressedData = file_get_contents($tempcompressedfile ) ;
 
         echo '------------------------------ <br>\n";
         echo "tempcompressedfile: <br>\n" ; 
