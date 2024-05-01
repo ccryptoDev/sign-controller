@@ -274,21 +274,18 @@ class SocketController extends Controller {
         echo "<br>\n" ; 
         
 
-        echo "------------------------------<br>\n";
-        echo "compressedData: <br>\n" ; 
-        echo "$compressedData: <br>\n" ; 
-        echo $compressedData . "<br>\n" ; 
-        echo "------------------------------<br>\n";
         
-
-
         
       // Read back in the compressed data:
       
        $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
-      // ////// "kll" ; // file_get_contents(tempdecompressedfile$) ;
-      
+       echo "------------------------------<br>\n";
+       echo "compressedData: <br>\n" ; 
+       echo "$Decompressed: <br>\n" ; 
+       echo $Decompressed . "<br>\n" ; 
+       echo "------------------------------<br>\n";
+
        // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
         // unlink($tempfiletodecompress);
         // unlink($tempdecompressedfile);
