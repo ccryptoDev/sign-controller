@@ -183,6 +183,7 @@ class SocketController extends Controller {
         shell_exec ("echo lll > tom2.txt") ;
         shell_exec("lzop -1f tom2.txt");
         shell_exec("lzop -1f $tempdatafile ");
+        echo "$tempdatafile <br>\n" ; 
      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
      //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
      //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
