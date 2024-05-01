@@ -131,9 +131,9 @@ class SocketController extends Controller {
         $data = 'holy mackerel mackerel mackerel';
 //        $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
        
-        echo '------------------------------' ."<br>\n";
+        echo '==============================' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
-        echo '------------------------------' ."<br>\n";
+        echo '==============================' ."<br>\n";
         
         $data = "Data,2°Use!" ;
         $compressed   =  $this->lzocompress($data) ;
@@ -147,6 +147,7 @@ class SocketController extends Controller {
         echo "Decompressed Data(hex):<br>\n " . bin2hex($decompressed) . "<br>\n<br>\n";
         echo "Decompressed Data:<br>\n " . $decompressed . "<br>\n<br>\n";
         echo '------------------------------' ."<br>\n";
+        echo '==============================' ."<br>\n";
         
         return 'Tested';
     }
@@ -182,11 +183,15 @@ class SocketController extends Controller {
      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
         shell_exec("lzop -1f $tempdatafile ");
         
+        echo '------------------------------' ."<br>\n";
+        echo "tempdatafile: <br>\n" ; 
         echo "$tempdatafile <br>\n" ; 
         echo "<br>\n" ; 
         
-        echo exec("ls -la lzopcompress*") . "<br>\n" ;
+        echo exec("ls -la lzopcompressin_*") . "<br>\n" ;
         echo "<br>\n" ; 
+        echo '------------------------------' ."<br>\n";
+
         
      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
      //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
@@ -205,7 +210,22 @@ class SocketController extends Controller {
         // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
 
-      
+        echo '------------------------------' ."<br>\n";
+        echo "tempcompressedfile: <br>\n" ; 
+        echo "$tempcompressedfile <br>\n" ; 
+        echo "<br>\n" ; 
+        
+        echo exec("ls -la lzopcompressin_*") . "<br>\n" ;
+        echo "<br>\n" ; 
+        echo '------------------------------' ."<br>\n";
+        
+        echo '------------------------------' ."<br>\n";
+        echo "compressedData: <br>\n" ; 
+        echo "$compressedData: <br>\n" ; 
+        echo $compressedData . "<br>\n" ; 
+        echo '------------------------------' ."<br>\n";
+        
+
         // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
         // unlink($tempdatafile);
         // unlink($tempcompressedfile);
