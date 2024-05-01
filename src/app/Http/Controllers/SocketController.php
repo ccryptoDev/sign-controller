@@ -150,10 +150,8 @@ class SocketController extends Controller {
     }
 
     public function lzocompress($DataToCompress)  {
-//        $tempdatafile= "./tmp/lzopin_" . $this->UniqueFileName() . ".tmp" ; 
-//        $tempcompressedfile= "./tmp/lzopout_" . $this->UniqueFileName() . ".tmp"  ; 
-        $tempdatafile= "lzopin1_" . $this->UniqueFileName() . ".tmp" ;
-        $tempcompressedfile= "lzopout1_" . $this->UniqueFileName() . ".tmp"  ; 
+        $tempdatafile= "lzopcompressin_" . $this->UniqueFileName() . ".tmp" ;
+        $tempcompressedfile= "lzopcompressout_" . $this->UniqueFileName() . ".tmp"  ; 
 
         // 
         // Debuging Code
@@ -180,10 +178,14 @@ class SocketController extends Controller {
      // use the Command line lzop, to open the file, compress, write to another file:
      //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
-        shell_exec ("echo lll > ./tmp/tom2.txt") ;
-        shell_exec("lzop -1f ./tom2.txt");
-     //////////   shell_exec("lzop -1f $tempdatafile ");
+        shell_exec("lzop -1f $tempdatafile ");
+        
         echo "$tempdatafile <br>\n" ; 
+        echo "<br>\n" ; 
+        
+        echo exec("ls -la lzopcompress*") . "<br>\n" ;
+        echo "<br>\n" ; 
+        
      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
      //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
      //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
@@ -191,8 +193,8 @@ class SocketController extends Controller {
                    
         echo exec("pwd") . "<br>\n"; 
         echo "<br>\n" ; 
-        echo exec("ls -la /tmp/") . "<br>\n" ;
-        echo "<br>\n" ; 
+      //  echo exec("ls -la /tmp/") . "<br>\n" ;
+      //  echo "<br>\n" ; 
         
         // sleep (20) ;
         $compressedData = "" ;
@@ -217,8 +219,8 @@ class SocketController extends Controller {
     public function lzodecompress($DataToDecompress) {
         echo "lll<br>\n<br>\n" ;
         
-        $tempfiletodecompress = "lzop_" . $this->UniqueFileName() . ".tmp" ;
-        $tempdecompressedfile = "lzop_" . $this->UniqueFileName() . ".tmp" ;
+        $tempfiletodecompress = "lzopdecompressin_" . $this->UniqueFileName() . ".tmp" ;
+        $tempdecompressedfile = "lzopdecompressout_" . $this->UniqueFileName() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
