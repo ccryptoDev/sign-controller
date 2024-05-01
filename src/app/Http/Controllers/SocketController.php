@@ -157,24 +157,14 @@ class SocketController extends Controller {
         $tempdatafile= "lzopcompressin_" . $NewTempFile . ".tmp" ;
         $tempcompressedfile= "lzopcompressin_" . $NewTempFile . ".tmp.lzo" ; 
 
-        // 
-        // Debuging Code
-        //   echo $tempdatafile . "<br>\n" ;
-        //   echo $tempcompressedfile . "<br>\n" ;
-        //   echo "<br>\n" ;
-      
+             
         // Note:  tom.xxx files for debugging are in the HOST operating system
         //        in the path /home/inexadmin/sign-controller/src/public
         //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
 
-        // Make a /tmp directory if one does not exist (Docker issues)
-        shell_exec("mkdir -p ./tmp"); 
-
              // Testing LOGS 
              //  echo exec("ls -la > tom.curpwd"); 
              
- //       shell_exec("/bin/lzop --help >") ;
-        
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
                
@@ -182,6 +172,7 @@ class SocketController extends Controller {
      // use the Command line lzop, to open the file, compress, write to another file:
      //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
+ 
         shell_exec("lzop -1f $tempdatafile ");
         
         echo '------------------------------' ."<br>\n";
@@ -252,7 +243,6 @@ class SocketController extends Controller {
         $tempfiletodecompress = "lzopdecompressin_" . $NewTempFile . ".tmp.lzo" ;
         $tempdecompressedfile = "lzopdecompressout_" . $NewTempFile . ".tmp" ;
 
-        
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
       //   echo $tempcompressedfile . "<br>\n" ;
@@ -267,12 +257,12 @@ class SocketController extends Controller {
         // shell_exec("sleep 10") ;
 
       // use the Command line lzop, to open the file, compress, write to another file:
-        shell_exec("/usr/bin/lzop $tempfiletodecompress -d -o $tempdecompressedfile");
+        shell_exec(" lzop -1f -d $tempfiletodecompress");
         
         
       // Read back in the compressed data:
       
-       // $Decompressed =  file_get_contents($tempdecompressedfile) ;
+       $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
       // ////// "kll" ; // file_get_contents(tempdecompressedfile$) ;
       
