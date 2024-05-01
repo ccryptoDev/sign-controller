@@ -150,8 +150,8 @@ class SocketController extends Controller {
     }
 
     public function lzocompress($DataToCompress)  {
-        $tempdatafile= "./tmp/lzop_" . $this->UniqueFileName() . ".tmp" ; 
-        $tempcompressedfile= "./tmp/lzop_" . $this->UniqueFileName() . ".tmp"  ; 
+        $tempdatafile= "./tmp/lzopin_" . $this->UniqueFileName() . ".tmp" ; 
+        $tempcompressedfile= "./tmp/lzopout_" . $this->UniqueFileName() . ".tmp"  ; 
 
         // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
