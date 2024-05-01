@@ -205,7 +205,6 @@ class SocketController extends Controller {
         
         // sleep (20) ;
         $compressedData = "" ;
-        goto exitit ;
       
         // Read back in the compressed data:
         $compressedData = file_get_contents($tempcompressedfile) ;
@@ -225,7 +224,8 @@ class SocketController extends Controller {
         echo $compressedData . "<br>\n" ; 
         echo '------------------------------' ."<br>\n";
         
-
+        goto exitit ;
+      
         // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
         // unlink($tempdatafile);
         // unlink($tempcompressedfile);
