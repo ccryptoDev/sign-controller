@@ -170,7 +170,7 @@ class SocketController extends Controller {
              // Testing LOGS 
              //  echo exec("ls -la > tom.curpwd"); 
              
-        // shell_exec("/bin/lzop --help > tom.lzhelp") ;
+ //       shell_exec("/bin/lzop --help >") ;
         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
@@ -181,8 +181,12 @@ class SocketController extends Controller {
 
         // use the Command line lzop, to open the file, compress, write to another file:
         echo shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
-        shell_exec("/lzop -c $tempdatafile > $tempcompressedfile ");
-        shell_exec("/lzop -c $tempdatafile > t.lzoptest ");
+        shell_exec("rm $tempcompressedfile")
+        shell_exec("/lzop $tempdatafile -o $tempcompressedfile");
+        shell_exec("ls -la $tempdatafile > tom.tempdatafile");
+        shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
+        
+        
 
             // Testing LOGS 
             //      echo shell_exec("ls -la ./tmp/ > tom.ls"); 
