@@ -157,105 +157,51 @@ class SocketController extends Controller {
         $NewTempFile = $this->UniqueFileName() ;
         $tempdatafile= "lzopcompress_" . $NewTempFile . ".tmp" ;
         $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ; 
-
              
         // Note:  tom.xxx files for debugging are in the HOST operating system
         //        in the path /home/inexadmin/sign-controller/src/public
         //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
          
-        // Make a file with the DATA to compress:
+     // Make a file with the DATA to compress:
+
        file_put_contents($tempdatafile,$DataToCompress) ;
                
-
      // use the Command line lzop, to open the file, compress, write to another file:
  
         shell_exec("lzop -1f $tempdatafile ");
         
         $compressedData = "" ;
-      
-        // Read back in the compressed data:
-        // shell_exec("echo -la $tempcompressedfile* > tom.tempcmd");
-        // shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
-        
         $compressedData = file_get_contents($tempcompressedfile ) ;
 
-        echo "------------------------------ <br>\n";
-        echo "tempcompressedfile: <br>\n" ; 
-        echo "$tempcompressedfile <br>\n" ; 
-        echo "<br>\n" ; 
-        
-        echo exec("ls -la lzopcompressin_*") . "<br>\n" ;
-        echo "<br>\n" ; 
-        echo "------------------------------<br>\n";
-        
-        echo "------------------------------<br>\n";
-        echo "compressedData: <br>\n" ; 
-        echo "$compressedData: <br>\n" ; 
-        echo $compressedData . "<br>\n" ; 
-        echo "------------------------------<br>\n";
-        
-        goto exitit ;
-      
         // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
         unlink($tempdatafile);
         unlink($tempcompressedfile);
 
       exitit: 
-        echo "EXITIT-----Function's Compressed Data (hex):<br>\n " . bin2hex($compressedData) . "<br>\n<br>\n";
         return $compressedData  ;
     }
       
     public function lzodecompress($DataToDecompress) {
-        echo "lll<br>\n<br>\n" ;
         $NewTempFile = $this->UniqueFileName() ; 
         $tempfiletodecompress = "lzopdecompress_" . $NewTempFile . ".tmp.lzo" ;
         $tempdecompressedfile = "lzopdecompress_" . $NewTempFile . ".tmp" ;
 
-      // Debuging Code
-      //   echo $tempdatafile . "<br>\n" ;
-      //   echo $tempcompressedfile . "<br>\n" ;
-      //   echo "<br>\n" ;
-      
-      
+            
       // Make a file with the DATA to compress:
       
-         file_put_contents($tempfiletodecompress,$DataToDecompress) ;
+        file_put_contents($tempfiletodecompress,$DataToDecompress) ;
       
-        // exec("ls -la $tempdecompressedfile") ;
-        // shell_exec("sleep 10") ;
-
       // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec(" lzop -1f -d $tempfiletodecompress");
         
-        echo "------------------------------ <br>\n";
-        echo "tempfiletodecompress: <br>\n" ; 
-        echo "$tempfiletodecompress <br>\n" ; 
-        echo "<br>\n" ; 
-        
-        echo exec("ls -la lzopdecompressin_*") . "<br>\n" ;
-        echo "<br>\n" ; 
-        echo "------------------------------<br>\n";  
-        
       // Read back in the compressed data:
       
-       $Decompressed =  file_get_contents($tempdecompressedfile) ;
+        $Decompressed = "" ;
+        $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
-       echo "------------------------------ <br>\n";
-       echo "tempdecompressedfile: <br>\n" ; 
-       echo "$tempdecompressedfile <br>\n" ; 
-       echo "<br>\n" ; 
-        
-      
-
-       echo "------------------------------<br>\n";
-       echo "compressedData: <br>\n" ; 
-       echo "Decompressed: <br>\n" ; 
-       echo $Decompressed . "<br>\n" ; 
-       echo "------------------------------<br>\n";
-
-       // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-        // unlink($tempfiletodecompress);
-        // unlink($tempdecompressedfile);
+      // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+        unlink($tempfiletodecompress);
+        unlink($tempdecompressedfile);
       
         return $Decompressed ;
       
