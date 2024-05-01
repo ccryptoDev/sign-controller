@@ -197,18 +197,11 @@ class SocketController extends Controller {
         goto exitit ;
       
         // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-        // unlink($tempdatafile);
-        // unlink($tempcompressedfile);
-
-//        $compressedData = "I like puppies" ;
+        unlink($tempdatafile);
+        unlink($tempcompressedfile);
 
       exitit: 
-      echo "Function's Compressed Data (hex):<br>\n " . bin2hex($compressedData) . "<br>\n<br>\n";
-      
-
-        echo "LZOCOMPRESS<br>\n" ;
-        echo "$compressedData" ;  
-        echo "LZOCOMPRESS<br>\n" ;
+        echo "EXITIT-----Function's Compressed Data (hex):<br>\n " . bin2hex($compressedData) . "<br>\n<br>\n";
         return $compressedData  ;
     }
       
@@ -264,7 +257,7 @@ class SocketController extends Controller {
         // unlink($tempfiletodecompress);
         // unlink($tempdecompressedfile);
       
-        return "$ Decompressed" ;
+        return $Decompressed ;
       
       }
       
