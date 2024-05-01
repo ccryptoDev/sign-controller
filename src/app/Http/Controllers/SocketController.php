@@ -137,6 +137,7 @@ class SocketController extends Controller {
         
         $data = "Data,2°Use!" ;
         $compressed   =  $this->lzocompress($data) ;
+
         $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
@@ -161,46 +162,20 @@ class SocketController extends Controller {
         // Note:  tom.xxx files for debugging are in the HOST operating system
         //        in the path /home/inexadmin/sign-controller/src/public
         //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
-
-             // Testing LOGS 
-             //  echo exec("ls -la > tom.curpwd"); 
-             
+         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
                
 
      // use the Command line lzop, to open the file, compress, write to another file:
-     //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
-     //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
  
         shell_exec("lzop -1f $tempdatafile ");
         
-        echo '------------------------------' ."<br>\n";
-        echo "tempdatafile: <br>\n" ; 
-        echo "$tempdatafile <br>\n" ; 
-        echo "<br>\n" ; 
-        
-        echo exec("ls -la lzopcompressin_*") . "<br>\n" ;
-        echo "<br>\n" ; 
-        echo '------------------------------' ."<br>\n";
-
-        
-     //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
-     //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
-     //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
-        
-                   
-        echo exec("pwd") . "<br>\n"; 
-        echo "<br>\n" ; 
-      //  echo exec("ls -la /tmp/") . "<br>\n" ;
-      //  echo "<br>\n" ; 
-        
-        // sleep (20) ;
         $compressedData = "" ;
       
         // Read back in the compressed data:
-        shell_exec("echo -la $tempcompressedfile* > tom.tempcmd");
-        shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
+        // shell_exec("echo -la $tempcompressedfile* > tom.tempcmd");
+        // shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
         
         $compressedData = file_get_contents($tempcompressedfile ) ;
 
@@ -266,21 +241,22 @@ class SocketController extends Controller {
         
         echo exec("ls -la lzopdecompressin_*") . "<br>\n" ;
         echo "<br>\n" ; 
-        echo "------------------------------<br>\n";
-        
-        echo "------------------------------ <br>\n";
-        echo "tempdecompressedfile: <br>\n" ; 
-        echo "$tempdecompressedfile <br>\n" ; 
-        echo "<br>\n" ; 
-        
+        echo "------------------------------<br>\n";  
         
       // Read back in the compressed data:
       
        $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
+       echo "------------------------------ <br>\n";
+       echo "tempdecompressedfile: <br>\n" ; 
+       echo "$tempdecompressedfile <br>\n" ; 
+       echo "<br>\n" ; 
+        
+      
+
        echo "------------------------------<br>\n";
        echo "compressedData: <br>\n" ; 
-       echo "$Decompressed: <br>\n" ; 
+       echo "Decompressed: <br>\n" ; 
        echo $Decompressed . "<br>\n" ; 
        echo "------------------------------<br>\n";
 
