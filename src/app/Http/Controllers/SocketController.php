@@ -152,11 +152,9 @@ class SocketController extends Controller {
     public function lzocompress($DataToCompress)  {
 //        $tempdatafile= "./tmp/lzopin_" . $this->UniqueFileName() . ".tmp" ; 
 //        $tempcompressedfile= "./tmp/lzopout_" . $this->UniqueFileName() . ".tmp"  ; 
-        $tempdatafile= "lzopin1_" . $this->UniqueFileName() . ".tmp" ; 
+        $tempdatafile= "lzopin1_" . $this->UniqueFileName() . ".tmp" ;
         $tempcompressedfile= "lzopout1_" . $this->UniqueFileName() . ".tmp"  ; 
 
-        // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
-        // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // 
         // Debuging Code
         //   echo $tempdatafile . "<br>\n" ;
@@ -179,14 +177,15 @@ class SocketController extends Controller {
        file_put_contents($tempdatafile,$DataToCompress) ;
                
 
-        // use the Command line lzop, to open the file, compress, write to another file:
-      //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
-      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
+     // use the Command line lzop, to open the file, compress, write to another file:
+     //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
+     //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
         shell_exec ("echo lll > tom2.txt") ;
+        shell_exec("lzop -1f tom2.txt");
         shell_exec("lzop -1f $tempdatafile ");
-      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
-      //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
-      //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
+     //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
+     //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
+     //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
         
                    
         echo exec("pwd") . "<br>\n"; 
