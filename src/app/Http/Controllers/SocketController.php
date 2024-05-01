@@ -213,20 +213,20 @@ class SocketController extends Controller {
         sleep(5) ;
         $compressedData = file_get_contents(".\" . $tempcompressedfile ) ;
 
-        echo '------------------------------' ."<br>\n";
+        echo '------------------------------ <br>\n";
         echo "tempcompressedfile: <br>\n" ; 
         echo "$tempcompressedfile <br>\n" ; 
         echo "<br>\n" ; 
         
         echo exec("ls -la lzopcompressin_*") . "<br>\n" ;
         echo "<br>\n" ; 
-        echo '------------------------------' ."<br>\n";
+        echo '------------------------------<br>\n";
         
-        echo '------------------------------' ."<br>\n";
+        echo '------------------------------<br>\n";
         echo "compressedData: <br>\n" ; 
         echo "$compressedData: <br>\n" ; 
         echo $compressedData . "<br>\n" ; 
-        echo '------------------------------' ."<br>\n";
+        echo '------------------------------<br>\n";
         
         goto exitit ;
       
