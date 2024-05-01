@@ -212,8 +212,6 @@ class SocketController extends Controller {
         shell_exec("ls -la $tempcompressedfile* > tom.tempcompressedfile");
         sleep(5)
         $compressedData = file_get_contents($tempcompressedfile) ;
-        //$compressedData = file_get_contents("tom.txt.lzo") ;
-        
 
         echo '------------------------------' ."<br>\n";
         echo "tempcompressedfile: <br>\n" ; 
