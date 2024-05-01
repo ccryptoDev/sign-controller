@@ -140,12 +140,14 @@ class SocketController extends Controller {
         $decompressed = $this->lzodecompress($compressed) ;
       
       // Output the compressed data
-        echo "Original Data:<br>\n " . $data . "<br>\n";
-        echo "Original Data (hex):<br>\n " . bin2hex($data) . "<br>\n";
-        echo "Compressed Data (hex):<br>\n " . bin2hex($compressed) . "<br>\n";
-        echo "Decompressed Data(hex):<br>\n " . bin2hex($decompressed) . "<br>\n";
-        echo "Decompressed Data:<br>\n " . $decompressed . "<br>\n";
-      
+        echo '------------------------------' ."<br>\n";  
+        echo "Original Data:<br>\n " . $data . "<br>\n<br>\n";
+        echo "Original Data (hex):<br>\n " . bin2hex($data) . "<br>\n<br>\n";
+        echo "Compressed Data (hex):<br>\n " . bin2hex($compressed) . "<br>\n<br>\n";
+        echo "Decompressed Data(hex):<br>\n " . bin2hex($decompressed) . "<br>\n<br>\n";
+        echo "Decompressed Data:<br>\n " . $decompressed . "<br>\n<br>\n";
+        echo '------------------------------' ."<br>\n";
+        
         return 'Tested';
     }
 
@@ -211,9 +213,9 @@ class SocketController extends Controller {
 
       exitit: 
         echo "LZOCOMPRESS<br>\n" ;
-        echo $compressedData ;  
+        echo "$compressedData" ;  
         echo "LZOCOMPRESS<br>\n" ;
-        return $compressedData   ;
+        return $compressedData  ;
     }
       
     public function lzodecompress($DataToDecompress) {
