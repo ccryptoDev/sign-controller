@@ -163,7 +163,7 @@ class SocketController extends Controller {
       
         // Note:  tom.xxx files for debugging are in the HOST operating system
         //        in the path /home/inexadmin/sign-controller/src/public
-        //        after a reboot of host OS, need to run 'sudo docker-compose up —d —build app'
+        //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
 
         // Make a /tmp directory if one does not exist (Docker issues)
         shell_exec("mkdir -p ./tmp"); 
