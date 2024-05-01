@@ -170,7 +170,7 @@ class SocketController extends Controller {
              // Testing LOGS 
              //  echo exec("ls -la > tom.curpwd"); 
              
-        shell_exec("rm /usr/bin/lzop --help ") ;
+        shell_exec("/bin/lzop --help > tom.lzhelp") ;
         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
