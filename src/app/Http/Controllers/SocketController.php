@@ -176,7 +176,7 @@ class SocketController extends Controller {
  //       shell_exec("/bin/lzop --help >") ;
         
         // Make a file with the DATA to compress:
-       file_put_contents($tempdatafile,$DataToCompress,LOCK_EX) ;
+       file_put_contents($tempdatafile,$DataToCompress) ;
                
 
      // use the Command line lzop, to open the file, compress, write to another file:
