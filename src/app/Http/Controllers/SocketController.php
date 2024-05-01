@@ -216,8 +216,9 @@ class SocketController extends Controller {
       
     public function lzodecompress($DataToDecompress) {
         echo "lll<br>\n<br>\n" ;
-        $tempfiletodecompress = "/tmp/lzop_" . $this->UniqueFileName() . ".tmp" ;
-        $tempdecompressedfile = "/tmp/lzop_" . $this->UniqueFileName() . ".tmp" ;
+        
+        $tempfiletodecompress = "lzop_" . $this->UniqueFileName() . ".tmp" ;
+        $tempdecompressedfile = "lzop_" . $this->UniqueFileName() . ".tmp" ;
       
       // Debuging Code
       //   echo $tempdatafile . "<br>\n" ;
