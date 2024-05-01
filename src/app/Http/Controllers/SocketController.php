@@ -152,8 +152,8 @@ class SocketController extends Controller {
     public function lzocompress($DataToCompress)  {
 //        $tempdatafile= "./tmp/lzopin_" . $this->UniqueFileName() . ".tmp" ; 
 //        $tempcompressedfile= "./tmp/lzopout_" . $this->UniqueFileName() . ".tmp"  ; 
-        $tempdatafile= "lzopin_" . $this->UniqueFileName() . ".tmp" ; 
-        $tempcompressedfile= "lzopout_" . $this->UniqueFileName() . ".tmp"  ; 
+        $tempdatafile= "lzopin1_" . $this->UniqueFileName() . ".tmp" ; 
+        $tempcompressedfile= "lzopout1_" . $this->UniqueFileName() . ".tmp"  ; 
 
         // $tempdatafile = "/tmp/lzop_" . UFN("") . ".tmp" ;
         // $tempcompressedfile = "/tmp/lzop_" . UFN("") . ".tmp" ;
@@ -177,36 +177,22 @@ class SocketController extends Controller {
         
         // Make a file with the DATA to compress:
        file_put_contents($tempdatafile,$DataToCompress) ;
-      
-            // Testing LOGS 
-        echo shell_exec("lzop --help > tom.lzlog"); 
-        
+               
 
         // use the Command line lzop, to open the file, compress, write to another file:
-        shell_exec("ls -la /bin/busybox/ > tom.usrbin");
-        shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
+      //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
+      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
         shell_exec("lzop -1f $tempdatafile ");
-        shell_exec("ls -la $tempdatafile > tom.tempdatafile");
-        shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
-        shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
+      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
+      //  shell_exec("echo ls -la $tempcompressedfile > tom.lstempcompressedfile");
+      //  shell_exec("ls -la $tempcompressedfile > tom.tempcompressedfile");
         
+                   
+        echo exec("pwd") . "<br>\n"; 
+        echo "<br>\n" ; 
+        echo exec("ls -la /tmp/") . "<br>\n" ;
+        echo "<br>\n" ; 
         
-
-            // Testing LOGS 
-            //      echo shell_exec("ls -la ./tmp/ > tom.ls"); 
-            //
-            //      echo shell_exec("./lzop --help  > tom.curr");
-            // shell_exec("./lzop $tempdatafile -o $tempcompressedfile");
-        
-
-        echo "./lzop $tempdatafile -o $tempcompressedfile";
-        
-            // Testing LOGS 
-            // echo shell_exec("ls -la ./tmp/ > tom.tmp");
-            // echo shell_exec("ls -la > tom.dir");
-
-        echo exec("pwd") ; 
-        echo exec("ls -la /tmp/") ;
         // sleep (20) ;
         $compressedData = "" ;
         goto exitit ;
