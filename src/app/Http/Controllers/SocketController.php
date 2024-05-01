@@ -181,7 +181,7 @@ class SocketController extends Controller {
      //  shell_exec("ls -la /bin/busybox/ > tom.usrbin");
      //  shell_exec("echo rm $tempcompressedfile > tom.rmtempcompressedfile") ;
         shell_exec ("echo lll > /tmp/tom2.txt") ;
-        shell_exec("lzop -1f /tmp/tom2.txt");
+        shell_exec("cd /tmp/ && lzop -1f tom2.txt");
         shell_exec("lzop -1f $tempdatafile ");
         echo "$tempdatafile <br>\n" ; 
      //  shell_exec("ls -la $tempdatafile > tom.tempdatafile");
