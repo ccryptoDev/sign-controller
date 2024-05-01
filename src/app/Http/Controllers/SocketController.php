@@ -259,6 +259,29 @@ class SocketController extends Controller {
       // use the Command line lzop, to open the file, compress, write to another file:
         shell_exec(" lzop -1f -d $tempfiletodecompress");
         
+        echo "------------------------------ <br>\n";
+        echo "tempfiletodecompress: <br>\n" ; 
+        echo "$tempfiletodecompress <br>\n" ; 
+        echo "<br>\n" ; 
+        
+        echo exec("ls -la lzopdecompressin_*") . "<br>\n" ;
+        echo "<br>\n" ; 
+        echo "------------------------------<br>\n";
+        
+        echo "------------------------------ <br>\n";
+        echo "tempdecompressedfile: <br>\n" ; 
+        echo "$tempdecompressedfile <br>\n" ; 
+        echo "<br>\n" ; 
+        
+
+        echo "------------------------------<br>\n";
+        echo "compressedData: <br>\n" ; 
+        echo "$compressedData: <br>\n" ; 
+        echo $compressedData . "<br>\n" ; 
+        echo "------------------------------<br>\n";
+        
+
+
         
       // Read back in the compressed data:
       
