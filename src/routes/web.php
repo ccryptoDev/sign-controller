@@ -50,6 +50,7 @@ Route::post('get-brightness', [SocketController::class, 'get_brightness']);
 Route::post('send_img_playlist', [SocketController::class, 'send_img_playlist']);
 Route::get('send-image', [SocketController::class, 'compress_image']);
 Route::post('send-image-socket', [SocketController::class, 'send_image_socket']);
+Route::post('send-image-test', [SocketController::class, 'send_image_test']);
 Route::post('get-currentNumber', [SocketController::class, 'get_current_number']);
 Route::post('send-specNumber', [SocketController::class, 'send_picture_specific_screen']);
 Route::post('read-information', [SocketController::class, 'read_information']);

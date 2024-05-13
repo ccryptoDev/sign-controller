@@ -30,6 +30,59 @@ class SocketController extends Controller {
     private $ip = '192.168.0.220';
     private $port = 2888;
 
+    public function convertBitmapToHex()
+    {
+        $imagePath = base_path() . '/public/images/002.BMP';
+
+        $manager = new ImageManager(new Driver());
+        // Step 1: Open the bitmap file
+        // $img = Image::make($imagePath);
+        $img = $manager->read($imagePath);
+        $imageData = $this->getImageData($img);
+
+        // Step 2: Convert bitmap pixels data to hex
+        $hexData = '';
+        foreach ($imageData as $pixel) {
+            $hexData .= sprintf('%02X', $pixel);
+        }
+
+        return $hexData;
+    }
+
+    public function getImageData($srcImage)
+    {
+        $imgWidth = $srcImage->width();
+        $imgHeight = $srcImage->height();
+
+        $picData = [];
+        for ($i = 0; $i < $imgHeight; $i++) {
+            for ($j = 0; $j < $imgWidth; $j++) {
+                $colors = $srcImage->pickColor($j, $i);
+
+                $pixelC = 0;
+
+                // Quantize R component
+                if ($colors->red()->toInt() > 128) {
+                    $pixelC |= 0xE0;
+                }
+
+                // Quantize G component
+                if ($colors->green()->toInt() > 128) {
+                    $pixelC |= 0x1C;
+                }
+
+                // Quantize B component
+                if ($colors->blue()->toInt() > 128) {
+                    $pixelC |= 0x03;
+                }
+
+                $picData[] = $pixelC;
+            }
+        }
+
+        return $picData;
+    }
+
     public function change_brightness(Request $request) {
         // IP address and port
         $ip = $this->ip;
@@ -162,59 +215,102 @@ class SocketController extends Controller {
         return 'Tested';
     }
 
-    public function lzocompress($DataToCompress)  {
-        $NewTempFile = $this->UniqueFileName() ;
-        $tempdatafile= "lzopcompress_" . $NewTempFile . ".tmp" ;
-        $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ; 
-             
-        // Note:  tom.xxx files for debugging are in the HOST operating system
-        //        in the path /home/inexadmin/sign-controller/src/public
-        //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
-         
-     // Make a file with the DATA to compress:
+    public function lzocompress($dataToCompress)
+    {
+        // Generate temporary file names
+        $tempDataFile = tempnam(sys_get_temp_dir(), 'data_'); 
+        $tempCompressedFile = $tempDataFile . '.lzo';
 
-       file_put_contents($tempdatafile,$DataToCompress) ;
-               
-     // use the Command line lzop, to open the file, compress, write to another file:
- 
-        shell_exec("lzop -1f $tempdatafile ");
-        
-        $compressedData = "" ;
-        $compressedData = file_get_contents($tempcompressedfile ) ;
+        // Write data to temporary file
+        file_put_contents($tempDataFile, $dataToCompress); 
 
-        // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-        unlink($tempdatafile);
-        unlink($tempcompressedfile);
+        // Compress data using lzop command
+        shell_exec("lzop -1f $tempDataFile"); 
 
-      exitit: 
-        return $compressedData  ;
+        // Read compressed data from temporary file
+        $compressedData = file_get_contents($tempCompressedFile); 
+
+        // Clean up/delete the temporary files
+        unlink($tempDataFile); 
+        unlink($tempCompressedFile); 
+
+        return $compressedData; 
     }
       
-    public function lzodecompress($DataToDecompress) {
-        $NewTempFile = $this->UniqueFileName() ; 
-        $tempfiletodecompress = "lzopdecompress_" . $NewTempFile . ".tmp.lzo" ;
-        $tempdecompressedfile = "lzopdecompress_" . $NewTempFile . ".tmp" ;
+    public function lzodecompress($dataToDecompress)
+    {
+        // Generate temporary file names
+        $tempFileToDecompress = tempnam(sys_get_temp_dir(), 'decompress_'); 
+        $tempDecompressedFile = $tempFileToDecompress . '.tmp'; 
 
-            
-      // Make a file with the DATA to compress:
-      
-        file_put_contents($tempfiletodecompress,$DataToDecompress) ;
-      
-      // use the Command line lzop, to open the file, compress, write to another file:
-        shell_exec(" lzop -1f -d $tempfiletodecompress");
+        // Write compressed data to temporary file
+        file_put_contents($tempFileToDecompress, $dataToDecompress);
+
+        // Use lzop command to decompress the data
+        shell_exec("lzop -1f -d $tempFileToDecompress");
+
+        // Read decompressed data from temporary file
+        $decompressedData = file_get_contents($tempDecompressedFile);
+
+        // Clean up/delete the temporary files
+        unlink($tempFileToDecompress); 
+        unlink($tempDecompressedFile); 
+
+        return $decompressedData;
+    }
+
+
+    // public function lzocompress($DataToCompress)  {
+    //     $NewTempFile = $this->UniqueFileName() ;
+    //     $tempdatafile= "lzopcompress_" . $NewTempFile . ".tmp" ;
+    //     $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ; 
+             
+    //     // Note:  tom.xxx files for debugging are in the HOST operating system
+    //     //        in the path /home/inexadmin/sign-controller/src/public
+    //     //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
+         
+    //     // Make a file with the DATA to compress:
+
+    //    file_put_contents($tempdatafile,$DataToCompress) ;
+               
+    //     // use the Command line lzop, to open the file, compress, write to another file:
+ 
+    //     shell_exec("lzop -1f $tempdatafile ");
         
-      // Read back in the compressed data:
+    //     $compressedData = "" ;
+    //     $compressedData = file_get_contents($tempcompressedfile ) ;
+
+    //     // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+    //     unlink($tempdatafile);
+    //     unlink($tempcompressedfile);
+
+    //   exitit: 
+    //     return $compressedData  ;
+    // }
       
-        $Decompressed = "" ;
-        $Decompressed =  file_get_contents($tempdecompressedfile) ;
+    // public function lzodecompress($DataToDecompress) {
+    //     $NewTempFile = $this->UniqueFileName() ; 
+    //     $tempfiletodecompress = "lzopdecompress_" . $NewTempFile . ".tmp.lzo" ;
+    //     $tempdecompressedfile = "lzopdecompress_" . $NewTempFile . ".tmp" ;
+            
+    //     // Make a file with the DATA to compress:
+    //     file_put_contents($tempfiletodecompress,$DataToDecompress) ;
       
-      // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
-        unlink($tempfiletodecompress);
-        unlink($tempdecompressedfile);
+    //     // use the Command line lzop, to open the file, compress, write to another file:
+    //     shell_exec(" lzop -1f -d $tempfiletodecompress");
+        
+    //     // Read back in the compressed data:
       
-        return $Decompressed ;
+    //     $Decompressed = "" ;
+    //     $Decompressed =  file_get_contents($tempdecompressedfile) ;
       
-      }
+    //     // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
+    //     unlink($tempfiletodecompress);
+    //     unlink($tempdecompressedfile);
+      
+    //     return $Decompressed ;
+      
+    // }
       
     
     public function UniqueFileName() {
@@ -454,6 +550,71 @@ class SocketController extends Controller {
         // echo "<br><br>Reply: " . bin2hex($reply) . "\n <br><br>";
         // echo "-----------------------------" ;
 
+
+        // Close the connection
+        socket_close($socket);
+
+        $response['success'] = true;
+        $response['result'] = bin2hex($reply);
+        return $response;
+    }
+
+    public function compress_image_test(Request $request) {
+        // $hexData = bin2hex($base64);
+        $hexData = [3,66,77,182,1,0,0,96,0,0,1,54,0,0,0,40,0,0,0,16,0,0,0,8,0,0,0,1,0,24,120,2,4,0,128,1,0,0,195,14,172,0,128,2,51,19,0,255,255,255,188,2,48,35,0,0,0,0,39,80,0,172,4,42,68,0,51,104,0,51,80,0,172,7,51,104,0,48,80,0,176,5,51,21,0,255,128,0,51,104,0,51,80,0,152,5,212,27,39,128,0,39,196,1,39,32,0,42,104,0,51,80,0,160,4,57,104,0,160,4,180,0,39,152,0,39,32,0,9,0,0,0,0,0,0,0,0,0,0,0,0,17,0,0];
+        $data = '';
+        for($i = 0; $i < count($hexData); $i++) {
+            // echo dechex($hexData[$i]).",";
+            $data .= dechex($hexData[$i]);
+        }
+        $hexData = $data;
+        $length = strlen($hexData);
+        // $length = 6 + $length;
+        $length = 200;
+        // IP address and port
+        $ip = $this->ip;
+        $port = $this->port;
+
+        echo "Opening connection. . .\n<br>";
+        // Data to be sent
+        $data1 =hex2bin('5948') .      // dword 5948H - Command Header
+            hex2bin('0101') .      // dword 0101H - Address Word
+            hex2bin('0103') .      // dword 020AH - Command Word
+            hex2bin($length) .      // dword 0004H - Data Packet Length ('4 bytes')
+            hex2bin($request['page_num']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            hex2bin($request['width']) . 
+            hex2bin($request['height']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
+            hex2bin($hexData) .
+
+        // Calculate the Exclusive of all bytes in $Data1 and 7Fh
+        // Calculate XOR checksum of each byte with 0x7F
+        $eccValue = 0x7F;
+        $length = strlen($data1);
+
+        for ($i = 0; $i < $length; $i++) {
+            $byte = ord($data1[$i]); // Get the ASCII value of the byte
+            $eccValue ^= $byte; // XOR with the current byte
+        }
+
+        // Create a new variable $data by concatenating $data1 and $eccValue
+        $data = $data1 . chr($eccValue);
+
+        // Open a socket connection
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if ($socket === false) {
+            echo "socket_create() failed: " . socket_strerror(socket_last_error()) . "\n";
+        }
+
+        // Connect to the server
+        $result = socket_connect($socket, $ip, $port);
+        if ($result === false) {
+            echo "socket_connect() failed: " . socket_strerror(socket_last_error($socket)) . "\n";
+        }
+
+        $res = socket_write($socket, $data, strlen($data));
+
+        // Reply
+        $reply = socket_read($socket, 1024);
 
         // Close the connection
         socket_close($socket);
@@ -733,15 +894,20 @@ class SocketController extends Controller {
         return $response;
     }
 
+    public function send_image_test(Request $request) {
+        $imageData = $this->convertBitmapToHex();
+        $res = $this->pack1LZO(103, 56, 40, 1, $imageData);
+        return $res;
+    }
+
+
     public function send_image_socket(Request $request) {
 
         $contents = file_get_contents(base_path().'/public/assets/media/signmessage/' . $request->imageName);
 
         $output = '';
         for($i=0; $i < strlen($contents); $i++) {
-            
             $output .= str_pad(dechex(ord($contents[$i])), 2, '0', STR_PAD_LEFT);
-
         }
 
         $length = str_pad(dechex(strlen($contents)), 4, '0', STR_PAD_LEFT);
@@ -753,7 +919,6 @@ class SocketController extends Controller {
             $length . 
             $output;
 
-        
         // Calculate the Exclusive of all bytes in $Data1 and 7Fh
         // Calculate XOR checksum of each byte with 0x7F
 
@@ -787,9 +952,6 @@ class SocketController extends Controller {
         $data = lzo_compress($data, LZO1X_999);
         echo $data;
 
-
-        
-        
         // Create a new variable $data by concatenating $data1 and $eccValue
         // $data = $data1 . chr($eccValue);
         // echo $eccValue;
@@ -822,5 +984,82 @@ class SocketController extends Controller {
         return $response;
     } 
 
-   
+    private function pack1LZO($function, $screenW, $screenH, $pNb, $str)
+    {
+        // Construct the packet
+        $writeBuffer = [
+            0x59, 
+            0x48, 
+            0x01, 
+            0x01,
+            intval($function / 100), 
+            $function % 100,
+            0x00, // Placeholder for length (to be calculated later)
+            0x00,
+            intval($pNb / 256),
+            $pNb % 256,
+            intval($screenW / 256),
+            $screenW % 256,
+            intval($screenH / 256),
+            $screenH % 256,
+        ];
+
+        // Append data
+        foreach ($str as $byte) {
+            $writeBuffer[] = $byte;
+        }
+
+        // Calculate CRC (XOR checksum)
+        $eccValue = 0x7F;
+        foreach ($writeBuffer as $byte) {
+            $eccValue ^= $byte;
+        }
+
+        // Append CRC to the packet
+        $writeBuffer[] = $eccValue;
+
+        // Set length in the packet
+        $length = count($writeBuffer) - 6; // Length excluding header (4 bytes) and length bytes (2 bytes)
+        $writeBuffer[6] = intval($length / 256);
+        $writeBuffer[7] = $length % 256;
+
+        // Convert to binary string
+        $packet = '';
+        foreach ($writeBuffer as $byte) {
+            $packet .= chr($byte);
+        }
+
+        // Send data...
+        // Open a socket connection
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        if ($socket === false) {
+            echo "socket_create() failed: " . socket_strerror(socket_last_error()) . "\n";
+            $response['success'] = false;
+            $response['result'] = "socket error";
+
+            return $response;
+        }
+
+        // Connect to the server
+        $result = socket_connect($socket, $this->ip, $this->port);
+        if ($result === false) {
+            echo "socket_connect() failed: " . socket_strerror(socket_last_error($socket)) . "\n";
+            $response['success'] = false;
+            $response['result'] = "socket error";
+
+            return $response;
+        }
+
+        $res = socket_write($socket, $packet, strlen($packet));
+
+        // Reply
+        $reply = socket_read($socket, 1024);
+
+        // Close the connection
+        socket_close($socket);
+
+        $response['success'] = true;
+        $response['result'] = bin2hex($reply);
+        return $response;
+    }
 }

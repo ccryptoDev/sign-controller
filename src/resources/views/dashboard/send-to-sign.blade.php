@@ -144,15 +144,12 @@
     $("#send").on("click", function () {
         event.preventDefault();
 
-        console.log('selected message: ', firstSelectedImages[firstIndex]);
-        return; 
-
         if (firstSelectedImages[firstIndex]) {
-            
+    
             console.log('selected image ID: ', firstSelectedImages[firstIndex].id);
             console.log('selected image Name: ', firstSelectedImages[firstIndex].name);
 
-            Swal.fire({
+            const {value: confirmed} = Swal.fire({
                 title: "Send a message to Sign",
                 text: 'Are you sure to send the current selected message to Sign?',
                 icon: "question",
@@ -162,35 +159,34 @@
                     confirmButton: "btn-danger",
                 },
             }).then(function(result) {
-                console.log(result.isConfirmed);
-            });
-
-            return true;
-
-            $.ajax({
-                url : '/send-image-socket',
-                type : "POST",
-                data : {
-                    imageName: images[firstSelectedImages[firstIndex].id].name,
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success : function(res){
-                    if (res.success) {
-                        console.log(res);
-                        // toastr.success('Saved the message successfully!');
-                    }
-                    else {
-                        // toastr.error("Something went wrong, please try again.");    
-                    }
-                },
-                error : function(err){
-                    // toastr.error("Please refresh your browser");
+                if( result.isConfirmed) {
+                    $.ajax({
+                        // url : '/send-image-socket',
+                        url : '/send-image-test',
+                        type : "POST",
+                        data : {
+                            imageName: images[firstSelectedImages[firstIndex].id].name,
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success : function(res){
+                            if (res.success) {
+                                console.log(res);
+                                toastr.success('The selected message is successfully sent!');
+                            }
+                            else {
+                                toastr.error("Something went wrong, please try again.");    
+                            }
+                        },
+                        error : function(err){
+                            toastr.error("Please refresh your browser");
+                        }
+                    });
                 }
-            })
+            });
         } else {
-            // toastr.error("Please select image.");
+            toastr.error("Please select image.");
         }
     })
 
