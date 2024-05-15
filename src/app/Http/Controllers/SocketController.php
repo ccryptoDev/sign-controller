@@ -1009,6 +1009,11 @@ class SocketController extends Controller {
             $writeBuffer[] = $byte;
         }
 
+        // Set length in the packet
+        $length = count($writeBuffer) - 6; // Length excluding header (4 bytes) and length bytes (2 bytes)
+        $writeBuffer[6] = intval($length / 256);
+        $writeBuffer[7] = $length % 256;
+        
         // Calculate CRC (XOR checksum)
         // $eccValue = 0x7F;
         // foreach ($writeBuffer as $byte) {
@@ -1021,11 +1026,6 @@ class SocketController extends Controller {
         // Append CRC to the packet
         $writeBuffer[] = ($crc >> 8) & 0xFF;  // High byte of CRC
         $writeBuffer[] = $crc & 0xFF;         // Low byte of CRC
-
-        // Set length in the packet
-        $length = count($writeBuffer) - 6; // Length excluding header (4 bytes) and length bytes (2 bytes)
-        $writeBuffer[6] = intval($length / 256);
-        $writeBuffer[7] = $length % 256;
 
         // Convert to binary string
         $packet = '';
