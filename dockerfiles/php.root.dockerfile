@@ -1,9 +1,9 @@
 # Use php:8-fpm-alpine as the base image
 FROM php:8-fpm-alpine
 
-# Install MySQL client
+# Install MySQL client and lzop
 RUN apk update && \
-    apk add --no-cache mysql-client
+    apk add --no-cache mysql-client lzop
     
 # Create directory for web content
 RUN mkdir -p /var/www/html

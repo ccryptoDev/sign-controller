@@ -1011,8 +1011,9 @@ class SocketController extends Controller {
         ];
 
         // Append data
-        foreach ($str as $byte) {
-            $writeBuffer[] = $byte;
+        $lzoBytes = str_split($str);
+        foreach ($lzoBytes as $byte) {
+            $writeBuffer[] = ord($byte);
         }
 
         // Set length in the packet
@@ -1027,7 +1028,8 @@ class SocketController extends Controller {
         // }
         
         // Calculate CRC16 checksum
-        $crc = $this->calculateCRC16($writeBuffer);
+        // $crc = $this->calculateCRC16($writeBuffer);
+        $crc = $this->calculateCRC16(implode('', array_map('chr', $writeBuffer)));
 
         // Append CRC to the packet
         $writeBuffer[] = ($crc >> 8) & 0xFF;  // High byte of CRC
