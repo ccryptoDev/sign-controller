@@ -1,9 +1,15 @@
 # Use php:8-fpm-alpine as the base image
 FROM php:8-fpm-alpine
 
-# Install MySQL client and lzop
-RUN apk update && \
-    apk add --no-cache mysql-client lzop
+# Install MySQL client, lzop and GD
+RUN apk update && apk add --no-cache \
+    mysql-client \
+    lzop \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd 
     
 # Create directory for web content
 RUN mkdir -p /var/www/html
