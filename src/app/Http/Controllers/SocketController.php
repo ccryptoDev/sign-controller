@@ -900,7 +900,7 @@ class SocketController extends Controller {
 
         #step2: compress by lzo
         $compressedData = $this->lzocompress($imageData);
-return $compressedData;
+
         #step3: send to Sign
         $res = $this->pack1LZO(103, 56, 40, 1, $compressedData);
         return $res;
@@ -1040,7 +1040,7 @@ return $compressedData;
         foreach ($writeBuffer as $byte) {
             $packet .= chr($byte);
         }
-
+return $packet;
         // Send data...
         // Open a socket connection
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
