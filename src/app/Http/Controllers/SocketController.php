@@ -897,10 +897,10 @@ class SocketController extends Controller {
     public function send_image_test(Request $request) {
         #step1: convert from BMP to hex data
         $imageData = $this->convertBitmapToHex();
-return $imageData;
+
         #step2: compress by lzo
         $compressedData = $this->lzocompress($imageData);
-
+return $compressedData;
         #step3: send to Sign
         $res = $this->pack1LZO(103, 56, 40, 1, $compressedData);
         return $res;
