@@ -1040,7 +1040,7 @@ class SocketController extends Controller {
         foreach ($writeBuffer as $byte) {
             $packet .= chr($byte);
         }
-return $packet;
+
         // Send data...
         // Open a socket connection
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
