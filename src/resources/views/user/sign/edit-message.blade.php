@@ -285,8 +285,8 @@
 
     addBlankRow(2, 0);
     addBlackRow(10, 2);
-    addBlankRow(3, 11);
-    addBlackRow(10, 14);
+    addBlankRow(3, 12);
+    addBlackRow(10, 15);
     addBlankRow(3, 25);
     addBlackRow(10, 28);
     addBlankRow(2, 38);
@@ -448,7 +448,7 @@
             // console.log(messageArray);
             // console.log(layer);
 
-            var offsetRow = layer === 0 ? 2 : layer === 1 ? 4 : 8;
+            var offsetRow = layer === 0 ? 2 : layer === 1 ? 5 : 8; // start from 15'th row for 2'nd message, start from 28'th row for 3'nd message
             // offsetRow ++;
 
             var messageLength = messageArray.length;
