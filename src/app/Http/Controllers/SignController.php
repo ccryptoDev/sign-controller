@@ -67,37 +67,40 @@ class SignController extends Controller
 
     public function save_message(Request $request) {
 
+        $alignmentList = json_decode($request->input('three_line_alignment'), true);
+        $msg = json_decode($request->input('msg'), true);
+        
         if ($request->mode == 'create' || $request->saveMode == 'saveAcopy') { // in case of CREATING new MESSAGE
-            
-            // get max value for imageNo
-            $existedNo = Image::where("no", ">=", $request["range"][0])->where("no", "<=", $request["range"][1])->max("no");
+            $range = json_decode($request->input('range'), true);
 
+            // get max value for imageNo
+            $existedNo = Image::where("no", ">=", $range[0])->where("no", "<=", $range[1])->max("no");
+    
             if (!$existedNo) {
-                $no = $request["range"][0];
+                $no = $range[0];
             } else {
                 $no = $existedNo + 1;
             }
-
+    
             // Save a message into database (Missing validator)
             $image = new Image;
-
+    
             $image->no = $no;
             $image->type = $request->imageType;
             $image->name = $request->imageName . "." . $request->imageType;
             $image->path = "public/assets/media/signmessage";
             $image->keywords = $request->imageKeywords;
-            $image->message1 = $request->msg1;
-            $image->message2 = $request->msg2;
-            $image->message3 = $request->msg3;
-            $image->message = $request->msg;
-            $image->three_line_alignment = $request->three_line_alignment;
-
+            // $image->message1 = $request->msg1;
+            // $image->message2 = $request->msg2;
+            // $image->message3 = $request->msg3;
+            $image->message = $msg;
+            $image->three_line_alignment = $alignmentList;
+    
             try {
                 $image->save();
                 $createdImage = $image->fresh();
-
-                // if ($request->saveMode == 'saveAcopy') {
-
+    
+                // Save the image into the local storage
                 $fileName = $request->imageName . "." . $request->imageType;
                 // if same fileName exists
                 if (Storage::disk("public")->exists("assets/media/signmessage/$fileName")) {
@@ -105,57 +108,58 @@ class SignController extends Controller
                     // Copy the file
                     // Storage::disk("public")->copy("assets/media/signmessage/$fileName", "assets/media/signmessage/$copyFilename");
                 }
-
-                // } else {
-                    // save an image into the local storage
-                
-                Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $fileName);
-                
+    
+                // Save the BMP file
+                if ($request->hasFile('imageFile')) {
+                    // $request->file('imageFile')->storeAs('public/assets/media/signmessage', $fileName);
+                    Storage::disk("public")->putFileAs("assets/media/signmessage", $request->file('imageFile'), $fileName);
+                }
+    
                 $response["success"] = true;
                 $response["newID"] = $createdImage->no;
             } catch (\Exception $e) {
                 $response["success"] = false;
             }
-
+    
             return $response;
-
+    
         } else if ($request->mode == 'edit') { // in case of EDITING the existed MESSAGE
             // Get the existing image by ID
             $image = Image::where('no', $request->imageID)->first();
-
+    
             if (!$image) {
                 // Image not found, return an error response
                 $response["success"] = false;
                 $response["message"] = "Image not found.";
                 return $response;
             }
-
+    
             // Update other data in the image record
             $image->type = $request->imageType;
             $image->keywords = $request->imageKeywords;
-            $image->message1 = $request->msg1;
-            $image->message2 = $request->msg2;
-            $image->message3 = $request->msg3;
-            $image->message = $request->msg;
-            $image->three_line_alignment = $request->three_line_alignment;
-
+            // $image->message1 = $request->msg1;
+            // $image->message2 = $request->msg2;
+            // $image->message3 = $request->msg3;
+            $image->message = $msg;
+            $image->three_line_alignment = $alignmentList;
+            $image->name = $request->imageName . "." . $request->imageType;
+            $image->path = "public/assets/media/signmessage";
+    
             try {
                 $image->save();
-
+    
                 // Replace the image in the local storage if a new image was sent in the request
-                if ($request->base64Image) {
-                    Storage::disk("public")->putFileAs("assets/media/signmessage", $request->base64Image, $request->imageName . "." . $request->imageType);
-                    // Update image details
-                    $image->name = $request->imageName . "." . $request->imageType;
-                    $image->path = "public/assets/media/signmessage";
+                if ($request->hasFile('imageFile')) {
+                    // $request->file('imageFile')->storeAs('public/assets/media/signmessage', $image->name);
+                    Storage::disk("public")->putFileAs("assets/media/signmessage", $request->file('imageFile'), $image->name);
                 }
                 $response["success"] = true;
-                
             } catch (\Exception $e) {
                 $response["success"] = false;
             }
-
+    
             return $response;
         }
     }
+    
 }

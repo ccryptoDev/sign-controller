@@ -197,6 +197,8 @@
                     <div id="ledContainer">
                         <div id='wrapperLed' class="row"></div>
                     </div>
+                    <canvas id="3LineLed" width="56" height="40" class="d-none"></canvas>
+
                     {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
                     <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
                     <div id="gridCanvas" class="gridCanvas rotationTime d-none">
@@ -213,6 +215,7 @@
 <script src="/js/charToLed.js"></script>
 <script src="/js/canvastobmp.min.js"></script>
 <script src="/js/html2canvas.min.js"></script>
+
 <script>
     const messageData = @json($message_data);
     console.log(messageData);
@@ -221,43 +224,12 @@
     let alignments = [0,0,0];
 
     const canvasWidth = 56;
+    const canvasHeight = 40;
     let drawMode = 0; // 3-line mode
 
     var messages = [];
     var isSaveCopy = false;
 
-    if (mode == 'edit') {
-        if (messageData.message1 !== null) {
-            messages.push( messageData.message1.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                }) 
-            );
-        } else {
-            messages.push([]);
-        }
-        
-        if (messageData.message2 !== null) {
-            messages.push( 
-                messageData.message2.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                })
-            );
-        } else {
-            messages.push([]);
-        }
-
-        if (messageData.message3 !== null) {
-            messages.push( 
-                messageData.message3.map(innerArray => {
-                    return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-                })
-            );
-        } else {
-            messages.push([]);
-        }
-
-        alignmentList = messageData.three_line_alignment;
-    }
 
     const lightOff = function (rowNum, col) {
         
@@ -271,18 +243,19 @@
     const addBlankRow = function (length, previousRowNum) {
 
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center blank"/>').appendTo('#wrapperLed');
+            var col = $('<div class="col-md-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
             lightOff(previousRowNum + i, col);
         }
     }
     
     const addBlackRow = function (length, previousRowNum) {
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center"/>').appendTo('#wrapperLed');
+            var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
             lightOff(previousRowNum + i, col);
         }
     }
 
+    // Make the initial screen in 3-line mode
     addBlankRow(2, 0);
     addBlackRow(10, 2);
     addBlankRow(3, 12);
@@ -291,15 +264,44 @@
     addBlackRow(10, 28);
     addBlankRow(2, 38);
 
-    // drawGrid();
-    $(document.fonts).ready(function(){
+    $(document.fonts).ready(function() {
         // assign alignments after loading
         if (mode == 'edit') {
+            // if (messageData.message1 !== null) {
+            //     messages.push( 
+            //         messageData.message1.map(innerArray => {
+            //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
+            //         }) 
+            //     );
+            // } else {
+            //     messages.push([]);
+            // }
+            
+            // if (messageData.message2 !== null) {
+            //     messages.push( 
+            //         messageData.message2.map(innerArray => {
+            //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
+            //         })
+            //     );
+            // } else {
+            //     messages.push([]);
+            // }
+
+            // if (messageData.message3 !== null) {
+            //     messages.push( 
+            //         messageData.message3.map(innerArray => {
+            //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
+            //         })
+            //     );
+            // } else {
+            //     messages.push([]);
+            // }
+
+            alignmentList = messageData.three_line_alignment;
             alignmentList.forEach(function(alignment, index) {
                 switch (alignment) {
                     case 'left':
                         alignments[index] = 0;
-                        
                         break;
                     case 'center':
                         alignments[index] = 1;
@@ -310,7 +312,7 @@
                     default:
                         break;
                 }
-                justifyAlignment(index);
+                // justifyAlignment(index);
             });
             
             $('.btn-group').each(function(index) {
@@ -318,14 +320,13 @@
                 $(this).find('button').removeClass('bg-dark');
                 $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
             });
-        }
-        
-        function clearLights(){
-            var lightsOn = $('.on');
-            lightsOn.addClass('off');
-            lightsOn.removeClass('on');
-            
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            messageData.message.forEach(function(msg, index) {
+                $('.message-input input').eq(index).val(msg);
+                console.log($('.message-input input').eq(index).val());
+            });
+
+            displayLED();
         }
         
         function textToLED(theWord){
@@ -399,8 +400,7 @@
             return temp;
         }
 
-        // tpying in editor
-        $('.message-input input').on('keyup', function(e) {
+        function displayLED() {
             let temp = getMessage();
             clearLights();
             messages = [];
@@ -411,28 +411,30 @@
                 messages.push(letters);
                 justifyAlignment(i);
             }
+        }
+
+        // message change event in 3-line mode
+        $('.message-input input').on('keyup', function(e) {
+            displayLED();
         });
 
-        $("#inputBox").on('keyup', function(e) {
-            clearLights();
-            var value = $("#inputBox").val();
-            messages = [];
+        // $("#inputBox").on('keyup', function(e) {
+        //     clearLights();
+        //     var value = $("#inputBox").val();
+        //     messages = [];
             
-            if(value != '' ) {
-                var msg = value.split('\n');
-                var layer = msg.length;
+        //     if(value != '' ) {
+        //         var msg = value.split('\n');
+        //         var layer = msg.length;
 
-                for (let i = 0; i < layer; i++) {
-                    console.log('layer ', i);
-
-                    myMessage = textToLED(msg[i]);
-                    messages.push(myMessage);
-                    justifyAlignment(i);
-
-                }
-
-            }
-        });
+        //         for (let i = 0; i < layer; i++) {
+        //             console.log('layer ', i);
+        //             myMessage = textToLED(msg[i]);
+        //             messages.push(myMessage);
+        //             justifyAlignment(i);
+        //         }
+        //     }
+        // });
 
         function setLight(row, col, state){
             var theLight = $('.'+row+'_'+col);
@@ -441,6 +443,14 @@
             } else {
                 theLight.removeClass('on');
             }
+        }
+
+        function clearLights(){
+            var lightsOn = $('.on');
+            lightsOn.addClass('off');
+            lightsOn.removeClass('on');
+            
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function drawMessage(messageArray, layer){
@@ -533,9 +543,6 @@
         }
         
         function handleClick(e) {
-            // if(!isDown) {
-            //     return;
-            // }
             var flag = false;
             for(let j = 0; j < 3; j++) {
                 if(e.offsetY > (100 * j  + 30 * (j + 1)) && e.offsetY < 130 * (j + 1)) {
@@ -547,13 +554,8 @@
             } else {
                 canvas.style.cursor = 'default';
             }
-            // boxSize = 10
-            // ctx.fillStyle = "black";
-
-            // ctx.fillRect(Math.floor(e.offsetX / boxSize) * boxSize,
-            // Math.floor(e.offsetY / boxSize) * boxSize,
-            // boxSize, boxSize);
         }
+        
         var bw = 400;
         // Box height
         var bh = 400;
@@ -785,32 +787,95 @@
             return isEmpty;
         }
 
-        var saveMessageCall = function (range, base64Image, imageType) {
+        var convertHTMLtoImage = function () {
+            const cols = document.querySelectorAll('#wrapperLed .col');
+            const canvas = document.getElementById('3LineLed');
+            const context = canvas.getContext('2d');
+
+            for (let col = 0; col < cols.length; col++) {
+                const pixels = cols[col].querySelectorAll('div');
+                for (let row = 0; row < pixels.length; row++) {
+                    if (pixels[row].classList.contains('on')) {
+                        context.fillStyle = 'yellow';
+                    } else {
+                        context.fillStyle = 'black';
+                    }
+                    context.fillRect(row, col, 1, 1);
+                }
+            }
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const imageData = context.getImageData(0, 0, width, height);
+            const data = imageData.data;
+
+            const headerSize = 54;
+            const imageSize = width * height * 3; // 3 bytes per pixel (RGB)
+            const fileSize = headerSize + imageSize;
+            const buffer = new ArrayBuffer(fileSize);
+            const view = new DataView(buffer);
+
+            // BMP Header
+            view.setUint16(0, 0x424D, false); // 'BM'
+            view.setUint32(2, fileSize, true);
+            view.setUint32(6, 0, true);
+            view.setUint32(10, headerSize, true);
+
+            // DIB Header
+            view.setUint32(14, 40, true); // DIB header size
+            view.setInt32(18, width, true); // Width
+            view.setInt32(22, -height, true); // Height (negative for top-down bitmap)
+            view.setUint16(26, 1, true); // Planes
+            view.setUint16(28, 24, true); // Bits per pixel (24 for RGB)
+            view.setUint32(30, 0, true); // Compression (no compression)
+            view.setUint32(34, imageSize, true); // Image size
+            view.setInt32(38, 2835, true); // Horizontal resolution (pixels per meter)
+            view.setInt32(42, 2835, true); // Vertical resolution (pixels per meter)
+            view.setUint32(46, 0, true); // Colors in color table (none)
+            view.setUint32(50, 0, true); // Important color count (all colors are important)
+
+            // Pixel data
+            let offset = headerSize;
+            for (let i = 0; i < data.length; i += 4) {
+                view.setUint8(offset, data[i + 2]); // Blue
+                view.setUint8(offset + 1, data[i + 1]); // Green
+                view.setUint8(offset + 2, data[i]); // Red
+                offset += 3;
+            }
+
+            const blob = new Blob([buffer], { type: 'image/bmp' });
+            return blob;
+        }
+
+        var saveMessageCall = function (range, imageFile, imageType) {
             const [msg1 = [], msg2 = [], msg3 = []] = messages;
             const msg = getMessage();
 
+            const formData = new FormData();
+            formData.append('imageFile', imageFile);
+            formData.append('imageType', imageType);
+            formData.append('range', JSON.stringify(range));
+            formData.append('mode', parseInt(message_ID, 10) ? 'edit' : 'create');
+            formData.append('saveMode', isSaveCopy ? 'saveAcopy' : 'save');
+            formData.append('imageID', message_ID);
+            formData.append('imageName', message_name);
+            formData.append('imageKeywords', message_keywords);
+            // formData.append('msg1', JSON.stringify(msg1));
+            // formData.append('msg2', JSON.stringify(msg2));
+            // formData.append('msg3', JSON.stringify(msg3));
+            formData.append('msg', JSON.stringify(msg));
+            formData.append('three_line_alignment', JSON.stringify(alignmentList)); // e.g ['center', 'left', 'right']
+
             $.ajax({
-                url : '/save-message',
-                type : "POST",
-                data : {
-                    mode: parseInt(message_ID, 10) ? 'edit' : 'create',
-                    saveMode: isSaveCopy ? 'saveAcopy' : 'save',
-                    range: range,
-                    base64Image: base64Image,
-                    imageID: message_ID,
-                    imageName: message_name,
-                    imageType: imageType,
-                    imageKeywords: message_keywords,
-                    msg1: msg1,
-                    msg2: msg2,
-                    msg3: msg3,
-                    msg: msg,
-                    three_line_alignment: alignmentList // e.g ['center', 'left', 'right']
-                },
+                url: '/save-message',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success : function(res){
+                success: function (res) {
                     if (res.success) {
                         if (isSaveCopy) {
                             var newMessageId = res.newID;
@@ -820,19 +885,18 @@
                                 title: 'Copy of a message done successfully!',
                                 timer: 2000,
                                 timerProgressBar: true,
-                                onClose: function() {
+                                onClose: function () {
                                     window.location.href = newMessageURL;
                                 }
                             });
                         } else {
                             toastr.success('Saved the message successfully!');
                         }
-                    }
-                    else {
-                        toastr.error("Something went wrong, please try again.");    
+                    } else {
+                        toastr.error("Something went wrong, please try again.");
                     }
                 },
-                error : function(err){
+                error: function (err) {
                     toastr.error("Please refresh your browser");
                 }
             });
@@ -844,23 +908,19 @@
 
             if (drawMode == 0) { // 3-line mode
                 // html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
-                    drawText();
+                drawText();
+                // CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
+                //     saveMessageCall(range, url, 'bmp');
+                // });
 
-                    CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
-                        saveMessageCall(range, url, 'bmp');
-                        // clearMessage();
-                    });
+                const convertedBMP = convertHTMLtoImage();
+                saveMessageCall(range, convertedBMP, 'bmp');
 
                 // })
             } else {
                 html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
                     CanvasToBMP.toDataURL(canvas, function (url) {
                         var imageName = 'symbol', imageType = 'bmp', imageKeywords = 'symbol'; // [userID]_[imageName]_[timestamp] will be sent to server
-
-                        // TODO: exceed error
-                        // console.log(url);
-                        // saveMessageCall(range, url, imageName, imageType, imageKeywords);
-                        // clearMessage();
                     })
                 });
             }
@@ -1024,18 +1084,10 @@
         });
 
         var makeGrid = function () {
-            // changeMode();
-            // prevent page refreshing when clicking submit
-            // event.preventDefault();
             let mouseIsDown = false;
-            // let rows = $("#inputHeight").val();
-            // let columns = $("#inputWidth").val();
-            // const rows = userHeight.value;
-            // const columns = userWidth.value;
             const rows = 56;
             const columns = 40;
 
-            // grid.children().remove(); // delete any previous table rows
             while (grid.hasChildNodes()) {
                 grid.removeChild(grid.lastChild); // delete any previous table rows
             }
@@ -1071,12 +1123,7 @@
                 r += 1;
             } // end while loop
             grid.insertAdjacentHTML('afterbegin', tableRows); // add grid to DOM
-            // grid.classList.toggle('flyItIn'); // fly in effect for grid
-            // grid.classList.toggle('flyItIn2'); // Twice to trigger reflow
-            // Listen for click to paint or erase a tile
-            // grid.on('click', 'td', function() {
-            //     paintEraseTiles($(this));
-            // });
+
             grid.addEventListener("click", function(event) {
                 event.preventDefault();
                 paintEraseTiles(event.target);
@@ -1092,7 +1139,6 @@
 
             // Listen for mouse down, up and over for continuous paint and erase
 
-            // grid.on('mousedown', function(event) {
             grid.addEventListener('mousedown', function(event) {
                 event.preventDefault();
                 mouseIsDown = event.which === 1 ? true : false;
@@ -1102,13 +1148,11 @@
                 mouseIsDown = event.which === 1 ? true : false;
             });
 
-            // document.on('mouseup', function() {
             document.addEventListener('mouseup', function(event) {
                 event.preventDefault();
                 mouseIsDown = false;
             });
 
-            // grid.on('mouseover', 'td', function() {
             grid.addEventListener('mouseover', function(event) {
                 // if (mouseIsDown) {paintEraseTiles($(this));}
                 event.preventDefault();
@@ -1127,8 +1171,7 @@
                 }
                 // targetCell.style.backgroundColor = gridTileMode === PAINT ? userColor.value : 'transparent';
                 targetCell.style.backgroundColor = 'red';
-                //     // $(targetCell).css('background-color', $('#colorPicker').val());
-                //     // $(targetCell).css('background-color', 'transparent');
+
             } else {
                 console.log("Nice try: " + targetCell.nodeName + " talk to the hand!");
             }
@@ -1136,28 +1179,25 @@
 
         $("#inputWidth").on('change', function() {
             $(displayWidth).val($(this).val());
-        })
+        });
+        
         $("#gridWidthDisplay").on('change', function() {
             $("#inputWidth").val($(this).val());
-        })
+        });
+        
         $("#inputHeight").on('change', function() {
             $(displayHeight).val($(this).val());
-        })
+        });
+
         $("#gridHeightDisplay").on('change', function() {
             $("#inputHeight").val($(this).val());
-        })
+        });
 
         $("#colorPicker").on('change', function() {
             gridTileMode = PAINT;
             tileMode.innerHTML = ' ' + gridTileMode;
-        })
-        // userColor.oninput = function (event){
-        //     gridTileMode = PAINT;
-        //     tileMode.innerHTML = ' ' + gridTileMode;
-        // };
-        // Erase colors from the grid
+        });
 
-        // clear.on('click', function(){
         if (document.getElementById('clearGrid') !== null) {
             document.getElementById('clearGrid').addEventListener('click', function() {
                 // gridCanvas.classList.toggle('rotateCanvas'); // rotate the Design Canvas div
@@ -1179,17 +1219,13 @@
             $(this).addClass('btn-danger');
         })
 
-        // $('button').on('click', function(event) {
         if (document.getElementById('mode') !== null) {
             document.getElementById('mode').addEventListener('click', function(event) {
                 gridTileMode = event.target.className.indexOf('paint') >=0 ? PAINT : ERASE;
-                // $('.paintOrErase').text(' ' + gridTileMode);
                 tileMode.innerHTML = ' ' + gridTileMode;
             });
         }
 
-
-        
         // Alignment
 
         // the first layer
