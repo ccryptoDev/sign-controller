@@ -51,10 +51,10 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `first_name`, `last_name`, `level`, `status`, `business_name`, `remember_token`, `current_team_id`, `profile_photo_path`, `created_at`, `updated_at`)
 VALUES
 	(1,'Jing','jing@inex.net',NULL,'$2y$10$8y6oVgm8MGj0wF.1.2g1ZeYDlkVcVUvXJJaCzLhgOf.wrrjDV6eBC','Tai','Fu',2,0,'INEX','8VdNp9NqGwHT8VBgzDjk7Ka5xzBAVgO4TrXHz0zuDiU1VRtEGqaBePZpYpnu',NULL,NULL,'2023-11-08 19:41:51','2023-11-09 22:14:18'),
-	(5,'Tiago Souza','tiago@inex.net',NULL,'$2y$10$L1KiqTgIY6EOR2Z3gOl1GuSjB6hv76kfXaom5QrUOREhEM6.7Jfqm','Tiago','Souza 123123123',1,0,NULL,NULL,NULL,NULL,'2023-11-09 22:13:29','2023-11-09 22:17:04'),
-	(11,'user','user@inex.net',NULL,'$2y$10$79KkMsuH9F1IQHA4715bM.gfb2jW.4MNTu47pYO.m.oaCADGRZJ7m',NULL,NULL,0,0,NULL,NULL,NULL,NULL,'2024-03-17 17:53:10','2024-03-17 17:53:10'),
-	(12,'admin','admin@inex.net',NULL,'$2y$10$iZy0GwJ4/2vVVhvEpwQcQuAper6r.eBkiPcFcmTe5VRZ7gWxZ0eza',NULL,NULL,1,0,NULL,NULL,NULL,NULL,'2024-03-17 17:54:40','2024-03-17 17:54:40'),
-	(13,'superadmin','superadmin@inex.net',NULL,'$2y$10$vw8c493K54kq26sezsEzquMRn4mZnnQkdlGgTdPSny6Gs.3AhoWXe',NULL,NULL,2,0,NULL,NULL,NULL,NULL,'2024-03-17 17:55:50','2024-03-17 17:55:50');
+	(2,'Tiago Souza','tiago@inex.net',NULL,'$2y$10$L1KiqTgIY6EOR2Z3gOl1GuSjB6hv76kfXaom5QrUOREhEM6.7Jfqm','Tiago','Souza 123123123',1,0,NULL,NULL,NULL,NULL,'2023-11-09 22:13:29','2023-11-09 22:17:04'),
+	(3,'user','user@inex.net',NULL,'$2y$10$79KkMsuH9F1IQHA4715bM.gfb2jW.4MNTu47pYO.m.oaCADGRZJ7m',NULL,NULL,0,0,NULL,NULL,NULL,NULL,'2024-03-17 17:53:10','2024-03-17 17:53:10'),
+	(4,'admin','admin@inex.net',NULL,'$2y$10$iZy0GwJ4/2vVVhvEpwQcQuAper6r.eBkiPcFcmTe5VRZ7gWxZ0eza',NULL,NULL,1,0,NULL,NULL,NULL,NULL,'2024-03-17 17:54:40','2024-03-17 17:54:40'),
+	(5,'superadmin','superadmin@inex.net',NULL,'$2y$10$vw8c493K54kq26sezsEzquMRn4mZnnQkdlGgTdPSny6Gs.3AhoWXe',NULL,NULL,2,0,NULL,NULL,NULL,NULL,'2024-03-17 17:55:50','2024-03-17 17:55:50');
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
