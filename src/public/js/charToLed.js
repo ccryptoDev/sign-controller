@@ -1234,8 +1234,17 @@ function charToLED(theChar){
             break;
         case '0' :
             theLed = [
-                        
-                    ];
+                    [false,false,true,true,false,false],
+                    [false,true,true,true,true,false],
+                    [false,true,false,false,true,false],
+                    [true,true,false,false,true,true],
+                    [true,false,false,false,false,true],
+                    [true,false,false,false,false,true],
+                    [true,true,false,false,true,true],
+                    [false,true,false,false,true,false],
+                    [false,true,true,true,true,false],
+                    [false,false,true,true,false,false]
+                ];
             break;
         case '1' :
             theLed = [
