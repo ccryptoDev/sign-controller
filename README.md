@@ -6,23 +6,21 @@
    - Run `sudo cp src/.env.example src/.env`
    - Open src/.env and configure env variables
 
-3. Run `sudo docker-compose build`
+3. Run `sudo docker-compose up -d --build app`
 
-4. Run `sudo docker-compose up` if no any error
-
-5. Install php dependencies:  
+4. Install php dependencies:  
    - Run `sudo docker-compose exec php composer install`
    - It will install php dependencies and as a result, `vendor` directory will be created in `/var/www/html/`
 
-6. Database migration:
+5. Database migration:
    - Run `sudo docker-compose exec php php /var/www/html/artisan migrate`
    - Run `sudo docker-compose exec php php /var/www/html/artisan db:seed`
 
 ## The configuration steps to run automatically sign-controller with docker when rebooting or restarting
 
-7. Stop docker: `sudo docker-compose down`
+6. Stop docker: `sudo docker-compose down`
 
-8. Create a systemd Service File
+7. Create a systemd Service File
    - Run `sudo nano /etc/systemd/system/docker-compose-laravel.service`
    - The above command creates & opens `docker-compose-laravel.service` file in `/etc/systemd/system/`
    - Then, fill up a systemd service file with the following content and save it:
@@ -43,15 +41,15 @@
    [Install]
    WantedBy=multi-user.target
 
-9. Reload systemd: 
+8. Reload systemd: 
    `sudo systemctl daemon-reload`
 
-10. Enable the Service: 
+9. Enable the Service: 
    `sudo systemctl enable docker-compose-laravel.service`
 
-11. Start or Restart the service: 
+10. Start or Restart the service: 
    `sudo systemctl start docker-compose-laravel.service`
    or
    `sudo systemctl restart docker-compose-laravel.service`
 
-12. After reboot or restart a system, check if laravel with a docker is running.
+11. After reboot or restart a system, check if laravel with a docker is running.
