@@ -94,6 +94,7 @@ class SignController extends Controller
             // $image->message2 = $request->msg2;
             // $image->message3 = $request->msg3;
             $image->message = $msg;
+            $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
     
             try {
@@ -141,6 +142,7 @@ class SignController extends Controller
             // $image->message2 = $request->msg2;
             // $image->message3 = $request->msg3;
             $image->message = $msg;
+            $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
             $image->name = $request->imageName . "." . $request->imageType;
             $image->path = "public/assets/media/signmessage";

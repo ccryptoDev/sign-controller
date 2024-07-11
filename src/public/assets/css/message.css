@@ -101,7 +101,8 @@ p {
   border: 1px solid #ddd;
 }
 
-#ledContainer {
+#ledContainer,
+#gridCanvas {
   max-width: 100%;
   position: relative;
   /* height: 150px; */
@@ -111,7 +112,8 @@ p {
   margin: auto;
 }
 
-#wrapperLed {
+#wrapperLed,
+#pixelCanvas {
   margin: 50px auto;
   /* border: 1px solid #ddd; */
   padding-bottom: 20px;
@@ -133,6 +135,10 @@ p {
 }
 
 .on {
+  background-color: yellow;
+}
+
+#pixelCanvas .on {
   background-color: yellow;
 }
 

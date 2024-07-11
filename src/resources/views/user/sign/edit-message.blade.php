@@ -94,7 +94,7 @@
                                 class="form-control" 
                                 name="message_1" 
                                 id="message_1" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
+                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
                             >
                         </div>
                     </div>  <!-- end: message 1 -->
@@ -127,7 +127,7 @@
                                 class="form-control" 
                                 name="message_2" 
                                 id="message_2" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
+                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
                             >
                         </div>
                     </div>  <!-- end: message 2 -->
@@ -160,7 +160,7 @@
                                 class="form-control" 
                                 name="message_3" 
                                 id="message_3" 
-                                value="{{ $mode == 'edit' ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
+                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
                             >
                         </div>
                     </div>  <!-- end: message 3 -->
@@ -170,10 +170,10 @@
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
                     @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
+                        <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
                     @else 
                         <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
                     @endif
-                    <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
                     <button class="btn btn-primary" type="button" id="clearMessage">Clear</button>
                     <button class="btn btn-primary" type="button" id="exit">
                         <a href="{{ route('send-to-sign') }}">Exit</a>
@@ -202,8 +202,10 @@
                     {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
                     <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
                     <div id="gridCanvas" class="gridCanvas rotationTime d-none">
-                        <table id="pixelCanvas" class="flyItIn2"></table>
+                        {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
+                        <div id="pixelCanvas" class="row flyItIn2"></div>
                     </div>
+                    <canvas id="draw-mode" width="56" height="40" class="d-none"></canvas>
                 </div>
             </div>
         </div>
@@ -225,17 +227,20 @@
 
     const canvasWidth = 56;
     const canvasHeight = 40;
-    let drawMode = 0; // 3-line mode
+    let drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
 
     var messages = [];
     var isSaveCopy = false;
 
 
-    const lightOff = function (rowNum, col) {
+    const lightOff = function (rowNum, col, mode = 'line') {
         
         for(j = 0; j < canvasWidth; j++) {
             var line_0 = document.createElement('div');
-            line_0.className = (rowNum) + "_" + j + " light off";
+            if (mode != 'line')
+                line_0.className = "pixel_" + (rowNum) + "_" + j + " light off";
+            else 
+                line_0.className = (rowNum) + "_" + j + " light off";
             col.append(line_0);
         }
     }
@@ -244,29 +249,32 @@
 
         for (let i = 0; i < length; i ++) {
             var col = $('<div class="col-md-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
-            lightOff(previousRowNum + i, col);
+            lightOff(previousRowNum + i, col, 'line');
         }
     }
     
-    const addBlackRow = function (length, previousRowNum) {
+    const addBlackRow = function (length, previousRowNum, mode) {
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
-            lightOff(previousRowNum + i, col);
+            if (mode == 'line')
+                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
+            else 
+                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#pixelCanvas');
+            lightOff(previousRowNum + i, col, mode);
         }
     }
 
     // Make the initial screen in 3-line mode
     addBlankRow(2, 0);
-    addBlackRow(10, 2);
+    addBlackRow(10, 2, 'line');
     addBlankRow(3, 12);
-    addBlackRow(10, 15);
+    addBlackRow(10, 15, 'line');
     addBlankRow(3, 25);
-    addBlackRow(10, 28);
+    addBlackRow(10, 28, 'line');
     addBlankRow(2, 38);
 
     $(document.fonts).ready(function() {
         // assign alignments after loading
-        if (mode == 'edit') {
+        if (mode == 'edit' && messageData.draw_mode == 0) {
             // if (messageData.message1 !== null) {
             //     messages.push( 
             //         messageData.message1.map(innerArray => {
@@ -402,7 +410,7 @@
 
         function displayLED() {
             let temp = getMessage();
-            clearLights();
+            clearLights('wrapperLed');
             messages = [];
 
             let layer = temp.length;
@@ -437,7 +445,7 @@
         // });
 
         function setLight(row, col, state){
-            var theLight = $('.'+row+'_'+col);
+            var theLight = $('#wrapperLed').find('.' + row+ '_' + col);
             if(state) {
                 theLight.addClass('on');
             } else {
@@ -445,12 +453,10 @@
             }
         }
 
-        function clearLights(){
-            var lightsOn = $('.on');
+        function clearLights(target) {
+            var lightsOn = $('#' + target).find('.on');
             lightsOn.addClass('off');
             lightsOn.removeClass('on');
-            
-            // ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         function drawMessage(messageArray, layer){
@@ -656,7 +662,7 @@
             }
 
             changeMode();
-            makeGrid();
+            // makeGrid();
         });
         
         var changeMode = function() {
@@ -665,17 +671,17 @@
             drawBoard();
 
             if(drawMode == 0) { // 3-line mode
-                // $("#canvas_bg").removeClass('d-none');
+                $('.messages').removeClass('d-none');
                 $("#canvas").removeClass('d-none');
                 $("#ledContainer").removeClass('d-none');
                 $("#inputBox").removeClass('d-none');
                 $("#gridCanvas").addClass('d-none');
             } else {
+                $('.messages').addClass('d-none');
                 $("#gridCanvas").removeClass('d-none');
                 $("#ledContainer").addClass('d-none');
                 $("#inputBox").addClass('d-none');
                 $("#canvas").addClass('d-none');
-                // $("#canvas_bg").addClass('d-none');
             }
         }
 
@@ -762,7 +768,6 @@
         const displayWidth = document.getElementById('gridWidthDisplay');
         const userHeight = document.getElementById('inputHeight');
         const userWidth = document.getElementById('inputWidth');
-            // let grid = $('#pixelCanvas');
         const grid = document.getElementById('pixelCanvas');
         const gridCanvas = document.getElementById('gridCanvas');
         let gridTileMode = PAINT // controls paint or erase of grid cells (td's)
@@ -788,9 +793,16 @@
         }
 
         var convertHTMLtoImage = function () {
-            const cols = document.querySelectorAll('#wrapperLed .col');
-            const canvas = document.getElementById('3LineLed');
-            const context = canvas.getContext('2d');
+            let cols, canvas;
+            if (drawMode == 0) {
+                cols = document.querySelectorAll('#wrapperLed .col');
+                canvas = document.getElementById('3LineLed');
+            } else {
+                cols = document.querySelectorAll('#pixelCanvas .col');
+                canvas = document.getElementById('draw-mode');
+            }
+            
+            let context = canvas.getContext('2d');
 
             for (let col = 0; col < cols.length; col++) {
                 const pixels = cols[col].querySelectorAll('div');
@@ -847,9 +859,30 @@
             return blob;
         }
 
+        function drawModePixelArray() {
+            let pixelArray = [];
+
+            for (let row = 0; row < 40; row++) {
+                let rowArray = [];
+                for (let col = 0; col < 56; col++) {
+                    let pixelElement = document.querySelector(`#pixelCanvas .col .pixel_${row}_${col}`);
+                    if (pixelElement) {
+                        rowArray.push(pixelElement.classList.contains('on') ? 1 : 0);
+                    } else {
+                        rowArray.push(0); // Default to 0 if element not found
+                    }
+                }
+                pixelArray.push(rowArray);
+            }
+
+            return pixelArray;
+        }
+
         var saveMessageCall = function (range, imageFile, imageType) {
             const [msg1 = [], msg2 = [], msg3 = []] = messages;
-            const msg = getMessage();
+            let msg = getMessage();
+
+            if (drawMode == 1) msg = drawModePixelArray();
 
             const formData = new FormData();
             formData.append('imageFile', imageFile);
@@ -864,6 +897,7 @@
             // formData.append('msg2', JSON.stringify(msg2));
             // formData.append('msg3', JSON.stringify(msg3));
             formData.append('msg', JSON.stringify(msg));
+            formData.append('drawMode', drawMode);
             formData.append('three_line_alignment', JSON.stringify(alignmentList)); // e.g ['center', 'left', 'right']
 
             $.ajax({
@@ -907,24 +941,13 @@
             // Get base64data of BMP
 
             if (drawMode == 0) { // 3-line mode
-                // html2canvas($("#wrapperLed").first()[0]).then(function(canvas) {
                 drawText();
                 // CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
                 //     saveMessageCall(range, url, 'bmp');
                 // });
-
-                const convertedBMP = convertHTMLtoImage();
-                saveMessageCall(range, convertedBMP, 'bmp');
-
-                // })
-            } else {
-                html2canvas($("#pixelCanvas").first()[0]).then(function(canvas) {
-                    CanvasToBMP.toDataURL(canvas, function (url) {
-                        var imageName = 'symbol', imageType = 'bmp', imageKeywords = 'symbol'; // [userID]_[imageName]_[timestamp] will be sent to server
-                    })
-                });
-            }
-            
+            } 
+            const convertedBMP = convertHTMLtoImage();
+            saveMessageCall(range, convertedBMP, 'bmp');
         }
 
         // Get user role
@@ -1085,93 +1108,101 @@
 
         var makeGrid = function () {
             let mouseIsDown = false;
-            const rows = 56;
-            const columns = 40;
+            let isRightClick = false;
 
             while (grid.hasChildNodes()) {
-                grid.removeChild(grid.lastChild); // delete any previous table rows
+                grid.removeChild(grid.lastChild); 
             }
 
-            //Build the grid row by row and then append to the table
-            //  project rubrics requires use of for and while loops
+            addBlackRow(40, 0, 'grid');
 
-            let tableRows = '';
-            let r = 1;
-            
-            var selectedMode = drawMode;
-            var blank = 3;
-            var j = 1;
-            while (r <= rows) {
-                if(selectedMode == 0) {
-                    var editableRow = parseInt(rows / 3) - blank;
-                    var totalRow = rows / 3;
-                    if(r > totalRow * j) {
-                        j++;
+            // orignal draw in draw-mode
+            if (mode == 'edit') {
+                for (var row = 0; row < messageData.message.length; row++) {
+                    for (var col = 0; col < canvasWidth; col++) {
+                        if (messageData.message[row][col]) {
+                            $('.pixel_' + row + '_' + col).removeClass('off');
+                            $('.pixel_' + row + '_' + col).addClass('on');
+                        }
                     }
-                    if(r <= totalRow * j - 3) {
-                        tableRows += '<tr>';
-                    } else {
-                        tableRows += '<tr class="disabled">';
-                    }
-                } else {
-                    tableRows += '<tr>';
                 }
-                for (let c=1; c <= columns; c++) {
-                    tableRows += '<td class="' +c+ '"></td>';
-                }
-                tableRows += '</tr>';
-                r += 1;
-            } // end while loop
-            grid.insertAdjacentHTML('afterbegin', tableRows); // add grid to DOM
+            }
 
-            grid.addEventListener("click", function(event) {
+            // Prevent the context menu from appearing on right-click
+            grid.addEventListener('contextmenu', function(event) {
                 event.preventDefault();
-                paintEraseTiles(event.target);
-            });
-            grid.addEventListener("touchstart", function(event) {
-                event.preventDefault();
-                paintEraseTiles(event.target);
-            });
-            grid.addEventListener("touchmove", function(event) {
-                event.preventDefault();
-                paintEraseTiles(event.target)
+                paintEraseTiles(event.target, false);
             });
 
-            // Listen for mouse down, up and over for continuous paint and erase
-
+            // Handle left-click and right-click
             grid.addEventListener('mousedown', function(event) {
                 event.preventDefault();
-                mouseIsDown = event.which === 1 ? true : false;
-            });
-            grid.addEventListener('touchstart', function(event) {
-                event.preventDefault();
-                mouseIsDown = event.which === 1 ? true : false;
+                if (event.button === 0) { // Left-click
+                    mouseIsDown = true;
+                    isRightClick = false;
+                    paintEraseTiles(event.target, true);
+                } else if (event.button === 2) { // Right-click
+                    mouseIsDown = true;
+                    isRightClick = true;
+                    paintEraseTiles(event.target, false);
+                }
             });
 
+            // Handle touchstart
+            grid.addEventListener('touchstart', function(event) {
+                event.preventDefault();
+                mouseIsDown = true;
+                paintEraseTiles(event.target, true);
+            });
+
+            // Handle mousemove for continuous painting/erasing
+            grid.addEventListener('mousemove', function(event) {
+                if (mouseIsDown) {
+                    event.preventDefault();
+                    paintEraseTiles(event.target, !isRightClick);
+                }
+            });
+
+            // Handle touchmove for continuous painting/erasing
+            grid.addEventListener('touchmove', function(event) {
+                if (mouseIsDown) {
+                    event.preventDefault();
+                    paintEraseTiles(event.target, true);
+                }
+            });
+
+            // Handle mouseup to stop painting/erasing
             document.addEventListener('mouseup', function(event) {
                 event.preventDefault();
                 mouseIsDown = false;
             });
 
+            // Handle mouseover for continuous painting/erasing
             grid.addEventListener('mouseover', function(event) {
-                // if (mouseIsDown) {paintEraseTiles($(this));}
-                event.preventDefault();
-                if (mouseIsDown) {paintEraseTiles(event.target);}
-            }); // end continuous paint and erase
-        // }); // end grid
-        }; // end grid
+                if (mouseIsDown) {
+                    event.preventDefault();
+                    paintEraseTiles(event.target, !isRightClick);
+                }
+            });
+        }; 
+
         makeGrid();
 
         // paint or erase cells based on the mode (girdTileMode)
 
-        function paintEraseTiles(targetCell) {
-            if (targetCell.nodeName === 'TD') {
+        function paintEraseTiles(targetCell, mode) {
+            if (targetCell.classList.contains('light')) {
                 if($($(targetCell).parent())[0].className == 'disabled') {
                     return;
                 }
                 // targetCell.style.backgroundColor = gridTileMode === PAINT ? userColor.value : 'transparent';
-                targetCell.style.backgroundColor = 'red';
-
+                if (mode == true) {
+                    targetCell.classList.add('on');
+                    targetCell.classList.remove('off');
+                } else {
+                    targetCell.classList.add('off');
+                    targetCell.classList.remove('on');
+                }
             } else {
                 console.log("Nice try: " + targetCell.nodeName + " talk to the hand!");
             }
@@ -1336,24 +1367,14 @@
         // Clear Canvas for New button
 
         var clearMessage = function () {
-            
-            // $("#inputBox").val('\n\n');
-            $('.message-input input').each(function() {
-                $(this).val('');
-            });
-            clearLights();
-            
-            messages = [];
-    
-            var trs = $("#pixelCanvas").first().children().children();
-            
-            for (let i = 0; i < trs.length; i++) {
-    
-                var tds = trs[i].children
-                
-                for (let j = 0; j < tds.length; j++) {
-                    tds[j].style.backgroundColor = 'white';
-                }
+            if (drawMode == 0) {
+                $('.message-input input').each(function() {
+                    $(this).val('');
+                });
+                clearLights('wrapperLed');
+                messages = [];
+            } else {
+                clearLights('pixelCanvas');
             }
         }
 
