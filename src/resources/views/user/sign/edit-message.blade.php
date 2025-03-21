@@ -4,7 +4,7 @@
     <!-- custom header  -->
     <div class="custom-header px-4 px-md-16">
         <div class="page-logo">
-            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
+            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  />
         </div>
         <div class="d-none d-sm-block text-center italic page-title">
             <h2>Work with a Message</h2>
@@ -21,20 +21,20 @@
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
-    </div>  
+    </div>
     <!-- end: custom-header -->
 
     <div class="container">
         <div class="row">
             <div class="card card-custom card-stretch">
 
-                <div class="card-header flex-column message-inform-form"> <!-- mesage name and keywords -->
-                    <div class="message-inform"> <!-- name -->
+                <div class="card-header col-md-12 flex-column message-inform-form"> <!-- mesage name and keywords -->
+                    <div @if(isset($message_data['no']) && $message_data['no'] > 0)  style="display: none;"  @endif  class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
-                            <input class="form-control" 
-                                name="message_name" 
-                                id="message_name" 
+                            <input class="form-control"
+                                name="message_name"
+                                id="message_name"
                                 placeholder="Input the message name"
                                 value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
                                 {{ isset($message_data['no']) && $message_data['no'] > 0 ? 'disabled' : '' }}
@@ -50,9 +50,9 @@
                     <div class="message-inform"> <!-- keywords -->
                         <label for="message-keywords">Keywords</label>
                         <div>
-                            <input class="form-control" 
-                                name="message_keywords" 
-                                id="message_keywords" 
+                            <input class="form-control"
+                                name="message_keywords"
+                                id="message_keywords"
                                 placeholder="Insert a space for multiple keywords"
                                 value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
                             >
@@ -69,7 +69,7 @@
                     <div class="message_1 message"> <!-- message 1 -->
                         <div class="align-wrapper">
                             <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
+                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
                                     data-alignment="left"
                                     id="alignLeftFirst"
                                 >
@@ -81,7 +81,7 @@
                                 >
                                     <i class="fas fa-align-center"></i>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
+                                <button class="btn btn-sm btn-icon btn-light text-right"
                                     data-alignment="right"
                                     id="alignRightFirst"
                                 >
@@ -90,10 +90,10 @@
                             </div>
                         </div>
                         <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_1" 
-                                id="message_1" 
+                            <input
+                                class="form-control"
+                                name="message_1"
+                                id="message_1"
                                 value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
                             >
                         </div>
@@ -102,7 +102,7 @@
                     <div class="message_1 message"> <!-- message 2 -->
                         <div class="align-wrapper">
                             <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
+                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
                                     data-alignment="left"
                                     id="alignLeftSecond"
                                 >
@@ -114,7 +114,7 @@
                                 >
                                     <i class="fas fa-align-center"></i>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
+                                <button class="btn btn-sm btn-icon btn-light text-right"
                                     data-alignment="right"
                                     id="alignRightSecond"
                                 >
@@ -123,10 +123,10 @@
                             </div>
                         </div>
                         <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_2" 
-                                id="message_2" 
+                            <input
+                                class="form-control"
+                                name="message_2"
+                                id="message_2"
                                 value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
                             >
                         </div>
@@ -135,7 +135,7 @@
                     <div class="message_1 message"> <!-- message 3 -->
                         <div class="align-wrapper">
                             <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
+                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
                                     data-alignment="left"
                                     id="alignLeftThird"
                                 >
@@ -147,7 +147,7 @@
                                 >
                                     <i class="fas fa-align-center"></i>
                                 </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
+                                <button class="btn btn-sm btn-icon btn-light text-right"
                                     data-alignment="right"
                                     id="alignRightThird"
                                 >
@@ -156,22 +156,22 @@
                             </div>
                         </div>
                         <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_3" 
-                                id="message_3" 
+                            <input
+                                class="form-control"
+                                name="message_3"
+                                id="message_3"
                                 value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
                             >
                         </div>
                     </div>  <!-- end: message 3 -->
                 </div> <!-- end: message editbox -->
 
-                <div class="action-group"> <!-- actions -->
+                <div class="action-group flex-wrap p-1"> <!-- actions -->
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
                     @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
                         <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
-                    @else 
+                    @else
                         <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
                     @endif
                     <button class="btn btn-primary" type="button" id="clearMessage">Clear</button>
@@ -193,7 +193,7 @@
 
                 <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
 
-                <div class="card-body text-center">  
+                <div class="card-body text-center">
                     <div id="ledContainer">
                         <div id='wrapperLed' class="row"></div>
                     </div>
@@ -234,31 +234,31 @@
 
 
     const lightOff = function (rowNum, col, mode = 'line') {
-        
+
         for(j = 0; j < canvasWidth; j++) {
             var line_0 = document.createElement('div');
             if (mode != 'line')
                 line_0.className = "pixel_" + (rowNum) + "_" + j + " light off";
-            else 
+            else
                 line_0.className = (rowNum) + "_" + j + " light off";
             col.append(line_0);
         }
     }
-    
+
     const addBlankRow = function (length, previousRowNum) {
 
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
+            var col = $('<div class="col-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
             lightOff(previousRowNum + i, col, 'line');
         }
     }
-    
+
     const addBlackRow = function (length, previousRowNum, mode) {
         for (let i = 0; i < length; i ++) {
             if (mode == 'line')
-                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
-            else 
-                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#pixelCanvas');
+                var col = $('<div class="col-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
+            else
+                var col = $('<div class="col-12 d-flex justify-content-center col"/>').appendTo('#pixelCanvas');
             lightOff(previousRowNum + i, col, mode);
         }
     }
@@ -276,17 +276,17 @@
         // assign alignments after loading
         if (mode == 'edit' && messageData.draw_mode == 0) {
             // if (messageData.message1 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message1.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-            //         }) 
+            //         })
             //     );
             // } else {
             //     messages.push([]);
             // }
-            
+
             // if (messageData.message2 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message2.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
             //         })
@@ -296,7 +296,7 @@
             // }
 
             // if (messageData.message3 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message3.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
             //         })
@@ -322,7 +322,7 @@
                 }
                 // justifyAlignment(index);
             });
-            
+
             $('.btn-group').each(function(index) {
                 let alignmentIndex = alignments[index];
                 $(this).find('button').removeClass('bg-dark');
@@ -336,14 +336,14 @@
 
             displayLED();
         }
-        
+
         function textToLED(theWord){
             var theMessage = [];
             for (var i = 0; i < theWord.length; i++) {
                 theMessage.push( transposeArray(charToLED(theWord.charAt(i))) );
                 theMessage.push( charToLED() );
             }
-        
+
             var flatten = [];
             flatten = flatten.concat.apply(flatten, theMessage);
 
@@ -355,7 +355,7 @@
             if (!messages[layer]) return;
 
             const emptyLetter = [false, false, false, false, false, false, false, false, false, false];
-  
+
             if (alignments[layer] === 0) {
 
                 var emptyLetters = [], afterEmptyLetters = [];
@@ -372,10 +372,10 @@
             } else {
                 // alignment
                 let upwordLength;
-                
-                if (alignments[layer] === 1) 
+
+                if (alignments[layer] === 1)
                     upwordLength = (canvasWidth - messages[layer].length) / 2;
-                else 
+                else
                     upwordLength = canvasWidth - messages[layer].length - 1;
 
                 var emptyLetters = [], afterEmptyLetters = [];
@@ -390,7 +390,7 @@
                 }
                 emptyLetters = emptyLetters.concat(afterEmptyLetters);
                 drawMessage(emptyLetters, layer);
-                
+
             }
         }
 
@@ -430,7 +430,7 @@
         //     clearLights();
         //     var value = $("#inputBox").val();
         //     messages = [];
-            
+
         //     if(value != '' ) {
         //         var msg = value.split('\n');
         //         var layer = msg.length;
@@ -538,7 +538,7 @@
                     } else {
                         ctx.fillText(item, canvas.width - 10, 130 * (index + 1));
                     }
-                    
+
                     // ctx.fillText(alignment + "-aligned", item, 10 , 100 * (index + 1) + (index == 0 ? 0 : 10 * index));
                 })
                 if(undo_flag == false) {
@@ -547,7 +547,7 @@
                 }
             }
         }
-        
+
         function handleClick(e) {
             var flag = false;
             for(let j = 0; j < 3; j++) {
@@ -561,7 +561,7 @@
                 canvas.style.cursor = 'default';
             }
         }
-        
+
         var bw = 400;
         // Box height
         var bh = 400;
@@ -572,7 +572,7 @@
         var rows = 3;
 
         function drawBoard(){
-            
+
             for (let x = 0; x < canvas.width; x += 10) {
                 ctx.moveTo(x, 0);
                 ctx.lineTo(x, canvas.height);
@@ -664,7 +664,7 @@
             changeMode();
             // makeGrid();
         });
-        
+
         var changeMode = function() {
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -744,7 +744,7 @@
             //     line ++;
             //     drawText();
             // }
-            
+
             // call this function whenever message is changed.
             drawText();
         });
@@ -801,7 +801,7 @@
                 cols = document.querySelectorAll('#pixelCanvas .col');
                 canvas = document.getElementById('draw-mode');
             }
-            
+
             let context = canvas.getContext('2d');
 
             for (let col = 0; col < cols.length; col++) {
@@ -936,8 +936,8 @@
             });
         }
 
-        var saveMessage = function (range) {           
-    
+        var saveMessage = function (range) {
+
             // Get base64data of BMP
 
             if (drawMode == 0) { // 3-line mode
@@ -945,7 +945,7 @@
                 // CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
                 //     saveMessageCall(range, url, 'bmp');
                 // });
-            } 
+            }
             const convertedBMP = convertHTMLtoImage();
             saveMessageCall(range, convertedBMP, 'bmp');
         }
@@ -1111,7 +1111,7 @@
             let isRightClick = false;
 
             while (grid.hasChildNodes()) {
-                grid.removeChild(grid.lastChild); 
+                grid.removeChild(grid.lastChild);
             }
 
             addBlackRow(40, 0, 'grid');
@@ -1184,7 +1184,7 @@
                     paintEraseTiles(event.target, !isRightClick);
                 }
             });
-        }; 
+        };
 
         makeGrid();
 
@@ -1211,11 +1211,11 @@
         $("#inputWidth").on('change', function() {
             $(displayWidth).val($(this).val());
         });
-        
+
         $("#gridWidthDisplay").on('change', function() {
             $("#inputWidth").val($(this).val());
         });
-        
+
         $("#inputHeight").on('change', function() {
             $(displayHeight).val($(this).val());
         });
@@ -1262,7 +1262,7 @@
         // the first layer
         $("#alignLeftFirst").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftFirst").classList.add("bg-dark");
             document.getElementById("alignCenterFirst").classList.remove("bg-dark");
             document.getElementById("alignRightFirst").classList.remove("bg-dark");
@@ -1274,7 +1274,7 @@
 
         $("#alignCenterFirst").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftFirst").classList.remove("bg-dark");
             document.getElementById("alignCenterFirst").classList.add("bg-dark");
             document.getElementById("alignRightFirst").classList.remove("bg-dark");
@@ -1285,7 +1285,7 @@
 
         $("#alignRightFirst").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftFirst").classList.remove("bg-dark");
             document.getElementById("alignCenterFirst").classList.remove("bg-dark");
             document.getElementById("alignRightFirst").classList.add("bg-dark");
@@ -1297,7 +1297,7 @@
         // the second layer
         $("#alignLeftSecond").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftSecond").classList.add("bg-dark");
             document.getElementById("alignCenterSecond").classList.remove("bg-dark");
             document.getElementById("alignRightSecond").classList.remove("bg-dark");
@@ -1309,7 +1309,7 @@
 
         $("#alignCenterSecond").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftSecond").classList.remove("bg-dark");
             document.getElementById("alignCenterSecond").classList.add("bg-dark");
             document.getElementById("alignRightSecond").classList.remove("bg-dark");
@@ -1320,7 +1320,7 @@
 
         $("#alignRightSecond").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftSecond").classList.remove("bg-dark");
             document.getElementById("alignCenterSecond").classList.remove("bg-dark");
             document.getElementById("alignRightSecond").classList.add("bg-dark");
@@ -1332,7 +1332,7 @@
         // the third layer
         $("#alignLeftThird").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftThird").classList.add("bg-dark");
             document.getElementById("alignCenterThird").classList.remove("bg-dark");
             document.getElementById("alignRightThird").classList.remove("bg-dark");
@@ -1344,7 +1344,7 @@
 
         $("#alignCenterThird").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftThird").classList.remove("bg-dark");
             document.getElementById("alignCenterThird").classList.add("bg-dark");
             document.getElementById("alignRightThird").classList.remove("bg-dark");
@@ -1355,7 +1355,7 @@
 
         $("#alignRightThird").on("click", function() {
             event.preventDefault();
-            
+
             document.getElementById("alignLeftThird").classList.remove("bg-dark");
             document.getElementById("alignCenterThird").classList.remove("bg-dark");
             document.getElementById("alignRightThird").classList.add("bg-dark");
