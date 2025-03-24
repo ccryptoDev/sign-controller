@@ -1,15 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SignController;
 use App\Http\Controllers\FontController;
-use App\Http\Controllers\ManageUserController;
+use App\Http\Controllers\SignController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SocketController;
-use Illuminate\Support\Facades\Hash;
-
 use App\Http\Controllers\MainMenuController;
+
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\MessageMenuController;
 use App\Http\Controllers\MessageSignController;
 
@@ -93,13 +94,17 @@ Route::middleware([
 
     //Main Menu
     Route::get('main-menu', [MainMenuController::class, 'index']) ->name('main-menu');
-    Route::get('system-settings', [MainMenuController::class, 'settings']) ->name('system-settings');
+    // Route::get('system-settings', [MainMenuController::class, 'settings']) ->name('system-settings');
     Route::get('schedules', [MainMenuController::class, 'schedules']) ->name('schedules');
     Route::get('turn-sign', [MainMenuController::class, 'turnSign']) ->name('turn-sign');
     Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
     Route::get('message-sign', [MessageSignController::class, 'index']) ->name('message-sign');
     Route::get('send-to-sign', [MessageSignController::class, 'send_to_sign']) -> name('send-to-sign');
     Route::get('delete-message', [MessageSignController::class, 'deleteMessage']) -> name('delete-message');
+
+    // System Settings
+    Route::get('system-settings', [SettingsController::class, 'index'])->name('system-settings');
+    Route::post('system-settings/update', [SettingsController::class, 'update'])->name('system-settings.update');
 
     // Socket Connection
 });

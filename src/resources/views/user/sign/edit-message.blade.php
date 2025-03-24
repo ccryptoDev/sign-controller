@@ -1,25 +1,13 @@
 @include('user.header_new')
 
-<div class="d-flex flex-column justify-content-between px-8 py-10 px-lg-24">
+<div class="d-flex flex-column justify-content-between px-8 py-2 px-lg-24">
     <!-- custom header  -->
-    <div class="custom-header px-4 px-md-16">
-        <div class="page-logo">
-            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  />
-        </div>
-        <div class="d-none d-sm-block text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
-        </div>
-        <div class="qrcode-form">
-            <!-- <a href="#">Click for HELP</a> -->
-            <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
-        </div>
-    </div>
+    <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
     <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
+            <h2>MESSAGES</h2>
+            <p>This menu allows the user to retrieve or create messages</p>
         </div>
     </div>
     <!-- end: custom-header -->
@@ -28,8 +16,8 @@
         <div class="row">
             <div class="card card-custom card-stretch">
 
-                <div class="card-header col-md-12 flex-column message-inform-form"> <!-- mesage name and keywords -->
-                    <div @if(isset($message_data['no']) && $message_data['no'] > 0)  style="display: none;"  @endif  class="message-inform"> <!-- name -->
+                <div class="card-header col-md-12 flex-column message-inform-form {{ (isset($message_data['no']) && $message_data['no'] > 0) ? 'd-none' : '' }}"> <!-- mesage name and keywords -->
+                    <div class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
                             <input class="form-control"
@@ -60,111 +48,157 @@
                     </div> <!-- end: keywords -->
                 </div> <!-- end: message name and keywords -->
 
-                <div class="mode"> <!-- mode -->
-                    <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
-                    <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
-                </div> <!-- end: mode -->
+                <div class="card-body">
+                    <div class="mode"> <!-- mode -->
+                        <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
+                        <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
+                    </div> <!-- end: mode -->
 
-                <div class="card-header flex-column messages"> <!-- message editbox -->
-                    <div class="message_1 message"> <!-- message 1 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
-                                    data-alignment="left"
-                                    id="alignLeftFirst"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterFirst"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right"
-                                    data-alignment="right"
-                                    id="alignRightFirst"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
-                            </div>
+                    <!-- start led -->
+                    <div id="ledDiv" class="text-center work-area">
+                        <div id="ledContainer">
+                            <div id='wrapperLed' class="row"></div>
                         </div>
-                        <div class="message-input">
-                            <input
-                                class="form-control"
-                                name="message_1"
-                                id="message_1"
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 1 -->
+                        <canvas id="3LineLed" width="56" height="40" class="d-none"></canvas>
 
-                    <div class="message_1 message"> <!-- message 2 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
-                                    data-alignment="left"
-                                    id="alignLeftSecond"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterSecond"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right"
-                                    data-alignment="right"
-                                    id="alignRightSecond"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
-                            </div>
+                        {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
+                        <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
+                        <div id="gridCanvas" class="gridCanvas rotationTime d-none">
+                            {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
+                            <div id="pixelCanvas" class="row flyItIn2"></div>
                         </div>
-                        <div class="message-input">
-                            <input
-                                class="form-control"
-                                name="message_2"
-                                id="message_2"
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 2 -->
+                        <canvas id="draw-mode" width="56" height="40" class="d-none"></canvas>
+                    </div>
+                    <!-- end led -->
 
-                    <div class="message_1 message"> <!-- message 3 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
-                                    data-alignment="left"
-                                    id="alignLeftThird"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterThird"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right"
-                                    data-alignment="right"
-                                    id="alignRightThird"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
+                    <div class=" flex-column messages">
+                        <div class="message_1 message"> <!-- message 1 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="message-input">
-                            <input
-                                class="form-control"
-                                name="message_3"
-                                id="message_3"
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 3 -->
-                </div> <!-- end: message editbox -->
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_1"
+                                    id="message_1"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 1 -->
+
+                        <div class="message_1 message"> <!-- message 2 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_2"
+                                    id="message_2"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 2 -->
+
+                        <div class="message_1 message"> <!-- message 3 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_3"
+                                    id="message_3"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 3 -->
+                    </div><!-- end: message editbox -->
+                </div>
 
                 <div class="action-group flex-wrap p-1"> <!-- actions -->
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
@@ -190,23 +224,7 @@
                         <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
                     </div> -->
                 </div> <!-- actions -->
-
                 <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
-
-                <div class="card-body text-center">
-                    <div id="ledContainer">
-                        <div id='wrapperLed' class="row"></div>
-                    </div>
-                    <canvas id="3LineLed" width="56" height="40" class="d-none"></canvas>
-
-                    {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
-                    <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
-                    <div id="gridCanvas" class="gridCanvas rotationTime d-none">
-                        {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
-                        <div id="pixelCanvas" class="row flyItIn2"></div>
-                    </div>
-                    <canvas id="draw-mode" width="56" height="40" class="d-none"></canvas>
-                </div>
             </div>
         </div>
     </div>
@@ -219,6 +237,27 @@
 <script src="/js/html2canvas.min.js"></script>
 
 <script>
+
+    $(document).ready(function () {
+        $(".signalMessage").on("focus", function () {
+            let targetDiv = $("#ledDiv");
+
+            // Wait for keyboard to fully open before scrolling
+            setTimeout(() => {
+                targetDiv[0].scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 500);
+        });
+
+        // Detect keyboard pop-up using window resize
+        $(window).on("resize", function () {
+            if ($(window).height() < screen.height * 0.6) {
+                setTimeout(() => {
+                    $("#ledDiv")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 500);
+            }
+        });
+    });
+
     const messageData = @json($message_data);
     console.log(messageData);
     const mode = "{{ $mode }}";

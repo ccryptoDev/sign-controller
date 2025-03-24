@@ -2,26 +2,14 @@
 
 <div class="fluid bg-white">
     <!-- custom header  -->
-    <div class="custom-header px-4 px-md-16">
-        <div class="page-logo">
-            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
-        </div>
-        <div class="d-none d-sm-block text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
-        </div>
-        <div class="qrcode-form">
-            <!-- <a href="#">Click for HELP</a> -->
-            <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
-        </div>
-    </div>
+    <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
     <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
-    </div>  
+    </div>
     <!-- end: custom-header -->
 </div>
 
@@ -37,9 +25,9 @@
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
-        <!-- <button 
-            class="btn" 
-            type="button" 
+        <!-- <button
+            class="btn"
+            type="button"
             id="send"
         >
             <span>Open</span>
@@ -58,9 +46,9 @@
     <div class="px-8 search-form">
         <div class="search-item">
             <label class="italic">Search for these &nbsp; names/keywords</label>
-            <input class="form-control search-input" 
-                name="keyword" 
-                id="firstSearch" 
+            <input class="form-control search-input"
+                name="keyword"
+                id="firstSearch"
                 placeholder="Please type first keyword"
             >
         </div>
@@ -69,7 +57,7 @@
             <input class="form-control search-input text-center"
                 id="information"
                 value=""
-                placeholder="The information of selected sign will be displayed here" 
+                placeholder="The information of selected sign will be displayed here"
                 disabled
             >
         </div>
@@ -82,7 +70,7 @@
                 <div class="search-item">
                     <input class="form-control search-input"
                         name="id-name"
-                        id="secondSearch" 
+                        id="secondSearch"
                         placeholder="Please type second keyword"
                     >
                     </input>
@@ -101,7 +89,7 @@
                     </span>
                 </li>
                 @endforeach -->
-            </ul>               
+            </ul>
         </div>
     </div>
 </div>
@@ -112,15 +100,15 @@
 <script src="/assets/js/messagesign.js"></script>
 <!-- <script src="/assets/js/redirect.js"></script> -->
 <script>
-    
+
     // var images = {!! json_encode($images) !!};
     var images = @json($images);
 
     images = images.map((image, index) => (
-        { 
+        {
             id: index,
-            number: image.no, 
-            name: image.name,  
+            number: image.no,
+            name: image.name,
             path: image.path,
             keywords: image.keywords
         }
@@ -145,7 +133,7 @@
         event.preventDefault();
 
         if (firstSelectedImages[firstIndex]) {
-    
+
             console.log('selected image ID: ', firstSelectedImages[firstIndex].id);
             console.log('selected image Name: ', firstSelectedImages[firstIndex].name);
 
@@ -176,7 +164,7 @@
                                 toastr.success('The selected message is successfully sent!');
                             }
                             else {
-                                toastr.error("Something went wrong, please try again.");    
+                                toastr.error("Something went wrong, please try again.");
                             }
                         },
                         error : function(err){
@@ -206,7 +194,7 @@
     }
 
     $("#firstSearch").on('keyup', function(e) {
-        
+
         var value = $("#firstSearch").val().toLowerCase().trim();
         firstSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value));
 
@@ -241,7 +229,7 @@
     });
 
     $("#secondSearch").on('keyup', function(e) {
-        secondSearch();        
+        secondSearch();
 
         secondIndex = 0;
         if (secondSelectedImages.length > 0) {
