@@ -2,7 +2,7 @@
 
 <div class="fluid bg-white">
     <!-- custom header  -->
-    <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
+    <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
     <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
@@ -20,8 +20,11 @@
             Edit
         </button>
         <button class="btn btn-primary" type="button" id="create">
-            <a href="{{ route('edit-message', ['id' => 0]) }}">Create New</a>
+            <a href="{{ route('edit-message', ['id' => 0]) }}">New</a>
         </button>
+        <button class="btn btn-primary" type="button" id="copy">Copy</button>
+        <button class="btn btn-primary" type="button" id="library">Library</button>
+        <button class="btn btn-primary" type="button" id="delete">Delete</button>
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
@@ -52,7 +55,7 @@
                 placeholder="Please type first keyword"
             >
         </div>
-        <div class="search-item">
+        {{-- <div class="search-item">
             <label class="italic">Item Names</label>
             <input class="form-control search-input text-center"
                 id="information"
@@ -60,7 +63,7 @@
                 placeholder="The information of selected sign will be displayed here"
                 disabled
             >
-        </div>
+        </div> --}}
     </div>
     <!-- end::search form -->
 
@@ -118,14 +121,15 @@
 
     var firstIndex = 0, secondIndex = 0;
     var firstSelectedImages = images, secondSelectedImages = [];
+    let messageIds = [];
 
     $('#edit').on('click', function() {
-        var messageId = firstSelectedImages[firstIndex].number;
+        // var messageId = firstSelectedImages[firstIndex].number;
 
         // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
         // editUrl = editUrl.replace(':id', messageId);
 
-        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageId;
+        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
         window.location.href = editUrl;
     });
 
@@ -242,12 +246,51 @@
     });
 
     // Load a slider with all the messages
-    $("#slickPanel").html('<div class="slick" id="slick"></div>');
-    for (var i = 0; i < images.length; i++) {
-        // var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id="${images[i].id}" alt="image" /></span></div>`;
-        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-slide-no="${images[i].id}" data-id="${images[i].number}" alt="image" /></span></div>`;
-        $("#slick").append(component);
-    }
+    // $("#slickPanel").html('<div class="slick" id="slick"></div>');
+    // for (var i = 0; i < images.length; i++) {
+    //     // var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id="${images[i].id}" alt="image" /></span></div>`;
+    //     var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-slide-no="${images[i].id}" data-id="${images[i].number}" alt="image" /></span></div>`;
+    //     $("#slick").append(component);
+    // }
+    $(document).ready(function () {
+        $("#slickPanel").html('<div class="slick" id="slick"></div>');
+
+        let totalMessages = images.length;
+        let index = 0;
+
+        while (index < totalMessages) {
+            let numToShow = Math.floor(Math.random() * 3) + 1; // Randomly select 1, 2, or 3 images per slide
+            numToShow = Math.min(numToShow, totalMessages - index); // Avoid going out of bounds
+
+            let component = `<div class="slide-group">`;
+            for (let j = 0; j < numToShow; j++) {
+                let image = images[index];
+                component += `<span>
+                                <img src="{{ asset('assets/media/signmessage/${image.name}') }}"
+                                    data-slide-no="${image.id}"
+                                    data-id="${image.number}"
+                                    alt="image" />
+                            </span>`;
+                index++; // Move to the next message
+            }
+            component += `</div>`;
+
+            $("#slick").append(component);
+        }
+
+        slickFunction();
+        // Initialize Slick slider
+        // $('#slick').slick({
+        //     infinite: true,
+        //     slidesToShow: 1, // Each slide now contains 1 to 3 images
+        //     slidesToScroll: 1,
+        //     autoplay: true,
+        //     autoplaySpeed: 3000,
+        //     arrows: true,
+        //     dots: true
+        // });
+    });
+
 
 </script>
 

@@ -80,9 +80,14 @@ const slickFunction = function () {
   });
 
   $('.slick').on('click', '.slick-slide', function() {
+    messageIds = [];
     var slideIndex = $(this).attr('data-slick-index');
     var slide_no = $(this).find('span img').data('slide-no');
     firstIndex = slide_no;
+
+    $(this).find("span img").each(function () {
+        messageIds.push($(this).attr("data-id"));
+    });
 
     // move slider to the clicked one
     $('.slick').slick('slickGoTo', slideIndex);

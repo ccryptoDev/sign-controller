@@ -15,16 +15,17 @@ class SignController extends Controller
     }
 
     public function edit_message($messageID) {
+        $messageIds = explode(',', $messageID);
         if ($messageID) {
-            $image = Image::where('no', $messageID)->first();
+            $images = Image::whereIn('no', $messageIds)->get();
             $mode = 'edit';
         } else {
-            $image = [];
+            $images = [];
             $mode = 'create';
         }
-
+// dd($images);
         return view('user.sign.edit-message', [
-            'message_data' => $image,
+            'message_data' => $images,
             'mode' => $mode
         ]);
     }

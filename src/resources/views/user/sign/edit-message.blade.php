@@ -1,5 +1,8 @@
 @include('user.header_new')
-
+@php
+$message_datas = $message_data;
+$message_data = $message_datas[0];
+@endphp
 <div class="d-flex flex-column justify-content-between px-8 py-2 px-lg-24">
     <!-- custom header  -->
     <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
@@ -50,8 +53,49 @@
 
                 <div class="card-body">
                     <div class="mode"> <!-- mode -->
-                        <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
-                        <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
+                        {{-- @if(isset($message_data['no']) && $message_data['no'] > 0)
+                        <button class="btn btn-primary mr-1" type="button" id="saveMessage">Update</button>
+                        <button class="btn btn-primary mr-1" type="button" id="saveAcopy">Save a Copy</button>
+                        @else
+                            <button class="btn btn-primary mr-1" type="button" id="saveMessage">Save</button>
+                        @endif --}}
+                        <button class="btn btn-primary mr-1" type="button" id="saveMessage">Save</button>
+                        <button class="btn btn-primary mr-1" type="button" id="clearMessage">Clear</button>
+                        <button class="btn btn-primary mr-1" type="button" id="line-mode">3-Line</button>
+                        <button class="btn btn-secondary mr-1" type="button" id="dot-mode">Dot Draw</button>
+                        <button class="btn btn-danger mr-1" type="button" id="">Import</button>
+                        <button class="btn btn-danger mr-5" type="button" id="">Quit</button>
+                        <div class="align-wrapper">
+                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                    data-alignment="left"
+                                    id="alignLeftFirst"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Left Justify"
+                                >
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-light text-center"
+                                    data-alignment="center"
+                                    id="alignCenterFirst"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Center Justify"
+                                >
+                                    <i class="fas fa-align-center"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-light text-right"
+                                    data-alignment="right"
+                                    id="alignRightFirst"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Right Justify"
+                                >
+                                    <i class="fas fa-align-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div> <!-- end: mode -->
 
                     <!-- start led -->
@@ -71,7 +115,7 @@
                     </div>
                     <!-- end led -->
 
-                    <div class=" flex-column messages">
+                    {{-- <div class=" flex-column messages">
                         <div class="message_1 message"> <!-- message 1 -->
                             <div class="align-wrapper">
                                 <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
@@ -197,10 +241,22 @@
                                 >
                             </div>
                         </div>  <!-- end: message 3 -->
-                    </div><!-- end: message editbox -->
-                </div>
+                    </div><!-- end: message editbox --> --}}
 
-                <div class="action-group flex-wrap p-1"> <!-- actions -->
+                    <div class="mt-4" style="display: flex; justify-content: space-evenly; ">
+                        @foreach ($message_datas as $message_data)
+                        <img
+                            class="messageImage"
+                            src="{{ asset('assets/media/signmessage/' . $message_data->name) }}"
+                            style="width: 10%; cursor: pointer;"
+                            alt="image"
+                            data-message="{{ json_encode($message_data->message) }}"
+                            {{-- onclick="handleImageClick('{{ json_encode($message_data->message) }}')" --}}
+                        />
+                        @endforeach
+                    </div>
+                </div>
+                {{-- <div class="action-group flex-wrap p-1"> <!-- actions -->
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
                     @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
@@ -223,7 +279,7 @@
                         </div>
                         <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
                     </div> -->
-                </div> <!-- actions -->
+                </div> <!-- actions --> --}}
                 <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
             </div>
         </div>
@@ -258,7 +314,10 @@
         });
     });
 
+
     const messageData = @json($message_data);
+    let temp = messageData.message;
+    // const messageData = messageDatas[0];
     console.log(messageData);
     const mode = "{{ $mode }}";
     var alignmentList = ['left', 'left', 'left'];   // default ones
@@ -448,7 +507,7 @@
         }
 
         function displayLED() {
-            let temp = getMessage();
+            // let temp = getMessage();
             clearLights('wrapperLed');
             messages = [];
 
@@ -458,6 +517,29 @@
                 messages.push(letters);
                 justifyAlignment(i);
             }
+        }
+
+        $('.messageImage').on('click', function () {
+            temp = [];
+            textMessages = $(this).data('message');
+            console.log(textMessages);
+
+            // textMessages = JSON.parse(textMessages)
+            console.log(textMessages);
+            textMessages.forEach(function(item, index, array) {
+                temp.push(item);
+            });
+            displayLED();
+        });
+        function handleImageClick(textMessages) {
+            textMessages = JSON.parse(textMessages)
+            textMessages.forEach(function(item, index, array) {
+                temp.push(item);
+            });
+            displayLED();
+            console.log(temp);
+
+            // console.log(JSON.parse(textMessage));
         }
 
         // message change event in 3-line mode

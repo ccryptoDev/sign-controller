@@ -20,8 +20,17 @@
         <link href="/assets/css/message.css" rel="stylesheet" type="text/css" />
         <!--end::Layout Themes-->
         <link rel="shortcut icon" href="/assets/media/logos/logo-letter-13.png"/>
+
+        <style>
+            #wrapperLed, #pixelCanvas {
+                margin: 0px;
+                /* border: 1px solid #ddd; */
+                padding-bottom: 0px;
+                /* position: absolute; */
+                left: 0;
+            }
+        </style>
     </head>
     <body  id="kt_body"class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading"  >
-        
-       
-                
+
+
