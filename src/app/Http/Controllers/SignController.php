@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-use App\Models\Image;
 
 class SignController extends Controller
 {
@@ -17,16 +18,19 @@ class SignController extends Controller
     public function edit_message($messageID) {
         $messageIds = explode(',', $messageID);
         if ($messageID) {
-            $images = Image::whereIn('no', $messageIds)->get();
+            $images = Image::whereIn('no', $messageIds)->orderBy('id', 'desc')->get();
             $mode = 'edit';
         } else {
             $images = [];
             $mode = 'create';
         }
-// dd($images);
+        $screenSettings = Setting::pluck('value', 'key')->toArray();
+
         return view('user.sign.edit-message', [
-            'message_data' => $images,
-            'mode' => $mode
+            'messages_data' => $images,
+            'message_data' => isset($images[0]) ? $images[0] : $images,
+            'mode' => $mode,
+            'screenSettings' => $screenSettings,
         ]);
     }
 
@@ -67,7 +71,6 @@ class SignController extends Controller
     // }
 
     public function save_message(Request $request) {
-
         $alignmentList = json_decode($request->input('three_line_alignment'), true);
         $msg = json_decode($request->input('msg'), true);
 

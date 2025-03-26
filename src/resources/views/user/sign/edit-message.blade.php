@@ -1,7 +1,8 @@
 @include('user.header_new')
 @php
-$message_datas = $message_data;
-$message_data = $message_datas[0];
+// dd($message_data);
+// $message_datas = $message_data;
+// $message_data = isset($message_datas[0]) ? $message_datas[0] : $message_datas;
 @endphp
 <div class="d-flex flex-column justify-content-between px-8 py-2 px-lg-24">
     <!-- custom header  -->
@@ -19,7 +20,7 @@ $message_data = $message_datas[0];
         <div class="row">
             <div class="card card-custom card-stretch">
 
-                <div class="card-header col-md-12 flex-column message-inform-form {{ (isset($message_data['no']) && $message_data['no'] > 0) ? 'd-none' : '' }}"> <!-- mesage name and keywords -->
+                <div class="card-header col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
                     <div class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
@@ -115,7 +116,7 @@ $message_data = $message_datas[0];
                     </div>
                     <!-- end led -->
 
-                    {{-- <div class=" flex-column messages">
+                    <div class="flex-column messages" style="display: none;">
                         <div class="message_1 message"> <!-- message 1 -->
                             <div class="align-wrapper">
                                 <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
@@ -241,19 +242,20 @@ $message_data = $message_datas[0];
                                 >
                             </div>
                         </div>  <!-- end: message 3 -->
-                    </div><!-- end: message editbox --> --}}
+                    </div><!-- end: message editbox -->
 
                     <div class="mt-4" style="display: flex; justify-content: space-evenly; ">
-                        @foreach ($message_datas as $message_data)
-                        <img
-                            class="messageImage"
-                            src="{{ asset('assets/media/signmessage/' . $message_data->name) }}"
-                            style="width: 10%; cursor: pointer;"
-                            alt="image"
-                            data-message="{{ json_encode($message_data->message) }}"
-                            {{-- onclick="handleImageClick('{{ json_encode($message_data->message) }}')" --}}
-                        />
+                        @foreach ($messages_data as $index => $message_data)
+                            <img
+                                class="messageImage"
+                                src="{{ asset('assets/media/signmessage/' . $message_data->name) }}"
+                                style="width: 10%; cursor: pointer;"
+                                alt="image"
+                                data-message="{{ json_encode($message_data->message) }}"
+                                data-index="{{ $index }}"
+                            />
                         @endforeach
+
                     </div>
                 </div>
                 {{-- <div class="action-group flex-wrap p-1"> <!-- actions -->
@@ -314,11 +316,15 @@ $message_data = $message_datas[0];
         });
     });
 
+    const messagesData = @json($messages_data);
+    const screenSettings = @json($screenSettings);
 
-    const messageData = @json($message_data);
-    let temp = messageData.message;
-    // const messageData = messageDatas[0];
-    console.log(messageData);
+    let messageData = [];
+    // let temp = [];
+    if (messagesData.length > 0) {
+        messageData = messagesData[0];
+        // temp = messageData.message;
+    }
     const mode = "{{ $mode }}";
     var alignmentList = ['left', 'left', 'left'];   // default ones
     let alignments = [0,0,0];
@@ -330,6 +336,9 @@ $message_data = $message_datas[0];
     var messages = [];
     var isSaveCopy = false;
 
+    let message_name = $('#message_name').val();
+    let message_ID = $('#message_ID').val();
+    let message_keywords = $('#message_keywords').val();
 
     const lightOff = function (rowNum, col, mode = 'line') {
 
@@ -362,13 +371,59 @@ $message_data = $message_datas[0];
     }
 
     // Make the initial screen in 3-line mode
-    addBlankRow(2, 0);
-    addBlackRow(10, 2, 'line');
-    addBlankRow(3, 12);
-    addBlackRow(10, 15, 'line');
-    addBlankRow(3, 25);
-    addBlackRow(10, 28, 'line');
-    addBlankRow(2, 38);
+    addBlankRow(screenSettings.top_blank_rows, 0);
+    addBlackRow(screenSettings.font_pixels_high, 2, 'line');
+    addBlankRow(screenSettings.between_1st_2nd_row, 12);
+    addBlackRow(screenSettings.font_pixels_high, 15, 'line');
+    addBlankRow(screenSettings.between_2nd_3rd_row, 25);
+    addBlackRow(screenSettings.font_pixels_high, 28, 'line');
+    addBlankRow(screenSettings.blank_lines_bottom, 38);
+
+    // addBlankRow(2, 0);
+    // addBlackRow(10, 2, 'line');
+    // addBlankRow(1, 12);
+    // addBlackRow(10, 15, 'line');
+    // addBlankRow(1, 25);
+    // addBlackRow(10, 28, 'line');
+    // addBlankRow(2, 38);
+    function updateValuesAndAlignments() {
+        alignmentList = messageData.three_line_alignment;
+        alignmentList.forEach(function(alignment, index) {
+            switch (alignment) {
+                case 'left':
+                    alignments[index] = 0;
+                    break;
+                case 'center':
+                    alignments[index] = 1;
+                    break;
+                case 'right':
+                    alignments[index] = 2;
+                    break;
+                default:
+                    break;
+            }
+            // justifyAlignment(index);
+        });
+
+        $('.btn-group').each(function(index) {
+            let alignmentIndex = alignments[index];
+            $(this).find('button').removeClass('bg-dark');
+            $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
+        });
+
+        messageData.message.forEach(function(msg, index) {
+            $('.message-input input').eq(index).val(msg);
+            console.log($('.message-input input').eq(index).val());
+        });
+
+        $('#message_name').val(messageData.name.replace(".bmp", ""));
+        $('#message_ID').val(messageData.no);
+        $('#message_keywords').val(messageData.keywords);
+
+        message_name = $('#message_name').val();
+        message_ID = $('#message_ID').val();
+        message_keywords = $('#message_keywords').val();
+    }
 
     $(document.fonts).ready(function() {
         // assign alignments after loading
@@ -402,36 +457,7 @@ $message_data = $message_datas[0];
             // } else {
             //     messages.push([]);
             // }
-
-            alignmentList = messageData.three_line_alignment;
-            alignmentList.forEach(function(alignment, index) {
-                switch (alignment) {
-                    case 'left':
-                        alignments[index] = 0;
-                        break;
-                    case 'center':
-                        alignments[index] = 1;
-                        break;
-                    case 'right':
-                        alignments[index] = 2;
-                        break;
-                    default:
-                        break;
-                }
-                // justifyAlignment(index);
-            });
-
-            $('.btn-group').each(function(index) {
-                let alignmentIndex = alignments[index];
-                $(this).find('button').removeClass('bg-dark');
-                $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
-            });
-
-            messageData.message.forEach(function(msg, index) {
-                $('.message-input input').eq(index).val(msg);
-                console.log($('.message-input input').eq(index).val());
-            });
-
+            updateValuesAndAlignments()
             displayLED();
         }
 
@@ -507,7 +533,7 @@ $message_data = $message_datas[0];
         }
 
         function displayLED() {
-            // let temp = getMessage();
+            let temp = getMessage();
             clearLights('wrapperLed');
             messages = [];
 
@@ -520,27 +546,23 @@ $message_data = $message_datas[0];
         }
 
         $('.messageImage').on('click', function () {
-            temp = [];
-            textMessages = $(this).data('message');
-            console.log(textMessages);
-
-            // textMessages = JSON.parse(textMessages)
-            console.log(textMessages);
-            textMessages.forEach(function(item, index, array) {
-                temp.push(item);
-            });
+            let textMessages = $(this).data('message');
+            let index = $(this).data('index');
+            messageData = messagesData[index];
+            drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
+            updateValuesAndAlignments();
             displayLED();
         });
-        function handleImageClick(textMessages) {
-            textMessages = JSON.parse(textMessages)
-            textMessages.forEach(function(item, index, array) {
-                temp.push(item);
-            });
-            displayLED();
-            console.log(temp);
+        // function handleImageClick(textMessages) {
+        //     textMessages = JSON.parse(textMessages)
+        //     textMessages.forEach(function(item, index, array) {
+        //         temp.push(item);
+        //     });
+        //     displayLED();
+        //     console.log(temp);
 
-            // console.log(JSON.parse(textMessage));
-        }
+        //     // console.log(JSON.parse(textMessage));
+        // }
 
         // message change event in 3-line mode
         $('.message-input input').on('keyup', function(e) {
@@ -773,14 +795,14 @@ $message_data = $message_datas[0];
                 if ($('#dot-mode').hasClass('btn-primary')) $('#dot-mode').removeClass('btn-primary');
                 if (!$('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').addClass('btn-secondary');
                 drawMode = 0;
-            } else {
+            } else if (whichMode == 'dot-mode') {
                 if ($(this).hasClass('btn-secondary')) $(this).removeClass('btn-secondary');
                 if (!$(this).hasClass('btn-primary')) $(this).addClass('btn-primary');
 
                 if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
                 if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
                 drawMode = 1;
-            }
+            } else {}
 
             changeMode();
             // makeGrid();
@@ -1506,17 +1528,14 @@ $message_data = $message_datas[0];
         })
 
         // message name
-        let message_name = $('#message_name').val();
         $('#message_name').on('keyup', function(e) {
             message_name = e.target.value;
         });
 
         // let message_keywords = $('#message_keywords').val().split(' ');
-        let message_keywords = $('#message_keywords').val();
         $('#message_keywords').on('keyup', function(e) {
             message_keywords = e.target.value;
         });
-        let message_ID = $('#message_ID').val();
 
         function checkAlphanumeric(message) {
             var pattern = /^[a-zA-Z0-9]+$/;
