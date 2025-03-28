@@ -29,6 +29,63 @@
                 /* position: absolute; */
                 left: 0;
             }
+
+            .screen-layer-highlight {
+                border: 2px solid red;
+                padding: 0.5px;
+                border-radius: 8px;
+                transition: 0.3s ease-in-out;
+            }
+
+            .image-highlight {
+                border: 4px solid #4A41C2;
+                padding: 0.5px;
+                border-radius: 1px;
+                transition: 0.3s ease-in-out;
+            }
+
+            .hidden-input {
+                position: absolute;
+                left: -9999px;  /* Moves it off-screen */
+                width: 1px;
+                height: 1px;
+                border: none;
+                outline: none;
+                background: transparent;
+            }
+
+            @media (max-width: 768px) {
+                .mode {
+                    flex-direction: column; /* Stack buttons vertically */
+                    align-items: center;
+                }
+                .mode button {
+                    width: 100%; /* Make buttons full width */
+                    margin-bottom: 5px; /* Add spacing between buttons */
+                }
+            }
+
+            .btn-custom-sm {
+                padding: -0.5rem 3rem !important;  /* Default padding */
+                font-size: 14px !important;    /* Default font size */
+            }
+
+            /* Smaller screens (tablets & large phones) */
+            @media (max-width: 768px) {
+                .btn-custom-sm {
+                    padding: 4px 8px;
+                    font-size: 13px;
+                }
+            }
+
+            /* Extra small screens (phones) */
+            @media (max-width: 480px) {
+                .btn-custom-sm {
+                    padding: 3px 6px;
+                    font-size: 12px;
+                }
+            }
+
         </style>
     </head>
     <body  id="kt_body"class="quick-panel-right demo-panel-right offcanvas-right header-fixed subheader-enabled page-loading"  >
