@@ -578,11 +578,11 @@
             updateValuesAndAlignments()
             displayLED();
         } else {
-            if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
-            if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
+            // if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
+            // if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
 
-            if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
-            if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
+            // if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
+            // if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
         }
 
         function textToLED(theWord){
@@ -657,7 +657,8 @@
         }
 
         function displayLED() {
-            if(messageData.draw_mode == 0) {
+
+            if(messageData.draw_mode == 0 || messageData.draw_mode == undefined ) {
                 let temp = getMessage();
 
                 clearLights('wrapperLed');
