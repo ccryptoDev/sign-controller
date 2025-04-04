@@ -194,7 +194,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="card-body text-center" style="overflow:scroll">  
+                    <div class="card-body text-center" style="overflow:scroll">
                         <div class="row align-items-center mb-6">
                             <div class="col-8">
                                 <div id="kt_nouislider_2" class="nouislider nouislider-handle-danger"></div>
@@ -301,7 +301,7 @@
                 }
             });
         }
-        // 
+        //
         function clearLights(){
             var lightsOn = $('.on');
             lightsOn.addClass('off');
@@ -313,7 +313,7 @@
                 theMessage.push(charToLED(theWord.charAt(i)));
                 theMessage.push(charToLED());
             }
-        
+
             var flatten = [];
             flatten = flatten.concat.apply(flatten, theMessage);
             return flatten;
@@ -349,14 +349,14 @@
 
         function drawMessage(messageArray, line){
             var messageLength = messageArray.length;
-            var totalScrollLength = 60 + messageLength;        
-            if(messageLength>0){        
+            var totalScrollLength = 60 + messageLength;
+            if(messageLength>0){
                 for (var col = 0; col < messageLength; col++) {
                     for (var row = 0; row < 7; row++) {
                         var offsetCol = 0 + col;
                         if (offsetCol < 60 || offsetCol >= 0) {
                             setLight(line * 10 + row, offsetCol, messageArray[col][row]);
-                        }                
+                        }
                     }
                 }
             }
@@ -412,7 +412,7 @@
                     } else {
                         ctx.fillText(item, canvas.width - 10, 130 * (index + 1));
                     }
-                    
+
                     // ctx.fillText(alignment + "-aligned", item, 10 , 100 * (index + 1) + (index == 0 ? 0 : 10 * index));
                 })
                 if(undo_flag == false) {
@@ -658,7 +658,7 @@
 
             let tableRows = '';
             let r = 1;
-            
+
             var selectedMode = $("#edit-mode").val();
             var blank = 3;
             var j = 1;

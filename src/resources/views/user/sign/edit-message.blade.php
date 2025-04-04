@@ -18,19 +18,19 @@
                     class="form-control signalMessage hidden-input"
                     name="message_1"
                     id="message_1"
-                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
                 >
                 <input
                     class="form-control signalMessage hidden-input"
                     name="message_2"
                     id="message_2"
-                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
                 >
                 <input
                     class="form-control signalMessage hidden-input"
                     name="message_3"
                     id="message_3"
-                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
                 >
                 <div class="card-header col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
                     <div class="message-inform"> <!-- name -->
@@ -336,6 +336,8 @@
 <script src="/js/html2canvas.min.js"></script>
 
 <script>
+    var pixelHeight = parseInt("{{$screenSettings['font_pixels_high'] ?? 10}}");
+    var pixelWidth = parseInt("{{$screenSettings['font_pixels_wide'] ?? 6}}");
 
     $(document).ready(function () {
         $(".signalMessage").on("focus", function () {
@@ -406,8 +408,8 @@
     var alignmentList = ['left', 'left', 'left'];   // default ones
     let alignments = [0,0,0];
 
-    const canvasWidth = 56;
-    const canvasHeight = 40;
+    const canvasWidth = parseInt("{{$screenSettings['screen_pixels_wide'] ?? 56}}");;
+    const canvasHeight = parseInt("{{$screenSettings['screen_pixels_high'] ?? 40}}");;
     let drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
 
     var messages = [];
@@ -575,27 +577,53 @@
             // } else {
             //     messages.push([]);
             // }
+
             updateValuesAndAlignments()
             displayLED();
-        } else {
-            // if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
-            // if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
-
-            // if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
-            // if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
         }
+        else if (mode == 'edit' && messageData.draw_mode == 1) {
+            if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
+            if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
+
+            if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
+            if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
+        }
+
 
         function textToLED(theWord){
             var theMessage = [];
+            var totalWidth = 0;
+            var letterArrays = [];
+
+            // First, get all character arrays
             for (var i = 0; i < theWord.length; i++) {
-                theMessage.push( transposeArray(charToLED(theWord.charAt(i))) );
-                theMessage.push( charToLED() );
+                var letterArray = transposeArray(charToLED(theWord.charAt(i), pixelHeight, pixelWidth));
+                letterArrays.push(letterArray);
+                totalWidth += letterArray.length;
             }
 
-            var flatten = [];
-            flatten = flatten.concat.apply(flatten, theMessage);
+            // Add spaces between characters (1 pixel each)
+            totalWidth += Math.max(0, theWord.length - 1); // Add 1 pixel space between each character
 
-            return flatten;
+            // Create the final array with exact spacing
+            var currentPosition = 0;
+            for (var i = 0; i < letterArrays.length; i++) {
+                var letterArray = letterArrays[i];
+
+                // Add the character
+                for (var j = 0; j < letterArray.length; j++) {
+                    theMessage[currentPosition + j] = letterArray[j];
+                }
+                currentPosition += letterArray.length;
+
+                // Add one pixel space after character (except for last character)
+                if (i < letterArrays.length - 1) {
+                    theMessage[currentPosition] = new Array(pixelHeight).fill(false);
+                    currentPosition++;
+                }
+            }
+
+            return theMessage;
         }
 
         function justifyAlignment(layer) {
@@ -967,7 +995,7 @@
                 drawMode = 0;
             } else if (mode == 1) {
                 if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
-                if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
+                if (!$('#dot-mode').hasClass('btn-primary')) $(this).addClass('btn-primary');
 
                 if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
                 if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
@@ -1187,9 +1215,9 @@
         function drawModePixelArray() {
             let pixelArray = [];
 
-            for (let row = 0; row < 40; row++) {
+            for (let row = 0; row < canvasHeight; row++) {
                 let rowArray = [];
-                for (let col = 0; col < 56; col++) {
+                for (let col = 0; col < canvasWidth; col++) {
                     let pixelElement = document.querySelector(`#pixelCanvas .col .pixel_${row}_${col}`);
                     if (pixelElement) {
                         rowArray.push(pixelElement.classList.contains('on') ? 1 : 0);
@@ -1796,6 +1824,7 @@
         }
 
         $("#importImage").on("click", function (event) {
+            $("#dot-mode").click();
             $('#importModal').modal('show');
         });
 
@@ -1803,6 +1832,8 @@
             const file = event.target.files[0];
             const preview = document.getElementById("modalImagePreview");
             const confirmButton = document.getElementById("confirmImportButton");
+
+
 
             if (file) {
                 const reader = new FileReader();
@@ -1823,7 +1854,6 @@
 
         document.getElementById("confirmImportButton").addEventListener("click", function() {
             // alert("Image Imported Successfully!");
-            $("#dot-mode").click();
             $('#importModal').modal('hide');
         });
 
