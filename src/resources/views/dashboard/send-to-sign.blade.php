@@ -14,7 +14,7 @@
 </div>
 
 <div class="fluid bg-white">
-    <div class="send-button d-flex justify-content-center">
+    <div class="send-button d-flex justify-content-center flex-wrap mb-2">
         <button class="btn btn-primary" type="button" id="send">Send</button>
         <button class="btn btn-primary" type="button" id="edit">
             Edit
@@ -279,6 +279,11 @@
         }
 
         slickFunction();
+
+        var $firstSlide = $('.slick .slick-slide[data-slick-index="0"]');
+        if ($firstSlide.length) {
+            handleSlideClick($firstSlide);
+        }
         // Initialize Slick slider
         // $('#slick').slick({
         //     infinite: true,

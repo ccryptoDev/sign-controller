@@ -32,7 +32,7 @@
 
             .screen-layer-highlight {
                 border: 2px solid red;
-                padding: 0.5px;
+                /* padding: 0.5px; */
                 border-radius: 8px;
                 transition: 0.3s ease-in-out;
             }
@@ -54,14 +54,25 @@
                 background: transparent;
             }
 
-            @media (max-width: 768px) {
-                .mode {
-                    flex-direction: column; /* Stack buttons vertically */
-                    align-items: center;
+            .mode{
+                gap: 10px;
+            }
+            .mode button{
+                margin-bottom: 10px;
+            }
+
+            @media (max-width: 468px) {
+                .mode{
+                    align-items: flex-start;
+                    /* justify-content: space-between !important; */
+                    gap: 5px;
                 }
-                .mode button {
-                    width: 100%; /* Make buttons full width */
-                    margin-bottom: 5px; /* Add spacing between buttons */
+                .mode button{
+                    width: 80px;
+                    font-size: 10px;
+                    padding: 5px 13px;
+                    text-align: center;
+
                 }
             }
 

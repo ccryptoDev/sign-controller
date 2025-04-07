@@ -51,7 +51,7 @@
                             >
                         </div>
                     </div> <!-- end: name -->
-                    <div class="message-inform"> <!-- keywords -->
+                    {{-- <div class="message-inform"> <!-- keywords -->
                         <label for="message-keywords">Keywords</label>
                         <div>
                             <input class="form-control"
@@ -61,7 +61,7 @@
                                 value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
                             >
                         </div>
-                    </div> <!-- end: keywords -->
+                    </div> <!-- end: keywords --> --}}
                 </div> <!-- end: message name and keywords -->
 
                 <div class="card-body">
@@ -117,7 +117,7 @@
                         <div id="ledContainer">
                             <div id='wrapperLed' class="row"></div>
                         </div>
-                        <canvas id="3LineLed" width="56" height="40" class="d-none"></canvas>
+                        <canvas id="3LineLed" width="{{$screenSettings['screen_pixels_wide'] ?? 56}}" height="{{$screenSettings['screen_pixels_high'] ?? 40}}" class="d-none"></canvas>
 
                         {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
                         <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
@@ -125,7 +125,7 @@
                             {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
                             <div id="pixelCanvas" class="row flyItIn2"></div>
                         </div>
-                        <canvas id="draw-mode" width="56" height="40" class="d-none"></canvas>
+                        <canvas id="draw-mode" width="{{$screenSettings['screen_pixels_wide'] ?? 56}}" height="{{$screenSettings['screen_pixels_high'] ?? 40}}" class="d-none"></canvas>
                     </div>
                     <!-- end led -->
 
@@ -359,35 +359,16 @@
         });
 
         $(".ledGroup").on("click", function () {
-            // Remove border from all groups
-            $(".ledGroup").removeClass("screen-layer-highlight");
-
-            // Add border to the clicked group
-            $(this).addClass("screen-layer-highlight");
-
-            // Get the index of the clicked group
-            let groupIndex = $(this).index(".ledGroup") + 1; // Since indexes start from 0
-
-            // Focus the corresponding message input field
-            let $input = $("#message_" + groupIndex);
-            $input.focus();
-
-            $(".text-alignment .btn").each(function(){
-                if (alignmentList[groupIndex - 1] == $(this).data('alignment')) {
-                    $(this).addClass('bg-dark');
-                } else {
-                    $(this).removeClass('bg-dark');
-                }
-            });
+            highlightLedGroup($(this));
         });
 
-        $(document).on("click", function (event) {
-            // Check if the click is outside .ledGroup and input fields
-            if (!$(event.target).closest(".ledGroup, .signalMessage").length) {
-                $(".ledGroup").removeClass("screen-layer-highlight");
-                $(".signalMessage").blur(); // Remove focus from input fields
-            }
-        });
+        // $(document).on("click", function (event) {
+        //     // Check if the click is outside .ledGroup and input fields
+        //     if (!$(event.target).closest(".ledGroup, .signalMessage").length) {
+        //         $(".ledGroup").removeClass("screen-layer-highlight");
+        //         $(".signalMessage").blur(); // Remove focus from input fields
+        //     }
+        // });
 
         $("#quit").on("click", function () {
             window.location.href = "{{ route('send-to-sign') }}";
@@ -405,8 +386,8 @@
     }
 
     const mode = "{{ $mode }}";
-    var alignmentList = ['left', 'left', 'left'];   // default ones
-    let alignments = [0,0,0];
+    var alignmentList = ['center', 'center', 'center'];   // default ones
+    let alignments = [1,1,1];
 
     const canvasWidth = parseInt("{{$screenSettings['screen_pixels_wide'] ?? 56}}");;
     const canvasHeight = parseInt("{{$screenSettings['screen_pixels_high'] ?? 40}}");;
@@ -434,7 +415,7 @@
     const addBlankRow = function (length, previousRowNum) {
 
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
+            var col = $('<div style="padding: 0 25px !important;" class="col-12 p-1 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
             lightOff(previousRowNum + i, col, 'line');
         }
     }
@@ -545,8 +526,39 @@
         message_keywords = $('#message_keywords').val();
     }
 
+    function highlightLedGroup($target) {
+        // Remove border from all groups
+        $(".ledGroup").removeClass("screen-layer-highlight");
+
+        // Add border to the selected group
+        $target.addClass("screen-layer-highlight");
+
+        // Get the index of the selected group
+        let groupIndex = $target.index(".ledGroup") + 1;
+
+        // Focus the corresponding message input field
+        let $input = $("#message_" + groupIndex);
+        let input = $input[0]; // get the raw DOM element
+
+        $input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+        // let $input = $("#message_" + groupIndex);
+        // $input.focus();
+
+        // Highlight the correct alignment button
+        $(".text-alignment .btn").each(function () {
+            if (alignmentList[groupIndex - 1] == $(this).data("alignment")) {
+                $(this).addClass("bg-dark");
+            } else {
+                $(this).removeClass("bg-dark");
+            }
+        });
+    }
+
+
     $(document.fonts).ready(function() {
         // assign alignments after loading
+        const $firstGroup = $(".ledGroup").first();
         if (mode == 'edit' && messageData.draw_mode == 0) {
             // if (messageData.message1 !== null) {
             //     messages.push(
@@ -580,6 +592,10 @@
 
             updateValuesAndAlignments()
             displayLED();
+
+            if ($firstGroup.length) {
+                highlightLedGroup($firstGroup);
+            }
         }
         else if (mode == 'edit' && messageData.draw_mode == 1) {
             if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
@@ -587,6 +603,10 @@
 
             if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
             if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
+        } else {
+            if ($firstGroup.length) {
+                highlightLedGroup($firstGroup);
+            }
         }
 
 
@@ -719,7 +739,8 @@
                 updateValuesAndAlignments();
                 displayLED();
             } else {
-                changeThreeDotImageToDrawDot();
+                // makeGrid();
+                changeThreeDotImageToDotDraw();
             }
         });
         // function handleImageClick(textMessages) {
@@ -978,7 +999,7 @@
                 if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
                 if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
                 drawMode = 1;
-                changeThreeDotImageToDrawDot();
+                changeThreeDotImageToDotDraw();
             } else {}
 
             changeMode();
@@ -1027,7 +1048,7 @@
 
         changeMode();
 
-        var changeThreeDotImageToDrawDot = function () {
+        var changeThreeDotImageToDotDraw = function () {
             let imgUrl = $('.messageImage.image-highlight').attr('src');
 
             fetch(imgUrl)
@@ -1148,10 +1169,10 @@
         var convertHTMLtoImage = function () {
             let cols, canvas;
             if (drawMode == 0) {
-                cols = document.querySelectorAll('#wrapperLed .col');
+                cols = document.querySelectorAll('#wrapperLed .col:not(.ledGroup)');
                 canvas = document.getElementById('3LineLed');
             } else {
-                cols = document.querySelectorAll('#pixelCanvas .col');
+                cols = document.querySelectorAll('#pixelCanvas .col:not(.ledGroup)');
                 canvas = document.getElementById('draw-mode');
             }
 
@@ -1482,7 +1503,7 @@
                 grid.removeChild(grid.lastChild);
             }
 
-            addBlackRow(40, 0, 'grid');
+            addBlackRow(canvasHeight, 0, 'grid');
 
             // orignal draw in draw-mode
             if (mode == 'edit') {
@@ -1828,12 +1849,11 @@
             $('#importModal').modal('show');
         });
 
+        let importedFile = null;
         document.getElementById("modalImageInput").addEventListener("change", function(event) {
             const file = event.target.files[0];
             const preview = document.getElementById("modalImagePreview");
             const confirmButton = document.getElementById("confirmImportButton");
-
-
 
             if (file) {
                 const reader = new FileReader();
@@ -1843,17 +1863,17 @@
                     confirmButton.disabled = false; // Enable Import button
                 };
                 reader.readAsDataURL(file);
-
-                clearLights('pixelCanvas');
-                convertImageToHTML(file);
+                importedFile = file;
             } else {
+                importedFile = null;
                 preview.classList.add("d-none");
                 confirmButton.disabled = true;
             }
         });
 
         document.getElementById("confirmImportButton").addEventListener("click", function() {
-            // alert("Image Imported Successfully!");
+            clearLights('pixelCanvas');
+            convertImageToHTML(importedFile);
             $('#importModal').modal('hide');
         });
 
