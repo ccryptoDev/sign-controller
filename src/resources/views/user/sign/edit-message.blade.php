@@ -32,7 +32,7 @@
                     id="message_3"
                     value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
                 >
-                <div class="card-header col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
+                <div class="card-header mb-0 col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
                     <div class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
@@ -64,7 +64,7 @@
                     </div> <!-- end: keywords --> --}}
                 </div> <!-- end: message name and keywords -->
 
-                <div class="card-body">
+                <div class="card-body pt-0">
                     <div class="mode d-flex flex-wrap justify-content-center gap-2"> <!-- mode -->
                         {{-- @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary mr-1" type="button" id="saveMessage">Update</button>
@@ -72,12 +72,16 @@
                         @else
                             <button class="btn btn-primary mr-1" type="button" id="saveMessage">Save</button>
                         @endif --}}
-                        <button class="btn btn-danger mr-1" type="button" id="saveMessage">Save</button>
-                        <button class="btn btn-danger mr-1" type="button" id="quit">Quit</button>
-                        <button class="btn btn-danger mr-1" type="button" id="clearMessage">Clear</button>
-                        <button class="btn btn-primary mr-1" type="button" id="line-mode">3-Line</button>
-                        <button class="btn btn-secondary mr-1" type="button" id="dot-mode">Dot Draw</button>
-                        <button class="btn btn-secondary mr-1" type="button" id="importImage">Import</button>
+                        <div style="max-width: 100px; margin-right: 20px; gap: 10px;" class="d-flex align-items-center gap-2 edit-msg-single-inp-wrapper ">
+                            <input class="form-control" style="width: 45px; text-align: center" name="time_to_show" id="time_to_show" value="" />
+                            <label for="time_to_show" class="m-0 py-1" style="color: black; width: 70px; text-align: left; font-size: 12px;">Seconds to show image</label>
+                        </div>
+                        <button class="btn btn-danger" type="button" id="saveMessage">Save</button>
+                        <button class="btn btn-danger" type="button" id="quit">Quit</button>
+                        <button class="btn btn-danger" type="button" id="clearMessage">Clear</button>
+                        <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
+                        <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
+                        <button class="btn btn-secondary" type="button" id="importImage">Import</button>
                         <button class="btn btn-secondary mr-5" type="button" id="exportImage">Export</button>
                         <div class="align-wrapper">
                             <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
@@ -256,6 +260,18 @@
                             </div>
                         </div>  <!-- end: message 3 -->
                     </div><!-- end: message editbox --> --}}
+
+                    <div class="message-inform mt-2 {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- keywords -->
+                        <label for="message-keywords">Keywords</label>
+                        <div>
+                            <input class="form-control"
+                                name="message_keywords"
+                                id="message_keywords"
+                                placeholder="Insert a space for multiple keywords"
+                                value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
+                            >
+                        </div>
+                    </div> <!-- end: keywords -->
 
                     <div class="mt-4" style="display: flex; justify-content: space-evenly; ">
                         @foreach ($messages_data as $index => $message_data)
@@ -1016,7 +1032,7 @@
                 drawMode = 0;
             } else if (mode == 1) {
                 if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
-                if (!$('#dot-mode').hasClass('btn-primary')) $(this).addClass('btn-primary');
+                if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
 
                 if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
                 if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
@@ -1554,11 +1570,26 @@
 
             // Handle touchmove for continuous painting/erasing
             grid.addEventListener('touchmove', function(event) {
-                if (mouseIsDown) {
+                if (mouseIsDown && event.touches.length > 0) {
                     event.preventDefault();
-                    paintEraseTiles(event.target, true);
+
+                    const touch = event.touches[0];
+                    const x = touch.clientX;
+                    const y = touch.clientY;
+
+                    const target = document.elementFromPoint(x, y);
+                    if (target) {
+                        paintEraseTiles(target, true);
+                    }
                 }
-            });
+            }, { passive: false });
+
+            // grid.addEventListener('touchmove', function(event) {
+            //     if (mouseIsDown) {
+            //         event.preventDefault();
+            //         paintEraseTiles(event.target, true);
+            //     }
+            // });
 
             // Handle mouseup to stop painting/erasing
             document.addEventListener('mouseup', function(event) {
@@ -1646,9 +1677,7 @@
             });
         }
 
-        // Alignment
-
-        // Dynamic layer
+        // Dynamic layer Alignment
         $("#leftAlign").on("click", function() {
             event.preventDefault();
 

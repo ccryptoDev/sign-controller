@@ -59,6 +59,7 @@
             }
             .mode button{
                 margin-bottom: 10px;
+                padding: 8px 16px;
             }
 
             @media (max-width: 468px) {
@@ -66,15 +67,35 @@
                     align-items: flex-start;
                     /* justify-content: space-between !important; */
                     gap: 5px;
+                    align-items: center;
                 }
                 .mode button{
-                    width: 80px;
-                    font-size: 10px;
-                    padding: 5px 13px;
+
+                    font-size: 12px;
+
                     text-align: center;
 
                 }
             }
+
+            @media (max-width: 568px) {
+
+
+            .edit-msg-single-inp-wrapper{
+                /* min-width: 100%; */
+                justify-content: center;
+                margin-bottom: 10px;
+                margin-right: 0 !important;
+
+                input{
+                    width:38px !important;
+                    height: 38px;
+                }
+                label{
+                    font-size: 10px !important;
+                }
+            }
+        }
 
             .btn-custom-sm {
                 padding: -0.5rem 3rem !important;  /* Default padding */
