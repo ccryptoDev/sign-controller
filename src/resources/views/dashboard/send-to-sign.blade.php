@@ -2,44 +2,35 @@
 
 <div class="fluid bg-white">
     <!-- custom header  -->
-    <div class="custom-header px-4 px-md-16">
-        <div class="page-logo">
-            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
-        </div>
-        <div class="d-none d-sm-block text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
-        </div>
-        <div class="qrcode-form">
-            <!-- <a href="#">Click for HELP</a> -->
-            <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
-        </div>
-    </div>
+    <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
     <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
-    </div>  
+    </div>
     <!-- end: custom-header -->
 </div>
 
 <div class="fluid bg-white">
-    <div class="send-button d-flex justify-content-center">
+    <div class="send-button d-flex justify-content-center flex-wrap mb-2">
         <button class="btn btn-primary" type="button" id="send">Send</button>
         <button class="btn btn-primary" type="button" id="edit">
             Edit
         </button>
         <button class="btn btn-primary" type="button" id="create">
-            <a href="{{ route('edit-message', ['id' => 0]) }}">Create New</a>
+            <a href="{{ route('edit-message', ['id' => 0]) }}">New</a>
         </button>
+        <button class="btn btn-primary" type="button" id="copy">Copy</button>
+        <button class="btn btn-primary" type="button" id="library">Library</button>
+        <button class="btn btn-primary" type="button" id="delete">Delete</button>
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
-        <!-- <button 
-            class="btn" 
-            type="button" 
+        <!-- <button
+            class="btn"
+            type="button"
             id="send"
         >
             <span>Open</span>
@@ -58,21 +49,21 @@
     <div class="px-8 search-form">
         <div class="search-item">
             <label class="italic">Search for these &nbsp; names/keywords</label>
-            <input class="form-control search-input" 
-                name="keyword" 
-                id="firstSearch" 
+            <input class="form-control search-input"
+                name="keyword"
+                id="firstSearch"
                 placeholder="Please type first keyword"
             >
         </div>
-        <div class="search-item">
+        {{-- <div class="search-item">
             <label class="italic">Item Names</label>
             <input class="form-control search-input text-center"
                 id="information"
                 value=""
-                placeholder="The information of selected sign will be displayed here" 
+                placeholder="The information of selected sign will be displayed here"
                 disabled
             >
-        </div>
+        </div> --}}
     </div>
     <!-- end::search form -->
 
@@ -82,7 +73,7 @@
                 <div class="search-item">
                     <input class="form-control search-input"
                         name="id-name"
-                        id="secondSearch" 
+                        id="secondSearch"
                         placeholder="Please type second keyword"
                     >
                     </input>
@@ -101,7 +92,7 @@
                     </span>
                 </li>
                 @endforeach -->
-            </ul>               
+            </ul>
         </div>
     </div>
 </div>
@@ -112,15 +103,15 @@
 <script src="/assets/js/messagesign.js"></script>
 <!-- <script src="/assets/js/redirect.js"></script> -->
 <script>
-    
+
     // var images = {!! json_encode($images) !!};
     var images = @json($images);
 
     images = images.map((image, index) => (
-        { 
+        {
             id: index,
-            number: image.no, 
-            name: image.name,  
+            number: image.no,
+            name: image.name,
             path: image.path,
             keywords: image.keywords
         }
@@ -130,14 +121,15 @@
 
     var firstIndex = 0, secondIndex = 0;
     var firstSelectedImages = images, secondSelectedImages = [];
+    let messageIds = [];
 
     $('#edit').on('click', function() {
-        var messageId = firstSelectedImages[firstIndex].number;
+        // var messageId = firstSelectedImages[firstIndex].number;
 
         // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
         // editUrl = editUrl.replace(':id', messageId);
 
-        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageId;
+        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
         window.location.href = editUrl;
     });
 
@@ -145,7 +137,7 @@
         event.preventDefault();
 
         if (firstSelectedImages[firstIndex]) {
-    
+
             console.log('selected image ID: ', firstSelectedImages[firstIndex].id);
             console.log('selected image Name: ', firstSelectedImages[firstIndex].name);
 
@@ -176,7 +168,7 @@
                                 toastr.success('The selected message is successfully sent!');
                             }
                             else {
-                                toastr.error("Something went wrong, please try again.");    
+                                toastr.error("Something went wrong, please try again.");
                             }
                         },
                         error : function(err){
@@ -206,7 +198,7 @@
     }
 
     $("#firstSearch").on('keyup', function(e) {
-        
+
         var value = $("#firstSearch").val().toLowerCase().trim();
         firstSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value));
 
@@ -241,7 +233,7 @@
     });
 
     $("#secondSearch").on('keyup', function(e) {
-        secondSearch();        
+        secondSearch();
 
         secondIndex = 0;
         if (secondSelectedImages.length > 0) {
@@ -254,12 +246,56 @@
     });
 
     // Load a slider with all the messages
-    $("#slickPanel").html('<div class="slick" id="slick"></div>');
-    for (var i = 0; i < images.length; i++) {
-        // var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id="${images[i].id}" alt="image" /></span></div>`;
-        var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-slide-no="${images[i].id}" data-id="${images[i].number}" alt="image" /></span></div>`;
-        $("#slick").append(component);
-    }
+    // $("#slickPanel").html('<div class="slick" id="slick"></div>');
+    // for (var i = 0; i < images.length; i++) {
+    //     // var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-id="${images[i].id}" alt="image" /></span></div>`;
+    //     var component = `<div><span><img src="{{ asset('assets/media/signmessage/${images[i].name}') }}" data-slide-no="${images[i].id}" data-id="${images[i].number}" alt="image" /></span></div>`;
+    //     $("#slick").append(component);
+    // }
+    $(document).ready(function () {
+        $("#slickPanel").html('<div class="slick" id="slick"></div>');
+
+        let totalMessages = images.length;
+        let index = 0;
+
+        while (index < totalMessages) {
+            let numToShow = Math.floor(Math.random() * 3) + 1; // Randomly select 1, 2, or 3 images per slide
+            numToShow = Math.min(numToShow, totalMessages - index); // Avoid going out of bounds
+
+            let component = `<div class="slide-group">`;
+            for (let j = 0; j < numToShow; j++) {
+                let image = images[index];
+                component += `<span>
+                                <img src="{{ asset('assets/media/signmessage/${image.name}') }}"
+                                    data-slide-no="${image.id}"
+                                    data-id="${image.number}"
+                                    alt="image" />
+                            </span>`;
+                index++; // Move to the next message
+            }
+            component += `</div>`;
+
+            $("#slick").append(component);
+        }
+
+        slickFunction();
+
+        var $firstSlide = $('.slick .slick-slide[data-slick-index="0"]');
+        if ($firstSlide.length) {
+            handleSlideClick($firstSlide);
+        }
+        // Initialize Slick slider
+        // $('#slick').slick({
+        //     infinite: true,
+        //     slidesToShow: 1, // Each slide now contains 1 to 3 images
+        //     slidesToScroll: 1,
+        //     autoplay: true,
+        //     autoplaySpeed: 3000,
+        //     arrows: true,
+        //     dots: true
+        // });
+    });
+
 
 </script>
 

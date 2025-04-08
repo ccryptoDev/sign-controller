@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
+use App\Models\Setting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Image; 
 
 class MessageSignController extends Controller
 {
@@ -38,9 +39,10 @@ class MessageSignController extends Controller
         // $images = collect(Storage::disk('public')->files('assets/media/signmessage'))->map(function ($item) {
         //     return basename($item);
         // });
-        
-        $images = Image::select('no', 'name', 'path', 'keywords')->get();
-        
+
+        $numMessages = Setting::where('key', 'num_messages_to_keep')->value('value') ?? 30;
+        $images = Image::select('no', 'name', 'path', 'keywords')->orderBy('id','desc')->limit($numMessages)->get();
+
         return view('dashboard.send-to-sign', compact('images'));
     }
 

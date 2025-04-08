@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
-use App\Models\Image;
 
 class SignController extends Controller
 {
@@ -15,22 +16,26 @@ class SignController extends Controller
     }
 
     public function edit_message($messageID) {
+        $messageIds = explode(',', $messageID);
         if ($messageID) {
-            $image = Image::where('no', $messageID)->first();
+            $images = Image::whereIn('no', $messageIds)->orderBy('id', 'desc')->get();
             $mode = 'edit';
         } else {
-            $image = [];
+            $images = [];
             $mode = 'create';
         }
+        $screenSettings = Setting::pluck('value', 'key')->toArray();
 
         return view('user.sign.edit-message', [
-            'message_data' => $image,
-            'mode' => $mode
+            'messages_data' => $images,
+            'message_data' => isset($images[0]) ? $images[0] : $images,
+            'mode' => $mode,
+            'screenSettings' => $screenSettings,
         ]);
     }
 
     public function get_user_role(Request $request) {
-        
+
         $response["role"] = Auth::user()->level;
         $response["success"] = true;
 
@@ -38,8 +43,8 @@ class SignController extends Controller
     }
 
     // public function get_range(Request $request) {
-        
-    //     // 0, user role 
+
+    //     // 0, user role
     //     $response["range"] = [1, 999];
     //     $response["success"] = true;
 
@@ -66,25 +71,24 @@ class SignController extends Controller
     // }
 
     public function save_message(Request $request) {
-
         $alignmentList = json_decode($request->input('three_line_alignment'), true);
         $msg = json_decode($request->input('msg'), true);
-        
+
         if ($request->mode == 'create' || $request->saveMode == 'saveAcopy') { // in case of CREATING new MESSAGE
             $range = json_decode($request->input('range'), true);
 
             // get max value for imageNo
             $existedNo = Image::where("no", ">=", $range[0])->where("no", "<=", $range[1])->max("no");
-    
+
             if (!$existedNo) {
                 $no = $range[0];
             } else {
                 $no = $existedNo + 1;
             }
-    
+
             // Save a message into database (Missing validator)
             $image = new Image;
-    
+
             $image->no = $no;
             $image->type = $request->imageType;
             $image->name = $request->imageName . "." . $request->imageType;
@@ -96,11 +100,11 @@ class SignController extends Controller
             $image->message = $msg;
             $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
-    
+
             try {
                 $image->save();
                 $createdImage = $image->fresh();
-    
+
                 // Save the image into the local storage
                 $fileName = $request->imageName . "." . $request->imageType;
                 // if same fileName exists
@@ -109,32 +113,32 @@ class SignController extends Controller
                     // Copy the file
                     // Storage::disk("public")->copy("assets/media/signmessage/$fileName", "assets/media/signmessage/$copyFilename");
                 }
-    
+
                 // Save the BMP file
                 if ($request->hasFile('imageFile')) {
                     // $request->file('imageFile')->storeAs('public/assets/media/signmessage', $fileName);
                     Storage::disk("public")->putFileAs("assets/media/signmessage", $request->file('imageFile'), $fileName);
                 }
-    
+
                 $response["success"] = true;
                 $response["newID"] = $createdImage->no;
             } catch (\Exception $e) {
                 $response["success"] = false;
             }
-    
+
             return $response;
-    
+
         } else if ($request->mode == 'edit') { // in case of EDITING the existed MESSAGE
             // Get the existing image by ID
             $image = Image::where('no', $request->imageID)->first();
-    
+
             if (!$image) {
                 // Image not found, return an error response
                 $response["success"] = false;
                 $response["message"] = "Image not found.";
                 return $response;
             }
-    
+
             // Update other data in the image record
             $image->type = $request->imageType;
             $image->keywords = $request->imageKeywords;
@@ -146,10 +150,10 @@ class SignController extends Controller
             $image->three_line_alignment = $alignmentList;
             $image->name = $request->imageName . "." . $request->imageType;
             $image->path = "public/assets/media/signmessage";
-    
+
             try {
                 $image->save();
-    
+
                 // Replace the image in the local storage if a new image was sent in the request
                 if ($request->hasFile('imageFile')) {
                     // $request->file('imageFile')->storeAs('public/assets/media/signmessage', $image->name);
@@ -159,9 +163,9 @@ class SignController extends Controller
             } catch (\Exception $e) {
                 $response["success"] = false;
             }
-    
+
             return $response;
         }
     }
-    
+
 }

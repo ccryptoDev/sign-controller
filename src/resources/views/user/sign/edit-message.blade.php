@@ -1,40 +1,44 @@
 @include('user.header_new')
-
-<div class="d-flex flex-column justify-content-between px-8 py-10 px-lg-24">
+<div class="d-flex flex-column justify-content-between px-8 py-2 px-lg-24">
     <!-- custom header  -->
-    <div class="custom-header px-4 px-md-16">
-        <div class="page-logo">
-            <img  src="/assets/media/logos/logo_new.png" class="login-header-logo-image" alt=""  /> 
-        </div>
-        <div class="d-none d-sm-block text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
-        </div>
-        <div class="qrcode-form">
-            <!-- <a href="#">Click for HELP</a> -->
-            <img src="/assets/media/mainmenu/qr_code.png" alt="Sign Controller QRcode">
-        </div>
-    </div>
+    <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
     <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
-            <h2>Work with a Message</h2>
-            <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
+            <h2>MESSAGES</h2>
+            <p>This menu allows the user to retrieve or create messages</p>
         </div>
-    </div>  
+    </div>
     <!-- end: custom-header -->
 
     <div class="container">
         <div class="row">
             <div class="card card-custom card-stretch">
-
-                <div class="card-header flex-column message-inform-form"> <!-- mesage name and keywords -->
+                <input
+                    class="form-control signalMessage hidden-input"
+                    name="message_1"
+                    id="message_1"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
+                >
+                <input
+                    class="form-control signalMessage hidden-input"
+                    name="message_2"
+                    id="message_2"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
+                >
+                <input
+                    class="form-control signalMessage hidden-input"
+                    name="message_3"
+                    id="message_3"
+                    value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
+                >
+                <div class="card-header mb-0 col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
                     <div class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
-                            <input class="form-control" 
-                                name="message_name" 
-                                id="message_name" 
+                            <input class="form-control"
+                                name="message_name"
+                                id="message_name"
                                 placeholder="Input the message name"
                                 value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
                                 {{ isset($message_data['no']) && $message_data['no'] > 0 ? 'disabled' : '' }}
@@ -47,131 +51,248 @@
                             >
                         </div>
                     </div> <!-- end: name -->
-                    <div class="message-inform"> <!-- keywords -->
+                    {{-- <div class="message-inform"> <!-- keywords -->
                         <label for="message-keywords">Keywords</label>
                         <div>
-                            <input class="form-control" 
-                                name="message_keywords" 
-                                id="message_keywords" 
+                            <input class="form-control"
+                                name="message_keywords"
+                                id="message_keywords"
+                                placeholder="Insert a space for multiple keywords"
+                                value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
+                            >
+                        </div>
+                    </div> <!-- end: keywords --> --}}
+                </div> <!-- end: message name and keywords -->
+
+                <div class="card-body pt-0">
+                    <div class="mode d-flex flex-wrap justify-content-center gap-2"> <!-- mode -->
+                        {{-- @if(isset($message_data['no']) && $message_data['no'] > 0)
+                        <button class="btn btn-primary mr-1" type="button" id="saveMessage">Update</button>
+                        <button class="btn btn-primary mr-1" type="button" id="saveAcopy">Save a Copy</button>
+                        @else
+                            <button class="btn btn-primary mr-1" type="button" id="saveMessage">Save</button>
+                        @endif --}}
+                        <div style="max-width: 100px; margin-right: 20px; gap: 10px;" class="d-flex align-items-center gap-2 edit-msg-single-inp-wrapper ">
+                            <input class="form-control" style="width: 45px; text-align: center" name="time_to_show" id="time_to_show" value="" />
+                            <label for="time_to_show" class="m-0 py-1" style="color: black; width: 70px; text-align: left; font-size: 12px;">Seconds to show image</label>
+                        </div>
+                        <button class="btn btn-danger" type="button" id="saveMessage">Save</button>
+                        <button class="btn btn-danger" type="button" id="quit">Quit</button>
+                        <button class="btn btn-danger" type="button" id="clearMessage">Clear</button>
+                        <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
+                        <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
+                        <button class="btn btn-secondary" type="button" id="importImage">Import</button>
+                        <button class="btn btn-secondary mr-5" type="button" id="exportImage">Export</button>
+                        <div class="align-wrapper">
+                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                    data-alignment="left"
+                                    id="leftAlign"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Left Justify"
+                                >
+                                    <i class="fas fa-align-left"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-light text-center"
+                                    data-alignment="center"
+                                    id="centerAlign"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Center Justify"
+                                >
+                                    <i class="fas fa-align-center"></i>
+                                </button>
+                                <button class="btn btn-sm btn-icon btn-light text-right"
+                                    data-alignment="right"
+                                    id="rightAlign"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to Right Justify"
+                                >
+                                    <i class="fas fa-align-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div> <!-- end: mode -->
+
+                    <!-- start led -->
+                    <div id="ledDiv" class="text-center work-area">
+                        <div id="ledContainer">
+                            <div id='wrapperLed' class="row"></div>
+                        </div>
+                        <canvas id="3LineLed" width="{{$screenSettings['screen_pixels_wide'] ?? 56}}" height="{{$screenSettings['screen_pixels_high'] ?? 40}}" class="d-none"></canvas>
+
+                        {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
+                        <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
+                        <div id="gridCanvas" class="gridCanvas rotationTime d-none">
+                            {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
+                            <div id="pixelCanvas" class="row flyItIn2"></div>
+                        </div>
+                        <canvas id="draw-mode" width="{{$screenSettings['screen_pixels_wide'] ?? 56}}" height="{{$screenSettings['screen_pixels_high'] ?? 40}}" class="d-none"></canvas>
+                    </div>
+                    <!-- end led -->
+
+                    {{-- <div class="flex-column messages">
+                        <div class="message_1 message"> <!-- message 1 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightFirst"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_1"
+                                    id="message_1"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 1 -->
+
+                        <div class="message_1 message"> <!-- message 2 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightSecond"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_2"
+                                    id="message_2"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 2 -->
+
+                        <div class="message_1 message"> <!-- message 3 -->
+                            <div class="align-wrapper">
+                                <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
+                                    <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
+                                        data-alignment="left"
+                                        id="alignLeftThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Left Justify"
+                                    >
+                                        <i class="fas fa-align-left"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-center"
+                                        data-alignment="center"
+                                        id="alignCenterThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Center Justify"
+                                    >
+                                        <i class="fas fa-align-center"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-icon btn-light text-right"
+                                        data-alignment="right"
+                                        id="alignRightThird"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        title="Click here to Right Justify"
+                                    >
+                                        <i class="fas fa-align-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="message-input">
+                                <input
+                                    class="form-control signalMessage"
+                                    name="message_3"
+                                    id="message_3"
+                                    value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
+                                >
+                            </div>
+                        </div>  <!-- end: message 3 -->
+                    </div><!-- end: message editbox --> --}}
+
+                    <div class="message-inform mt-2 {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- keywords -->
+                        <label for="message-keywords">Keywords</label>
+                        <div>
+                            <input class="form-control"
+                                name="message_keywords"
+                                id="message_keywords"
                                 placeholder="Insert a space for multiple keywords"
                                 value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
                             >
                         </div>
                     </div> <!-- end: keywords -->
-                </div> <!-- end: message name and keywords -->
 
-                <div class="mode"> <!-- mode -->
-                    <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
-                    <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
-                </div> <!-- end: mode -->
+                    <div class="mt-4" style="display: flex; justify-content: space-evenly; ">
+                        @foreach ($messages_data as $index => $message_data)
+                            <img
+                                class="messageImage {{ $index == 0 ? 'image-highlight' : '' }}"
+                                src="{{ asset('assets/media/signmessage/' . $message_data->name) }}"
+                                style="width: 10%; cursor: pointer;"
+                                alt="image"
+                                data-message="{{ json_encode($message_data->message) }}"
+                                data-index="{{ $index }}"
+                            />
+                        @endforeach
 
-                <div class="card-header flex-column messages"> <!-- message editbox -->
-                    <div class="message_1 message"> <!-- message 1 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
-                                    data-alignment="left"
-                                    id="alignLeftFirst"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterFirst"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
-                                    data-alignment="right"
-                                    id="alignRightFirst"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_1" 
-                                id="message_1" 
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[0]) ? $message_data->message[0] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 1 -->
-
-                    <div class="message_1 message"> <!-- message 2 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="2" aria-label="Basic example"> <!-- alignment 2 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
-                                    data-alignment="left"
-                                    id="alignLeftSecond"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterSecond"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
-                                    data-alignment="right"
-                                    id="alignRightSecond"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_2" 
-                                id="message_2" 
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[1]) ? $message_data->message[1] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 2 -->
-
-                    <div class="message_1 message"> <!-- message 3 -->
-                        <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="3" aria-label="Basic example"> <!-- alignment 3 -->
-                                <button class="btn btn-sm btn-icon btn-light text-left bg-dark" 
-                                    data-alignment="left"
-                                    id="alignLeftThird"
-                                >
-                                    <i class="fas fa-align-left"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-center"
-                                    data-alignment="center"
-                                    id="alignCenterThird"
-                                >
-                                    <i class="fas fa-align-center"></i>
-                                </button>
-                                <button class="btn btn-sm btn-icon btn-light text-right" 
-                                    data-alignment="right"
-                                    id="alignRightThird"
-                                >
-                                    <i class="fas fa-align-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="message-input">
-                            <input 
-                                class="form-control" 
-                                name="message_3" 
-                                id="message_3" 
-                                value="{{ $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
-                            >
-                        </div>
-                    </div>  <!-- end: message 3 -->
-                </div> <!-- end: message editbox -->
-
-                <div class="action-group"> <!-- actions -->
+                    </div>
+                </div>
+                {{-- <div class="action-group flex-wrap p-1"> <!-- actions -->
                     <button class="btn btn-primary" type="button" id="sendMessage">Send</button>
                     @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary" type="button" id="saveMessage">Update</button>
                         <button class="btn btn-primary" type="button" id="saveAcopy">Save a Copy</button>
-                    @else 
+                    @else
                         <button class="btn btn-primary" type="button" id="saveMessage">Save</button>
                     @endif
                     <button class="btn btn-primary" type="button" id="clearMessage">Clear</button>
@@ -189,28 +310,40 @@
                         </div>
                         <button class="btn btn-warning mt-0 d-inline mr-3" type="button" id="createGrid">Set</button>
                     </div> -->
-                </div> <!-- actions -->
-
+                </div> <!-- actions --> --}}
                 <textarea class="form-control d-none" id="dummy" rows="3"></textarea>
-
-                <div class="card-body text-center">  
-                    <div id="ledContainer">
-                        <div id='wrapperLed' class="row"></div>
-                    </div>
-                    <canvas id="3LineLed" width="56" height="40" class="d-none"></canvas>
-
-                    {{-- <canvas id="canvas_bg" width="800" height="600" class="d-none"></canvas> --}}
-                    <canvas id="canvas" width="700" height="390" class="d-none"></canvas>
-                    <div id="gridCanvas" class="gridCanvas rotationTime d-none">
-                        {{-- <table id="pixelCanvas" class="flyItIn2"></table> --}}
-                        <div id="pixelCanvas" class="row flyItIn2"></div>
-                    </div>
-                    <canvas id="draw-mode" width="56" height="40" class="d-none"></canvas>
-                </div>
             </div>
         </div>
     </div>
 
+</div>
+
+<!-- Import Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Select an Image</h5>
+                <button type="button" class="btn-close close-modal" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <!-- File Input -->
+                <div class="mb-3">
+                    <label for="modalImageInput" class="form-label">Choose an Image:</label>
+                    <input type="file" class="form-control" id="modalImageInput" accept="image/*">
+                </div>
+
+                <!-- Image Preview -->
+                <div class="text-center">
+                    <img id="modalImagePreview" class="img-fluid rounded d-none" style="max-width: 100%;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-modal" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirmImportButton" class="btn btn-success" disabled>Import</button>
+            </div>
+        </div>
+    </div>
 </div>
 @include('user.footer')
 
@@ -219,74 +352,242 @@
 <script src="/js/html2canvas.min.js"></script>
 
 <script>
-    const messageData = @json($message_data);
-    console.log(messageData);
-    const mode = "{{ $mode }}";
-    var alignmentList = ['left', 'left', 'left'];   // default ones
-    let alignments = [0,0,0];
+    var pixelHeight = parseInt("{{$screenSettings['font_pixels_high'] ?? 10}}");
+    var pixelWidth = parseInt("{{$screenSettings['font_pixels_wide'] ?? 6}}");
 
-    const canvasWidth = 56;
-    const canvasHeight = 40;
+    $(document).ready(function () {
+        $(".signalMessage").on("focus", function () {
+            let targetDiv = $("#ledDiv");
+
+            // Wait for keyboard to fully open before scrolling
+            setTimeout(() => {
+                targetDiv[0].scrollIntoView({ behavior: "smooth", block: "center" });
+            }, 500);
+        });
+
+        // Detect keyboard pop-up using window resize
+        $(window).on("resize", function () {
+            if ($(window).height() < screen.height * 0.6) {
+                setTimeout(() => {
+                    $("#ledDiv")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 500);
+            }
+        });
+
+        $(".ledGroup").on("click", function () {
+            highlightLedGroup($(this));
+        });
+
+        // $(document).on("click", function (event) {
+        //     // Check if the click is outside .ledGroup and input fields
+        //     if (!$(event.target).closest(".ledGroup, .signalMessage").length) {
+        //         $(".ledGroup").removeClass("screen-layer-highlight");
+        //         $(".signalMessage").blur(); // Remove focus from input fields
+        //     }
+        // });
+
+        $("#quit").on("click", function () {
+            window.location.href = "{{ route('send-to-sign') }}";
+        });
+    });
+
+    const messagesData = @json($messages_data);
+    const screenSettings = @json($screenSettings);
+
+    let messageData = [];
+    // let temp = [];
+    if (messagesData.length > 0) {
+        messageData = messagesData[0];
+        // temp = messageData.message;
+    }
+
+    const mode = "{{ $mode }}";
+    var alignmentList = ['center', 'center', 'center'];   // default ones
+    let alignments = [1,1,1];
+
+    const canvasWidth = parseInt("{{$screenSettings['screen_pixels_wide'] ?? 56}}");;
+    const canvasHeight = parseInt("{{$screenSettings['screen_pixels_high'] ?? 40}}");;
     let drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
 
     var messages = [];
     var isSaveCopy = false;
 
+    let message_name = $('#message_name').val();
+    let message_ID = $('#message_ID').val();
+    let message_keywords = $('#message_keywords').val();
 
     const lightOff = function (rowNum, col, mode = 'line') {
-        
+
         for(j = 0; j < canvasWidth; j++) {
             var line_0 = document.createElement('div');
             if (mode != 'line')
                 line_0.className = "pixel_" + (rowNum) + "_" + j + " light off";
-            else 
+            else
                 line_0.className = (rowNum) + "_" + j + " light off";
             col.append(line_0);
         }
     }
-    
+
     const addBlankRow = function (length, previousRowNum) {
 
         for (let i = 0; i < length; i ++) {
-            var col = $('<div class="col-md-12 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
+            var col = $('<div style="padding: 0 25px !important;" class="col-12 p-1 d-flex justify-content-center col blank"/>').appendTo('#wrapperLed');
             lightOff(previousRowNum + i, col, 'line');
         }
     }
-    
+
     const addBlackRow = function (length, previousRowNum, mode) {
-        for (let i = 0; i < length; i ++) {
-            if (mode == 'line')
-                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#wrapperLed');
-            else 
-                var col = $('<div class="col-md-12 d-flex justify-content-center col"/>').appendTo('#pixelCanvas');
+        let target = mode === 'line' ? '#wrapperLed' : '#pixelCanvas';
+        let ledGroup = $('<div class="ledGroup col"></div>').appendTo(target); // Wrap group
+        for (let i = 0; i < length; i++) {
+            var col = $('<div class="col-12 d-flex justify-content-center col"/>').appendTo(ledGroup);
             lightOff(previousRowNum + i, col, mode);
         }
     }
 
     // Make the initial screen in 3-line mode
-    addBlankRow(2, 0);
-    addBlackRow(10, 2, 'line');
-    addBlankRow(3, 12);
-    addBlackRow(10, 15, 'line');
-    addBlankRow(3, 25);
-    addBlackRow(10, 28, 'line');
-    addBlankRow(2, 38);
+    addBlankRow(screenSettings.top_blank_rows, 0);
+    addBlackRow(screenSettings.font_pixels_high, 2, 'line');
+    addBlankRow(screenSettings.between_1st_2nd_row, 12);
+    addBlackRow(screenSettings.font_pixels_high, 15, 'line');
+    addBlankRow(screenSettings.between_2nd_3rd_row, 25);
+    addBlackRow(screenSettings.font_pixels_high, 28, 'line');
+    addBlankRow(screenSettings.blank_lines_bottom, 38);
+
+    // addBlankRow(2, 0);
+    // addBlackRow(10, 2, 'line');
+    // addBlankRow(1, 12);
+    // addBlackRow(10, 15, 'line');
+    // addBlankRow(1, 25);
+    // addBlackRow(10, 28, 'line');
+    // addBlankRow(2, 38);
+    var convertImageToHTML = function (imageFile) {
+        let img = new Image();
+        img.src = URL.createObjectURL(imageFile);
+
+        img.onload = function () {
+            let canvas = document.getElementById('draw-mode');
+            let ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+            // Set canvas size to match the image
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            // Draw the image onto the canvas
+            ctx.drawImage(img, 0, 0);
+
+            // Get pixel data
+            let imageData = ctx.getImageData(0, 0, img.width, img.height);
+            let data = imageData.data;
+
+            // Select existing divs inside #pixelCanvas
+            let cols = document.querySelectorAll('#pixelCanvas .ledGroup .col');
+            let totalCols = cols.length;
+
+            for (let col = 0; col < totalCols; col++) {
+                let pixels = cols[col].querySelectorAll('div');
+                for (let row = 0; row < pixels.length; row++) {
+                    let index = (col * img.width + row) * 4;
+                    let r = data[index];
+                    let g = data[index + 1];
+                    let b = data[index + 2];
+
+                    // Check if the color is "yellow" (similar to original function)
+                    if (r > 200 && g > 200 && b < 100) {
+                        pixels[row].classList.add('on'); // Apply "on" class for yellow pixels
+                    } else {
+                        pixels[row].classList.remove('on'); // Remove "on" class for other colors
+                    }
+                }
+            }
+        };
+    };
+
+    function updateValuesAndAlignments() {
+        alignmentList = messageData.three_line_alignment;
+        alignmentList.forEach(function(alignment, index) {
+            switch (alignment) {
+                case 'left':
+                    alignments[index] = 0;
+                    break;
+                case 'center':
+                    alignments[index] = 1;
+                    break;
+                case 'right':
+                    alignments[index] = 2;
+                    break;
+                default:
+                    break;
+            }
+            // justifyAlignment(index);
+        });
+
+        $('.btn-group').each(function(index) {
+            let alignmentIndex = alignments[index];
+            $(this).find('button').removeClass('bg-dark');
+            $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
+        });
+
+        messageData.message.forEach(function(msg, index) {
+            $('.signalMessage').eq(index).val(msg);
+            console.log($('.signalMessage').eq(index).val());
+        });
+
+        $('#message_name').val(messageData.name.replace(".bmp", ""));
+        $('#message_ID').val(messageData.no);
+        $('#message_keywords').val(messageData.keywords);
+
+        message_name = $('#message_name').val();
+        message_ID = $('#message_ID').val();
+        message_keywords = $('#message_keywords').val();
+    }
+
+    function highlightLedGroup($target) {
+        // Remove border from all groups
+        $(".ledGroup").removeClass("screen-layer-highlight");
+
+        // Add border to the selected group
+        $target.addClass("screen-layer-highlight");
+
+        // Get the index of the selected group
+        let groupIndex = $target.index(".ledGroup") + 1;
+
+        // Focus the corresponding message input field
+        let $input = $("#message_" + groupIndex);
+        let input = $input[0]; // get the raw DOM element
+
+        $input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+        // let $input = $("#message_" + groupIndex);
+        // $input.focus();
+
+        // Highlight the correct alignment button
+        $(".text-alignment .btn").each(function () {
+            if (alignmentList[groupIndex - 1] == $(this).data("alignment")) {
+                $(this).addClass("bg-dark");
+            } else {
+                $(this).removeClass("bg-dark");
+            }
+        });
+    }
+
 
     $(document.fonts).ready(function() {
         // assign alignments after loading
+        const $firstGroup = $(".ledGroup").first();
         if (mode == 'edit' && messageData.draw_mode == 0) {
             // if (messageData.message1 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message1.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
-            //         }) 
+            //         })
             //     );
             // } else {
             //     messages.push([]);
             // }
-            
+
             // if (messageData.message2 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message2.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
             //         })
@@ -296,7 +597,7 @@
             // }
 
             // if (messageData.message3 !== null) {
-            //     messages.push( 
+            //     messages.push(
             //         messageData.message3.map(innerArray => {
             //             return innerArray.map(item => item === 'true' ? true : item === 'false' ? false : item);
             //         })
@@ -305,49 +606,60 @@
             //     messages.push([]);
             // }
 
-            alignmentList = messageData.three_line_alignment;
-            alignmentList.forEach(function(alignment, index) {
-                switch (alignment) {
-                    case 'left':
-                        alignments[index] = 0;
-                        break;
-                    case 'center':
-                        alignments[index] = 1;
-                        break;
-                    case 'right':
-                        alignments[index] = 2;
-                        break;
-                    default:
-                        break;
-                }
-                // justifyAlignment(index);
-            });
-            
-            $('.btn-group').each(function(index) {
-                let alignmentIndex = alignments[index];
-                $(this).find('button').removeClass('bg-dark');
-                $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
-            });
-
-            messageData.message.forEach(function(msg, index) {
-                $('.message-input input').eq(index).val(msg);
-                console.log($('.message-input input').eq(index).val());
-            });
-
+            updateValuesAndAlignments()
             displayLED();
+
+            if ($firstGroup.length) {
+                highlightLedGroup($firstGroup);
+            }
         }
-        
+        else if (mode == 'edit' && messageData.draw_mode == 1) {
+            if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
+            if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
+
+            if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
+            if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
+        } else {
+            if ($firstGroup.length) {
+                highlightLedGroup($firstGroup);
+            }
+        }
+
+
         function textToLED(theWord){
             var theMessage = [];
-            for (var i = 0; i < theWord.length; i++) {
-                theMessage.push( transposeArray(charToLED(theWord.charAt(i))) );
-                theMessage.push( charToLED() );
-            }
-        
-            var flatten = [];
-            flatten = flatten.concat.apply(flatten, theMessage);
+            var totalWidth = 0;
+            var letterArrays = [];
 
-            return flatten;
+            // First, get all character arrays
+            for (var i = 0; i < theWord.length; i++) {
+                var letterArray = transposeArray(charToLED(theWord.charAt(i), pixelHeight, pixelWidth));
+                letterArrays.push(letterArray);
+                totalWidth += letterArray.length;
+            }
+
+            // Add spaces between characters (1 pixel each)
+            totalWidth += Math.max(0, theWord.length - 1); // Add 1 pixel space between each character
+
+            // Create the final array with exact spacing
+            var currentPosition = 0;
+            for (var i = 0; i < letterArrays.length; i++) {
+                var letterArray = letterArrays[i];
+
+                // Add the character
+                for (var j = 0; j < letterArray.length; j++) {
+                    theMessage[currentPosition + j] = letterArray[j];
+                }
+                currentPosition += letterArray.length;
+
+                // Add one pixel space after character (except for last character)
+                if (i < letterArrays.length - 1) {
+                    theMessage[currentPosition] = new Array(pixelHeight).fill(false);
+                    currentPosition++;
+                }
+            }
+
+            return theMessage;
         }
 
         function justifyAlignment(layer) {
@@ -355,7 +667,7 @@
             if (!messages[layer]) return;
 
             const emptyLetter = [false, false, false, false, false, false, false, false, false, false];
-  
+
             if (alignments[layer] === 0) {
 
                 var emptyLetters = [], afterEmptyLetters = [];
@@ -372,10 +684,10 @@
             } else {
                 // alignment
                 let upwordLength;
-                
-                if (alignments[layer] === 1) 
+
+                if (alignments[layer] === 1)
                     upwordLength = (canvasWidth - messages[layer].length) / 2;
-                else 
+                else
                     upwordLength = canvasWidth - messages[layer].length - 1;
 
                 var emptyLetters = [], afterEmptyLetters = [];
@@ -390,7 +702,7 @@
                 }
                 emptyLetters = emptyLetters.concat(afterEmptyLetters);
                 drawMessage(emptyLetters, layer);
-                
+
             }
         }
 
@@ -401,7 +713,7 @@
         // Get messages from editor
         function getMessage() {
             let temp = [];
-            $('.message-input input').each(function() {
+            $('.signalMessage').each(function() {
                 temp.push($(this).val());
             });
 
@@ -409,20 +721,57 @@
         }
 
         function displayLED() {
-            let temp = getMessage();
-            clearLights('wrapperLed');
-            messages = [];
 
-            let layer = temp.length;
-            for (let i = 0; i < layer; i++) {
-                letters = textToLED(temp[i]);
-                messages.push(letters);
-                justifyAlignment(i);
+            if(messageData.draw_mode == 0 || messageData.draw_mode == undefined ) {
+                let temp = getMessage();
+
+                clearLights('wrapperLed');
+                messages = [];
+
+                let layer = temp.length;
+                for (let i = 0; i < layer; i++) {
+                    letters = textToLED(temp[i]);
+                    messages.push(letters);
+                    justifyAlignment(i);
+                }
             }
         }
 
+        $('.messageImage').on('click', function () {
+            $(".messageImage").each(function(){
+                $(this).removeClass('image-highlight');
+            })
+            $(this).addClass('image-highlight');
+            let textMessages = $(this).data('message');
+            let index = $(this).data('index');
+            messageData = messagesData[index];
+            // mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
+            drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
+            // updateValuesAndAlignments();
+            // displayLED();
+            changeToImageDefaultMode(drawMode);
+            if (drawMode == 0) {
+                clearLights('wrapperLed');
+                updateValuesAndAlignments();
+                displayLED();
+            } else {
+                // makeGrid();
+                changeThreeDotImageToDotDraw();
+            }
+        });
+        // function handleImageClick(textMessages) {
+        //     textMessages = JSON.parse(textMessages)
+        //     textMessages.forEach(function(item, index, array) {
+        //         temp.push(item);
+        //     });
+        //     displayLED();
+        //     console.log(temp);
+
+        //     // console.log(JSON.parse(textMessage));
+        // }
+
         // message change event in 3-line mode
-        $('.message-input input').on('keyup', function(e) {
+        $('.signalMessage').on('keyup', function(e) {
             displayLED();
         });
 
@@ -430,7 +779,7 @@
         //     clearLights();
         //     var value = $("#inputBox").val();
         //     messages = [];
-            
+
         //     if(value != '' ) {
         //         var msg = value.split('\n');
         //         var layer = msg.length;
@@ -538,7 +887,7 @@
                     } else {
                         ctx.fillText(item, canvas.width - 10, 130 * (index + 1));
                     }
-                    
+
                     // ctx.fillText(alignment + "-aligned", item, 10 , 100 * (index + 1) + (index == 0 ? 0 : 10 * index));
                 })
                 if(undo_flag == false) {
@@ -547,7 +896,7 @@
                 }
             }
         }
-        
+
         function handleClick(e) {
             var flag = false;
             for(let j = 0; j < 3; j++) {
@@ -561,7 +910,7 @@
                 canvas.style.cursor = 'default';
             }
         }
-        
+
         var bw = 400;
         // Box height
         var bh = 400;
@@ -572,7 +921,7 @@
         var rows = 3;
 
         function drawBoard(){
-            
+
             for (let x = 0; x < canvas.width; x += 10) {
                 ctx.moveTo(x, 0);
                 ctx.lineTo(x, canvas.height);
@@ -637,9 +986,13 @@
             })
             $(this).addClass('active');
             // line = value.split("\n").length - 1;
-            line = Number($(this).parent().data('layer')) - 1;
-            alignmentList[line] = $(this).data('alignment');
-            drawText();
+            // line = Number($(this).parent().data('layer')) - 1;
+            let highlightedDiv = $(".ledGroup.screen-layer-highlight");
+            let index = highlightedDiv.index(".ledGroup");
+            if (index > -1) {
+                alignmentList[index] = $(this).data('alignment');
+                drawText();
+            }
         });
 
         // Switch the mode
@@ -652,19 +1005,43 @@
                 if ($('#dot-mode').hasClass('btn-primary')) $('#dot-mode').removeClass('btn-primary');
                 if (!$('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').addClass('btn-secondary');
                 drawMode = 0;
-            } else {
+                clearLights('wrapperLed');
+                updateValuesAndAlignments();
+                displayLED();
+            } else if (whichMode == 'dot-mode') {
                 if ($(this).hasClass('btn-secondary')) $(this).removeClass('btn-secondary');
                 if (!$(this).hasClass('btn-primary')) $(this).addClass('btn-primary');
 
                 if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
                 if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
                 drawMode = 1;
-            }
+                changeThreeDotImageToDotDraw();
+            } else {}
 
             changeMode();
             // makeGrid();
         });
-        
+
+        var changeToImageDefaultMode = function(mode) {
+            if (mode == 0) {
+                if ($('#line-mode').hasClass('btn-secondary')) $('#line-mode').removeClass('btn-secondary');
+                if (!$('#line-mode').hasClass('btn-primary')) $('#line-mode').addClass('btn-primary');
+
+                if ($('#dot-mode').hasClass('btn-primary')) $('#dot-mode').removeClass('btn-primary');
+                if (!$('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').addClass('btn-secondary');
+                drawMode = 0;
+            } else if (mode == 1) {
+                if ($('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').removeClass('btn-secondary');
+                if (!$('#dot-mode').hasClass('btn-primary')) $('#dot-mode').addClass('btn-primary');
+
+                if ($('#line-mode').hasClass('btn-primary')) $('#line-mode').removeClass('btn-primary');
+                if (!$('#line-mode').hasClass('btn-secondary')) $('#line-mode').addClass('btn-secondary');
+                drawMode = 1;
+            } else {}
+
+            changeMode();
+        }
+
         var changeMode = function() {
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -686,6 +1063,19 @@
         }
 
         changeMode();
+
+        var changeThreeDotImageToDotDraw = function () {
+            let imgUrl = $('.messageImage.image-highlight').attr('src');
+
+            fetch(imgUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                    let file = new File([blob], "image.png", { type: blob.type });
+                    clearLights('pixelCanvas');
+                    convertImageToHTML(file);
+                })
+                .catch(error => console.error("Error fetching image:", error));
+        }
 
         var undoFunction = function () {
             if(undo_lists.length >= 0 && undo_lists[undo_lists.length - 1]) {
@@ -744,7 +1134,7 @@
             //     line ++;
             //     drawText();
             // }
-            
+
             // call this function whenever message is changed.
             drawText();
         });
@@ -795,13 +1185,13 @@
         var convertHTMLtoImage = function () {
             let cols, canvas;
             if (drawMode == 0) {
-                cols = document.querySelectorAll('#wrapperLed .col');
+                cols = document.querySelectorAll('#wrapperLed .col:not(.ledGroup)');
                 canvas = document.getElementById('3LineLed');
             } else {
-                cols = document.querySelectorAll('#pixelCanvas .col');
+                cols = document.querySelectorAll('#pixelCanvas .col:not(.ledGroup)');
                 canvas = document.getElementById('draw-mode');
             }
-            
+
             let context = canvas.getContext('2d');
 
             for (let col = 0; col < cols.length; col++) {
@@ -862,9 +1252,9 @@
         function drawModePixelArray() {
             let pixelArray = [];
 
-            for (let row = 0; row < 40; row++) {
+            for (let row = 0; row < canvasHeight; row++) {
                 let rowArray = [];
-                for (let col = 0; col < 56; col++) {
+                for (let col = 0; col < canvasWidth; col++) {
                     let pixelElement = document.querySelector(`#pixelCanvas .col .pixel_${row}_${col}`);
                     if (pixelElement) {
                         rowArray.push(pixelElement.classList.contains('on') ? 1 : 0);
@@ -936,8 +1326,8 @@
             });
         }
 
-        var saveMessage = function (range) {           
-    
+        var saveMessage = function (range) {
+
             // Get base64data of BMP
 
             if (drawMode == 0) { // 3-line mode
@@ -945,7 +1335,7 @@
                 // CanvasToBMP.toDataURL($("#canvas").first()[0], function (url) {
                 //     saveMessageCall(range, url, 'bmp');
                 // });
-            } 
+            }
             const convertedBMP = convertHTMLtoImage();
             saveMessageCall(range, convertedBMP, 'bmp');
         }
@@ -1074,6 +1464,21 @@
             }
         }
 
+        // **Download the image when clicking the "Export" button**
+        document.getElementById("exportImage").addEventListener("click", function () {
+            const imageBlob = convertHTMLtoImage();
+            const url = URL.createObjectURL(imageBlob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = message_name + ".bmp"; // File name for download
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(url); // Clean up memory
+        });
+
         // Save Or Update
         $("#saveMessage").on("click", function() {
             event.preventDefault();
@@ -1111,10 +1516,10 @@
             let isRightClick = false;
 
             while (grid.hasChildNodes()) {
-                grid.removeChild(grid.lastChild); 
+                grid.removeChild(grid.lastChild);
             }
 
-            addBlackRow(40, 0, 'grid');
+            addBlackRow(canvasHeight, 0, 'grid');
 
             // orignal draw in draw-mode
             if (mode == 'edit') {
@@ -1165,11 +1570,26 @@
 
             // Handle touchmove for continuous painting/erasing
             grid.addEventListener('touchmove', function(event) {
-                if (mouseIsDown) {
+                if (mouseIsDown && event.touches.length > 0) {
                     event.preventDefault();
-                    paintEraseTiles(event.target, true);
+
+                    const touch = event.touches[0];
+                    const x = touch.clientX;
+                    const y = touch.clientY;
+
+                    const target = document.elementFromPoint(x, y);
+                    if (target) {
+                        paintEraseTiles(target, true);
+                    }
                 }
-            });
+            }, { passive: false });
+
+            // grid.addEventListener('touchmove', function(event) {
+            //     if (mouseIsDown) {
+            //         event.preventDefault();
+            //         paintEraseTiles(event.target, true);
+            //     }
+            // });
 
             // Handle mouseup to stop painting/erasing
             document.addEventListener('mouseup', function(event) {
@@ -1184,7 +1604,7 @@
                     paintEraseTiles(event.target, !isRightClick);
                 }
             });
-        }; 
+        };
 
         makeGrid();
 
@@ -1211,11 +1631,11 @@
         $("#inputWidth").on('change', function() {
             $(displayWidth).val($(this).val());
         });
-        
+
         $("#gridWidthDisplay").on('change', function() {
             $("#inputWidth").val($(this).val());
         });
-        
+
         $("#inputHeight").on('change', function() {
             $(displayHeight).val($(this).val());
         });
@@ -1257,122 +1677,176 @@
             });
         }
 
-        // Alignment
-
-        // the first layer
-        $("#alignLeftFirst").on("click", function() {
+        // Dynamic layer Alignment
+        $("#leftAlign").on("click", function() {
             event.preventDefault();
-            
-            document.getElementById("alignLeftFirst").classList.add("bg-dark");
-            document.getElementById("alignCenterFirst").classList.remove("bg-dark");
-            document.getElementById("alignRightFirst").classList.remove("bg-dark");
 
-            alignments[0] = 0;
+            let highlightedDiv = $(".ledGroup.screen-layer-highlight");
+            let index = highlightedDiv.index(".ledGroup");
+            if (index > -1) {
+                document.getElementById("leftAlign").classList.add("bg-dark");
+                document.getElementById("centerAlign").classList.remove("bg-dark");
+                document.getElementById("rightAlign").classList.remove("bg-dark");
 
-            justifyAlignment(0);
-        })
+                alignments[index] = 0;
 
-        $("#alignCenterFirst").on("click", function() {
+                justifyAlignment(index);
+            }
+        });
+
+        $("#centerAlign").on("click", function() {
             event.preventDefault();
-            
-            document.getElementById("alignLeftFirst").classList.remove("bg-dark");
-            document.getElementById("alignCenterFirst").classList.add("bg-dark");
-            document.getElementById("alignRightFirst").classList.remove("bg-dark");
 
-            alignments[0] = 1;
-            justifyAlignment(0);
-        })
+            let highlightedDiv = $(".ledGroup.screen-layer-highlight");
+            let index = highlightedDiv.index(".ledGroup");
+            if (index > -1) {
+                document.getElementById("leftAlign").classList.remove("bg-dark");
+                document.getElementById("centerAlign").classList.add("bg-dark");
+                document.getElementById("rightAlign").classList.remove("bg-dark");
 
-        $("#alignRightFirst").on("click", function() {
+                alignments[index] = 1;
+
+                justifyAlignment(index);
+            }
+        });
+
+        $("#rightAlign").on("click", function() {
             event.preventDefault();
-            
-            document.getElementById("alignLeftFirst").classList.remove("bg-dark");
-            document.getElementById("alignCenterFirst").classList.remove("bg-dark");
-            document.getElementById("alignRightFirst").classList.add("bg-dark");
 
-            alignments[0] = 2;
-            justifyAlignment(0);
-        })
+            let highlightedDiv = $(".ledGroup.screen-layer-highlight");
+            let index = highlightedDiv.index(".ledGroup");
+            if (index > -1) {
+                document.getElementById("leftAlign").classList.remove("bg-dark");
+                document.getElementById("centerAlign").classList.remove("bg-dark");
+                document.getElementById("rightAlign").classList.add("bg-dark");
 
-        // the second layer
-        $("#alignLeftSecond").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftSecond").classList.add("bg-dark");
-            document.getElementById("alignCenterSecond").classList.remove("bg-dark");
-            document.getElementById("alignRightSecond").classList.remove("bg-dark");
+                alignments[index] = 2;
 
-            alignments[1] = 0;
+                justifyAlignment(index);
+            }
+        });
+        // End
 
-            justifyAlignment(1);
-        })
+        // $("#alignLeftFirst").on("click", function() {
+        //     event.preventDefault();
 
-        $("#alignCenterSecond").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftSecond").classList.remove("bg-dark");
-            document.getElementById("alignCenterSecond").classList.add("bg-dark");
-            document.getElementById("alignRightSecond").classList.remove("bg-dark");
+        //     document.getElementById("alignLeftFirst").classList.add("bg-dark");
+        //     document.getElementById("alignCenterFirst").classList.remove("bg-dark");
+        //     document.getElementById("alignRightFirst").classList.remove("bg-dark");
 
-            alignments[1] = 1;
-            justifyAlignment(1);
-        })
+        //     alignments[0] = 0;
 
-        $("#alignRightSecond").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftSecond").classList.remove("bg-dark");
-            document.getElementById("alignCenterSecond").classList.remove("bg-dark");
-            document.getElementById("alignRightSecond").classList.add("bg-dark");
+        //     justifyAlignment(0);
+        // })
 
-            alignments[1] = 2;
-            justifyAlignment(1);
-        })
+        // $("#alignCenterFirst").on("click", function() {
+        //     event.preventDefault();
 
-        // the third layer
-        $("#alignLeftThird").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftThird").classList.add("bg-dark");
-            document.getElementById("alignCenterThird").classList.remove("bg-dark");
-            document.getElementById("alignRightThird").classList.remove("bg-dark");
+        //     document.getElementById("alignLeftFirst").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterFirst").classList.add("bg-dark");
+        //     document.getElementById("alignRightFirst").classList.remove("bg-dark");
 
-            alignments[2] = 0;
+        //     alignments[0] = 1;
+        //     justifyAlignment(0);
+        // })
 
-            justifyAlignment(2);
-        })
+        // $("#alignRightFirst").on("click", function() {
+        //     event.preventDefault();
 
-        $("#alignCenterThird").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftThird").classList.remove("bg-dark");
-            document.getElementById("alignCenterThird").classList.add("bg-dark");
-            document.getElementById("alignRightThird").classList.remove("bg-dark");
+        //     document.getElementById("alignLeftFirst").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterFirst").classList.remove("bg-dark");
+        //     document.getElementById("alignRightFirst").classList.add("bg-dark");
 
-            alignments[2] = 1;
-            justifyAlignment(2);
-        })
+        //     alignments[0] = 2;
+        //     justifyAlignment(0);
+        // })
 
-        $("#alignRightThird").on("click", function() {
-            event.preventDefault();
-            
-            document.getElementById("alignLeftThird").classList.remove("bg-dark");
-            document.getElementById("alignCenterThird").classList.remove("bg-dark");
-            document.getElementById("alignRightThird").classList.add("bg-dark");
+        // // the second layer
+        // $("#alignLeftSecond").on("click", function() {
+        //     event.preventDefault();
 
-            alignments[2] = 2;
-            justifyAlignment(2);
-        })
+        //     document.getElementById("alignLeftSecond").classList.add("bg-dark");
+        //     document.getElementById("alignCenterSecond").classList.remove("bg-dark");
+        //     document.getElementById("alignRightSecond").classList.remove("bg-dark");
+
+        //     alignments[1] = 0;
+
+        //     justifyAlignment(1);
+        // })
+
+        // $("#alignCenterSecond").on("click", function() {
+        //     event.preventDefault();
+
+        //     document.getElementById("alignLeftSecond").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterSecond").classList.add("bg-dark");
+        //     document.getElementById("alignRightSecond").classList.remove("bg-dark");
+
+        //     alignments[1] = 1;
+        //     justifyAlignment(1);
+        // })
+
+        // $("#alignRightSecond").on("click", function() {
+        //     event.preventDefault();
+
+        //     document.getElementById("alignLeftSecond").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterSecond").classList.remove("bg-dark");
+        //     document.getElementById("alignRightSecond").classList.add("bg-dark");
+
+        //     alignments[1] = 2;
+        //     justifyAlignment(1);
+        // })
+
+        // // the third layer
+        // $("#alignLeftThird").on("click", function() {
+        //     event.preventDefault();
+
+        //     document.getElementById("alignLeftThird").classList.add("bg-dark");
+        //     document.getElementById("alignCenterThird").classList.remove("bg-dark");
+        //     document.getElementById("alignRightThird").classList.remove("bg-dark");
+
+        //     alignments[2] = 0;
+
+        //     justifyAlignment(2);
+        // })
+
+        // $("#alignCenterThird").on("click", function() {
+        //     event.preventDefault();
+
+        //     document.getElementById("alignLeftThird").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterThird").classList.add("bg-dark");
+        //     document.getElementById("alignRightThird").classList.remove("bg-dark");
+
+        //     alignments[2] = 1;
+        //     justifyAlignment(2);
+        // })
+
+        // $("#alignRightThird").on("click", function() {
+        //     event.preventDefault();
+
+        //     document.getElementById("alignLeftThird").classList.remove("bg-dark");
+        //     document.getElementById("alignCenterThird").classList.remove("bg-dark");
+        //     document.getElementById("alignRightThird").classList.add("bg-dark");
+
+        //     alignments[2] = 2;
+        //     justifyAlignment(2);
+        // })
 
         // Clear Canvas for New button
 
         var clearMessage = function () {
             if (drawMode == 0) {
-                $('.message-input input').each(function() {
-                    $(this).val('');
-                });
-                clearLights('wrapperLed');
-                messages = [];
+                let highlightedDiv = $(".ledGroup.screen-layer-highlight");
+                let index = highlightedDiv.index(".ledGroup") + 1;
+                if (index > 0) {
+                    $("#message_" + index).val('');
+                    displayLED();
+                } else {
+                    $('.signalMessage').each(function() {
+                        $(this).val('');
+                    });
+                    clearLights('wrapperLed');
+                    messages = [];
+                }
             } else {
                 clearLights('pixelCanvas');
             }
@@ -1385,21 +1859,55 @@
         })
 
         // message name
-        let message_name = $('#message_name').val();
         $('#message_name').on('keyup', function(e) {
             message_name = e.target.value;
         });
 
         // let message_keywords = $('#message_keywords').val().split(' ');
-        let message_keywords = $('#message_keywords').val();
         $('#message_keywords').on('keyup', function(e) {
             message_keywords = e.target.value;
         });
-        let message_ID = $('#message_ID').val();
 
         function checkAlphanumeric(message) {
             var pattern = /^[a-zA-Z0-9]+$/;
             return pattern.test(message);
         }
+
+        $("#importImage").on("click", function (event) {
+            $("#dot-mode").click();
+            $('#importModal').modal('show');
+        });
+
+        let importedFile = null;
+        document.getElementById("modalImageInput").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById("modalImagePreview");
+            const confirmButton = document.getElementById("confirmImportButton");
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove("d-none");
+                    confirmButton.disabled = false; // Enable Import button
+                };
+                reader.readAsDataURL(file);
+                importedFile = file;
+            } else {
+                importedFile = null;
+                preview.classList.add("d-none");
+                confirmButton.disabled = true;
+            }
+        });
+
+        document.getElementById("confirmImportButton").addEventListener("click", function() {
+            clearLights('pixelCanvas');
+            convertImageToHTML(importedFile);
+            $('#importModal').modal('hide');
+        });
+
+        $(".close-modal").on("click", function (event) {
+            $('#importModal').modal('hide');
+        });
     });
 </script>

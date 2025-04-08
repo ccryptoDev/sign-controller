@@ -8,25 +8,25 @@ const slickFunction = function () {
       $('.slick-slide[data-slick-index="2"]').addClass('gt2');
   })
   .slick({
-    
+
     centerMode: true,
     centerPadding: 0,
     // slidesToShow: 3,
-    slidesToShow: 5,
-    slidesToScroll: 5,
+    slidesToShow: 3,
+    slidesToScroll: 3,
     responsive: [
       {
         breakpoint: 1440,
         settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
+          slidesToShow: 3,
+          slidesToScroll: 3,
         }
       },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5
+          slidesToShow: 3,
+          slidesToScroll: 3
         }
       },
       {
@@ -70,7 +70,7 @@ const slickFunction = function () {
     }
 
     firstIndex = next;
-    
+
     // highlisten the same item for thumbnail list
     highlightSelectedItem(next);
 
@@ -80,9 +80,14 @@ const slickFunction = function () {
   });
 
   $('.slick').on('click', '.slick-slide', function() {
+    messageIds = [];
     var slideIndex = $(this).attr('data-slick-index');
     var slide_no = $(this).find('span img').data('slide-no');
     firstIndex = slide_no;
+
+    $(this).find("span img").each(function () {
+        messageIds.push($(this).attr("data-id"));
+    });
 
     // move slider to the clicked one
     $('.slick').slick('slickGoTo', slideIndex);
@@ -115,7 +120,7 @@ const displayMessageName = function(imageList) {
 
 const addClassFunction = function () {
   const thumbnails = document.querySelectorAll('.thumbnail-list span');
-  
+
   thumbnails.forEach((thumbnail, index) => {
     thumbnail.addEventListener('click', () => {
       // console.log('Clicked thumbnail index:', index); index is secondIndex
@@ -126,7 +131,7 @@ const addClassFunction = function () {
 
       for (let i = 0; i < firstSelectedImages.length; i++) {
         if (firstSelectedImages[i].id === id) {
-          
+
           firstIndex = i;
           $('.slick').slick('slickGoTo', i);
 
@@ -134,7 +139,7 @@ const addClassFunction = function () {
 
         }
       }
-     
+
       firstIndex = index;
       // display the selected Image
       displayMessageName(secondSelectedImages);

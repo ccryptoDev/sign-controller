@@ -4,7 +4,7 @@
   /* background-color: black; */
 }
 
-.slick {  
+.slick {
   padding-top: 2rem;
   padding-bottom: 20px;
 }
@@ -20,11 +20,11 @@
   text-align: center;
   /* border: solid 2px rgb(12, 12, 12);
   border-radius: 8px; */
-  
+
   transform: translate(0, 0) scale(.4);
   transition: all .4s ease;
   /* opacity: .5;     */
-} 
+}
 
 .slick img {
   width: 100%;
@@ -51,7 +51,7 @@
   border: solid 2px white;
   /* border-radius: 8px; */
 }
-.slick-slide.slick-center span {
+.slick-slide.slick-current span {
   z-index: 1;
   transform: scale(1);
   opacity: 1;
@@ -102,7 +102,7 @@
   /* width: 40%;  */
   width: 120px;
   /* height: 60px; */
-  margin: 2rem 0;     
+  margin: 2rem 0;
 }
 .page-title {
   /* font-size: 30px; */
@@ -120,7 +120,7 @@
 }
 .font-size-13pt {
   font-size: 13pt;
-} 
+}
 
 /* QRCODE FORM */
 .qrcode-form {
@@ -312,7 +312,7 @@
 }
 
 .thumbnail-list li {
-  width: calc(25% - 10px); 
+  width: calc(25% - 10px);
   margin: 5px;
   border: 2px solid white;
 }
@@ -322,7 +322,7 @@
   padding: 5px;
 }
 
-.thumbnail-list span {    
+.thumbnail-list span {
   display: block;
   border: solid 2px rgb(12, 12, 12);
   cursor: pointer;
