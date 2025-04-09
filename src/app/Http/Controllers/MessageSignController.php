@@ -46,6 +46,18 @@ class MessageSignController extends Controller
         return view('dashboard.send-to-sign', compact('images'));
     }
 
+    public function libraryMessages(Request $request) {
+
+        // $images = collect(Storage::disk('public')->files('assets/media/signmessage'))->map(function ($item) {
+        //     return basename($item);
+        // });
+
+        $numMessages = Setting::where('key', 'num_messages_to_keep')->value('value') ?? 30;
+        $images = Image::select('no', 'name', 'path', 'keywords', 'user_level')->where('user_level', 2)->orderBy('id','desc')->limit($numMessages)->get();
+
+        return view('dashboard.library-messages', compact('images'));
+    }
+
     public function deleteMessage() {
         return view('dashboard.on-develop');
     }

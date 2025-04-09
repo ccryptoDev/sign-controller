@@ -14,17 +14,17 @@
 </div>
 
 <div class="fluid bg-white">
-    <div class="send-button d-flex justify-content-center flex-wrap">
+    <div class="send-button d-flex justify-content-center">
         <button class="btn btn-primary" type="button" id="send">Send</button>
-        <button class="btn btn-primary" type="button" id="edit">
+        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
             Edit
         </button>
-        <button class="btn btn-primary" type="button" id="create">
-            <a href="{{ route('edit-message', ['id' => 0]) }}">New</a>
+        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="create">
+            New
         </button>
         <button class="btn btn-primary" type="button" id="copy">Copy</button>
-        <button class="btn btn-primary" type="button" id="library">Library</button>
-        <button class="btn btn-primary" type="button" id="delete">Delete</button>
+        <button class="btn btn-danger" type="button" id="library">Library</button>
+        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="delete">Delete</button>
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
@@ -105,6 +105,7 @@
 <script>
 
     // var images = {!! json_encode($images) !!};
+    const userLevel = @json(auth()->user()->level);
     var images = @json($images);
 
     images = images.map((image, index) => (
@@ -129,8 +130,39 @@
         // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
         // editUrl = editUrl.replace(':id', messageId);
 
+        if (userLevel != 1) {
+            return false;
+        }
         var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
         window.location.href = editUrl;
+    });
+
+    $('#create').on('click', function() {
+        // var messageId = firstSelectedImages[firstIndex].number;
+
+        // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
+        // editUrl = editUrl.replace(':id', messageId);
+
+        if (userLevel != 1) {
+            return false;
+        }
+        var editUrl = '{{ url('/edit-message/') }}' + '/0';
+        window.location.href = editUrl;
+    });
+
+    $('#library').on('click', function () {
+        window.location.href = "{{ route('send-to-sign') }}";
+    });
+
+    $('.disabled-btn').on('click', function () {
+        Swal.fire({
+            icon: 'info',
+            title: 'USER CANNOT CHANGE INEX SHARED MESSAGES!',
+            timer: 5000,
+            timerProgressBar: true,
+            onClose: function () {
+            }
+        });
     });
 
     $("#send").on("click", function () {
@@ -182,37 +214,6 @@
         }
     })
 
-    $('#library').on('click', function () {
-        window.location.href = "{{ route('library-messages') }}";
-    });
-
-    function customSlick(images) {
-        $("#slickPanel").html('<div class="slick" id="slick"></div>');
-
-        let totalMessages = images.length;
-        let index = 0;
-
-        while (index < totalMessages) {
-            let numToShow = Math.floor(Math.random() * 3) + 1; // Randomly select 1, 2, or 3 images per slide
-            numToShow = Math.min(numToShow, totalMessages - index); // Avoid going out of bounds
-
-            let component = `<div class="slide-group">`;
-            for (let j = 0; j < numToShow; j++) {
-                let image = images[index];
-                component += `<span>
-                                <img  src="{{ asset('assets/media/signmessage/${image.name}') }}"
-                                    data-slide-no="${image.id}"
-                                    data-id="${image.number}"
-                                    alt="image" />
-                            </span>`;
-                index++; // Move to the next message
-            }
-            component += `</div>`;
-
-            $("#slick").append(component);
-        }
-    }
-
     var secondSearch  = function () {
         var value1 = $("#firstSearch").val().toLowerCase().trim(), value2 = $("#secondSearch").val().toLowerCase().trim();
         secondSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value1) && image.name.toLowerCase().trim().includes(value2));
@@ -233,7 +234,6 @@
         var value = $("#firstSearch").val().toLowerCase().trim();
         firstSelectedImages = images.filter(image => image.name.toLowerCase().trim().includes(value));
 
-        // customSlick(firstSelectedImages);
         $("#slickPanel").html('<div class="slick" id="slick"></div>');
         for (var i = 0; i < firstSelectedImages.length; i++) {
 
@@ -285,7 +285,30 @@
     //     $("#slick").append(component);
     // }
     $(document).ready(function () {
-        customSlick(images);
+        $("#slickPanel").html('<div class="slick" id="slick"></div>');
+
+        let totalMessages = images.length;
+        let index = 0;
+
+        while (index < totalMessages) {
+            let numToShow = Math.floor(Math.random() * 3) + 1; // Randomly select 1, 2, or 3 images per slide
+            numToShow = Math.min(numToShow, totalMessages - index); // Avoid going out of bounds
+
+            let component = `<div class="slide-group">`;
+            for (let j = 0; j < numToShow; j++) {
+                let image = images[index];
+                component += `<span>
+                                <img src="{{ asset('assets/media/signmessage/${image.name}') }}"
+                                    data-slide-no="${image.id}"
+                                    data-id="${image.number}"
+                                    alt="image" />
+                            </span>`;
+                index++; // Move to the next message
+            }
+            component += `</div>`;
+
+            $("#slick").append(component);
+        }
 
         slickFunction();
 

@@ -1268,7 +1268,7 @@
             return pixelArray;
         }
 
-        var saveMessageCall = function (range, imageFile, imageType) {
+        var saveMessageCall = function (range, imageFile, imageType, userLevel) {
             const [msg1 = [], msg2 = [], msg3 = []] = messages;
             let msg = getMessage();
 
@@ -1289,6 +1289,7 @@
             formData.append('msg', JSON.stringify(msg));
             formData.append('drawMode', drawMode);
             formData.append('three_line_alignment', JSON.stringify(alignmentList)); // e.g ['center', 'left', 'right']
+            formData.append('userLevel', userLevel);
 
             $.ajax({
                 url: '/save-message',
@@ -1326,7 +1327,7 @@
             });
         }
 
-        var saveMessage = function (range) {
+        var saveMessage = function (range, userLevel = 0) {
 
             // Get base64data of BMP
 
@@ -1337,7 +1338,7 @@
                 // });
             }
             const convertedBMP = convertHTMLtoImage();
-            saveMessageCall(range, convertedBMP, 'bmp');
+            saveMessageCall(range, convertedBMP, 'bmp', userLevel);
         }
 
         // Get user role
@@ -1451,11 +1452,17 @@
                         });
 
                         if (option) {
+                            let userLevel = 0;
                             var range = [1, 999];   // user
-                            if (option === "1") range = [1000, 1999];   // Admin
-                            if (option === '2') range = [2000, 2999];   // SuperAdmin
+                            if (option === '1') {
+                                range = [1000, 1999];   // Admin
+                                userLevel = 1;
+                            } else if (option === '2') {
+                                range = [2000, 2999];   // SuperAdmin
+                                userLevel = 2;
+                            }
 
-                            saveMessage(range);
+                            saveMessage(range, userLevel);
                         }
                     }
                 }

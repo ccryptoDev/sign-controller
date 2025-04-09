@@ -7,7 +7,14 @@
 .slick {
   padding-top: 2rem;
   padding-bottom: 20px;
+
+
 }
+@media screen and (max-width: 600px) {
+    .slick {
+        padding-inline:35px;
+    }
+  }
 
 .slick span {
   display: block;

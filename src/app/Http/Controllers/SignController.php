@@ -100,6 +100,7 @@ class SignController extends Controller
             $image->message = $msg;
             $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
+            $image->user_level = $request->userLevel;
 
             try {
                 $image->save();

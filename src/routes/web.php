@@ -100,6 +100,7 @@ Route::middleware([
     Route::get('message-menu', [MessageMenuController::class, 'index']) ->name('message-menu');
     Route::get('message-sign', [MessageSignController::class, 'index']) ->name('message-sign');
     Route::get('send-to-sign', [MessageSignController::class, 'send_to_sign']) -> name('send-to-sign');
+    Route::get('library-messages', [MessageSignController::class, 'libraryMessages']) -> name('library-messages');
     Route::get('delete-message', [MessageSignController::class, 'deleteMessage']) -> name('delete-message');
 
     // System Settings

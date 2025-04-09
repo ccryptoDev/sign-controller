@@ -1,39 +1,46 @@
 const slickFunction = function () {
   let lastClickTime = 0;
   $('.slick')
-    .on('init', () => {
+    .on('init', function (event, slick) {
       $('.slick-slide[data-slick-index="-2"]').addClass('lt2');
       $('.slick-slide[data-slick-index="-1"]').addClass('lt1');
       $('.slick-slide[data-slick-index="1"]').addClass('gt1');
       $('.slick-slide[data-slick-index="2"]').addClass('gt2');
+
+      if (slick.slideCount <= slick.options.slidesToShow) {
+        setTimeout(() => {
+          $('.slick .slick-slide').each(function () {
+            $(this).attr('aria-hidden', 'false');
+          });
+        }, 0); // 0ms delay = next tick after Slick's DOM ops
+      }
   })
   .slick({
 
     centerMode: true,
     centerPadding: 0,
-    // slidesToShow: 3,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     responsive: [
       {
         breakpoint: 1440,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: 5,
+          slidesToScroll: 5,
         }
       },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
+          slidesToShow: 5,
+          slidesToScroll: 5
         }
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
+          slidesToShow: 2,
+          slidesToScroll: 2
         }
       }
     ]
@@ -80,23 +87,32 @@ const slickFunction = function () {
   });
 
   $('.slick').on('click', '.slick-slide', function() {
-    messageIds = [];
-    var slideIndex = $(this).attr('data-slick-index');
-    var slide_no = $(this).find('span img').data('slide-no');
-    firstIndex = slide_no;
-
-    $(this).find("span img").each(function () {
-        messageIds.push($(this).attr("data-id"));
-    });
-
-    // move slider to the clicked one
-    $('.slick').slick('slickGoTo', slideIndex);
+    const slickInstance = $('.slick').slick('getSlick');
+    if (slickInstance.slideCount <= slickInstance.options.slidesToShow) {
+      $('.slick .slick-slide').removeClass('slick-current');
+      $(this).addClass('slick-current');
+    }
+    handleSlideClick($(this));
   });
 
   // Bind double-click event to slides
   // $('.slick').on('dblclick', '.slick-slide', function() {
   //   console.log('Double-clicked slide:', $(this).attr('data-slick-index'));
   // });
+}
+
+function handleSlideClick($slide) {
+    messageIds = [];
+    var slideIndex = $slide.attr('data-slick-index');
+    var slide_no = $slide.find('span img').data('slide-no');
+    firstIndex = slide_no;
+
+    $slide.find("span img").each(function () {
+      messageIds.push($(this).attr("data-id"));
+    });
+
+    // move slider to the clicked one
+    $('.slick').slick('slickGoTo', slideIndex);
 }
 
 const highlightSelectedItem = function(index) {
@@ -150,5 +166,5 @@ const addClassFunction = function () {
 
 document.addEventListener("DOMContentLoaded", function() {
   addClassFunction();
-  slickFunction();
+//   slickFunction();
 });
