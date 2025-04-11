@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -128,6 +129,9 @@ class SignController extends Controller
                 $response["success"] = true;
                 $response["newID"] = $createdImage->no;
             } catch (\Exception $e) {
+                Log::error('Error occurred: ' . $e->getMessage(), [
+                    'exception' => $e
+                ]);
                 $response["success"] = false;
             }
 
