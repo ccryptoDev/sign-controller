@@ -504,42 +504,45 @@
     };
 
     function updateValuesAndAlignments() {
-        alignmentList = messageData.three_line_alignment;
-        alignmentList.forEach(function(alignment, index) {
-            switch (alignment) {
-                case 'left':
-                    alignments[index] = 0;
-                    break;
-                case 'center':
-                    alignments[index] = 1;
-                    break;
-                case 'right':
-                    alignments[index] = 2;
-                    break;
-                default:
-                    break;
-            }
-            // justifyAlignment(index);
-        });
+        if (messageData.length > 0) {
+            alignmentList = messageData.three_line_alignment;
+            alignmentList.forEach(function(alignment, index) {
+                switch (alignment) {
+                    case 'left':
+                        alignments[index] = 0;
+                        break;
+                    case 'center':
+                        alignments[index] = 1;
+                        break;
+                    case 'right':
+                        alignments[index] = 2;
+                        break;
+                    default:
+                        break;
+                }
+                // justifyAlignment(index);
+            });
 
-        $('.btn-group').each(function(index) {
-            let alignmentIndex = alignments[index];
-            $(this).find('button').removeClass('bg-dark');
-            $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
-        });
+            $('.btn-group').each(function(index) {
+                let alignmentIndex = alignments[index];
+                $(this).find('button').removeClass('bg-dark');
+                $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
+            });
 
-        messageData.message.forEach(function(msg, index) {
-            $('.signalMessage').eq(index).val(msg);
-            console.log($('.signalMessage').eq(index).val());
-        });
+            messageData.message.forEach(function(msg, index) {
+                $('.signalMessage').eq(index).val(msg);
+                console.log($('.signalMessage').eq(index).val());
+            });
 
-        $('#message_name').val(messageData.name.replace(".bmp", ""));
-        $('#message_ID').val(messageData.no);
-        $('#message_keywords').val(messageData.keywords);
+            $('#message_name').val(messageData.name.replace(".bmp", ""));
+            $('#message_ID').val(messageData.no);
+            $('#message_keywords').val(messageData.keywords);
 
-        message_name = $('#message_name').val();
-        message_ID = $('#message_ID').val();
-        message_keywords = $('#message_keywords').val();
+            message_name = $('#message_name').val();
+            message_ID = $('#message_ID').val();
+            message_keywords = $('#message_keywords').val();
+
+        }
     }
 
     function highlightLedGroup($target) {
@@ -1046,7 +1049,6 @@
             value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawBoard();
-
             if(drawMode == 0) { // 3-line mode
                 $('.messages').removeClass('d-none');
                 $("#canvas").removeClass('d-none');
