@@ -50,9 +50,9 @@ class MessageSignController extends Controller
 
         if ($userLevel == 0) {
             $query->where('user_id', auth()->user()->id);
-        } else {
+        } elseif ($userLevel == 1) {
             $query->where('user_level', '!=', 2);
-        }
+        } else {}
 
         $images = $query->get();
 
