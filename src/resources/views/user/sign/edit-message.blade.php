@@ -393,6 +393,7 @@
 
     const messagesData = @json($messages_data);
     const screenSettings = @json($screenSettings);
+    const isSaveCopy = @json($isCopy);
 
     let messageData = [];
     // let temp = [];
@@ -410,7 +411,6 @@
     let drawMode = mode == "create" ? 0 : messageData.draw_mode; // 3-line mode
 
     var messages = [];
-    var isSaveCopy = false;
 
     let message_name = $('#message_name').val();
     let message_ID = $('#message_ID').val();
@@ -1302,21 +1302,21 @@
                 },
                 success: function (res) {
                     if (res.success) {
-                        if (isSaveCopy) {
-                            var newMessageId = res.newID;
-                            var newMessageURL = '{{ url('/edit-message/') }}' + '/' + newMessageId;
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Copy of a message done successfully!',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                onClose: function () {
-                                    window.location.href = newMessageURL;
-                                }
-                            });
-                        } else {
+                        // if (isSaveCopy) {
+                        //     var newMessageId = res.newID;
+                        //     var newMessageURL = '{{ url('/edit-message/') }}' + '/' + newMessageId;
+                        //     Swal.fire({
+                        //         icon: 'success',
+                        //         title: 'Copy of a message done successfully!',
+                        //         timer: 2000,
+                        //         timerProgressBar: true,
+                        //         onClose: function () {
+                        //             window.location.href = newMessageURL;
+                        //         }
+                        //     });
+                        // } else {
                             toastr.success('Saved the message successfully!');
-                        }
+                        // }
                     } else {
                         toastr.error("Something went wrong, please try again.");
                     }

@@ -183,22 +183,22 @@ class SocketController extends Controller {
         //   cd /home/linuxadmin/sign-controller
         //   git pull origin main
         //
-        
+
         echo '2024-04-11 update'."<br>\n";
-       
+
         $data = 'holy mackerel mackerel mackerel';
 //        $compressedData = exec("echo '$data' | /usr/bin/lzop -c | tommyj.lzo");
-       
+
         echo '==============================' ."<br>\n";
         echo '  Compression test            ' ."<br>\n";
         echo '==============================' ."<br>\n";
-        
+
         $data = "Data,2°Use!" ;
         $compressed   =  $this->lzocompress($data) ;
 
         $decompressed = $this->lzodecompress($compressed) ;
-      
-      // Show utput the lzocompress() and lzodecompress() 
+
+      // Show utput the lzocompress() and lzodecompress()
 
         echo "Original Data:<br>\n";
         echo $data . "<br>\n<br>\n";
@@ -211,37 +211,37 @@ class SocketController extends Controller {
         echo $decompressed . "<br>\n";
         echo "(" . bin2hex($decompressed) . ")<br>\n";
         echo '==============================' ."<br>\n";
-        
+
         return 'Tested';
     }
 
     public function lzocompress($dataToCompress)
     {
         // Generate temporary file names
-        $tempDataFile = tempnam(sys_get_temp_dir(), 'data_'); 
+        $tempDataFile = tempnam(sys_get_temp_dir(), 'data_');
         $tempCompressedFile = $tempDataFile . '.lzo';
 
         // Write data to temporary file
-        file_put_contents($tempDataFile, $dataToCompress); 
+        file_put_contents($tempDataFile, $dataToCompress);
 
         // Compress data using lzop command
-        shell_exec("lzop -1f $tempDataFile"); 
+        shell_exec("lzop -1f $tempDataFile");
 
         // Read compressed data from temporary file
-        $compressedData = file_get_contents($tempCompressedFile); 
+        $compressedData = file_get_contents($tempCompressedFile);
 
         // Clean up/delete the temporary files
-        unlink($tempDataFile); 
-        unlink($tempCompressedFile); 
+        unlink($tempDataFile);
+        unlink($tempCompressedFile);
 
-        return $compressedData; 
+        return $compressedData;
     }
-      
+
     public function lzodecompress($dataToDecompress)
     {
         // Generate temporary file names
-        $tempFileToDecompress = tempnam(sys_get_temp_dir(), 'decompress_'); 
-        $tempDecompressedFile = $tempFileToDecompress . '.tmp'; 
+        $tempFileToDecompress = tempnam(sys_get_temp_dir(), 'decompress_');
+        $tempDecompressedFile = $tempFileToDecompress . '.tmp';
 
         // Write compressed data to temporary file
         file_put_contents($tempFileToDecompress, $dataToDecompress);
@@ -253,8 +253,8 @@ class SocketController extends Controller {
         $decompressedData = file_get_contents($tempDecompressedFile);
 
         // Clean up/delete the temporary files
-        unlink($tempFileToDecompress); 
-        unlink($tempDecompressedFile); 
+        unlink($tempFileToDecompress);
+        unlink($tempDecompressedFile);
 
         return $decompressedData;
     }
@@ -263,20 +263,20 @@ class SocketController extends Controller {
     // public function lzocompress($DataToCompress)  {
     //     $NewTempFile = $this->UniqueFileName() ;
     //     $tempdatafile= "lzopcompress_" . $NewTempFile . ".tmp" ;
-    //     $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ; 
-             
+    //     $tempcompressedfile= "lzopcompress_" . $NewTempFile . ".tmp.lzo" ;
+
     //     // Note:  tom.xxx files for debugging are in the HOST operating system
     //     //        in the path /home/inexadmin/sign-controller/src/public
     //     //        after a reboot of host OS, need to run 'docker-compose up -d --build app'
-         
+
     //     // Make a file with the DATA to compress:
 
     //    file_put_contents($tempdatafile,$DataToCompress) ;
-               
+
     //     // use the Command line lzop, to open the file, compress, write to another file:
- 
+
     //     shell_exec("lzop -1f $tempdatafile ");
-        
+
     //     $compressedData = "" ;
     //     $compressedData = file_get_contents($tempcompressedfile ) ;
 
@@ -284,35 +284,35 @@ class SocketController extends Controller {
     //     unlink($tempdatafile);
     //     unlink($tempcompressedfile);
 
-    //   exitit: 
+    //   exitit:
     //     return $compressedData  ;
     // }
-      
+
     // public function lzodecompress($DataToDecompress) {
-    //     $NewTempFile = $this->UniqueFileName() ; 
+    //     $NewTempFile = $this->UniqueFileName() ;
     //     $tempfiletodecompress = "lzopdecompress_" . $NewTempFile . ".tmp.lzo" ;
     //     $tempdecompressedfile = "lzopdecompress_" . $NewTempFile . ".tmp" ;
-            
+
     //     // Make a file with the DATA to compress:
     //     file_put_contents($tempfiletodecompress,$DataToDecompress) ;
-      
+
     //     // use the Command line lzop, to open the file, compress, write to another file:
     //     shell_exec(" lzop -1f -d $tempfiletodecompress");
-        
+
     //     // Read back in the compressed data:
-      
+
     //     $Decompressed = "" ;
     //     $Decompressed =  file_get_contents($tempdecompressedfile) ;
-      
+
     //     // Clean up/delete the temp files used to pass data to/from LZOP's command line. . .
     //     unlink($tempfiletodecompress);
     //     unlink($tempdecompressedfile);
-      
+
     //     return $Decompressed ;
-      
+
     // }
-      
-    
+
+
     public function UniqueFileName() {
         $s = strtoupper(md5(uniqid(rand(),true)));
         $guidText =
@@ -323,7 +323,7 @@ class SocketController extends Controller {
             substr($s,20);
         return $guidText;
     }
-    
+
 
     public function get_brightness(Request $request) {
         // IP address and port
@@ -334,7 +334,7 @@ class SocketController extends Controller {
             hex2bin('0101') .      // dword 0101H - Address Word
             hex2bin('020A') .      // dword 020AH - Command Word
             hex2bin('0002') .      // dword 0004H - Data Packet Length ('4 bytes')
-            // hex2bin('00') . 
+            // hex2bin('00') .
         $eccValue = 0x7F;
         $length = strlen($data1);
 
@@ -433,12 +433,12 @@ class SocketController extends Controller {
         $reply = socket_read($socket, 1024);
         // Close the connection
         socket_close($socket);
-        
+
         $response['success'] = true;
         $response['result'] = bin2hex($reply);
         return $response;
     }
-    
+
     public function compress_image(Request $request) {
         // Compress Image
         $contents = File::get(base_path().'/public/images/99.bmp');
@@ -453,7 +453,7 @@ class SocketController extends Controller {
         // // insert watermark
         // // $image->place('images/watermark.png');
 
-        // // save modified image in new format 
+        // // save modified image in new format
         // $image->toPng()->save('images/foo.png');
         // $encoded = $image->toJpg();
         // $contents = $encoded;
@@ -481,9 +481,9 @@ class SocketController extends Controller {
             hex2bin('0103') .      // dword 020AH - Command Word
             hex2bin($length) .      // dword 0004H - Data Packet Length ('4 bytes')
             hex2bin($request['page_num']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
-            hex2bin($request['width']) . 
+            hex2bin($request['width']) .
             hex2bin($request['height']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
-            // hex2bin($hexData) . 
+            // hex2bin($hexData) .
             hex2bin($hexData) .
 
         // Calculate the Exclusive of all bytes in $Data1 and 7Fh
@@ -530,7 +530,7 @@ class SocketController extends Controller {
         // print_r($result);
 
         $res = socket_write($socket, $data, strlen($data));
-        
+
         // return $res;
 
 
@@ -582,7 +582,7 @@ class SocketController extends Controller {
             hex2bin('0103') .      // dword 020AH - Command Word
             hex2bin($length) .      // dword 0004H - Data Packet Length ('4 bytes')
             hex2bin($request['page_num']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
-            hex2bin($request['width']) . 
+            hex2bin($request['width']) .
             hex2bin($request['height']) .        // byte 00H - Brigthtness Control 0=auto, 1=manual
             hex2bin($hexData) .
 
@@ -643,7 +643,7 @@ class SocketController extends Controller {
             hex2bin('0101') .      // dword 0101H - Address Word
             hex2bin('0105') .      // dword 020AH - Command Word
             hex2bin('0002') .      // dword 0004H - Data Packet Length ('4 bytes')
-            hex2bin($mode) . 
+            hex2bin($mode) .
         $eccValue = 0x7F;
         $length = strlen($data1);
 
@@ -677,7 +677,7 @@ class SocketController extends Controller {
         $reply = socket_read($socket, 1024);
         // Close the connection
         socket_close($socket);
-        
+
         $response['success'] = true;
         $response['result'] = bin2hex($reply);
         return $response;
@@ -693,7 +693,7 @@ class SocketController extends Controller {
             hex2bin('0101') .      // dword 0101H - Address Word
             hex2bin('0106') .      // dword 020AH - Command Word
             hex2bin('0002') .      // dword 0004H - Data Packet Length ('4 bytes')
-            // hex2bin('00') . 
+            // hex2bin('00') .
         $eccValue = 0x7F;
         $length = strlen($data1);
 
@@ -748,9 +748,9 @@ class SocketController extends Controller {
             hex2bin('0101') .      // dword 0101H - Address Word
             hex2bin('0107') .      // dword 020AH - Command Word
             hex2bin('0002') .      // dword 0004H - Data Packet Length ('4 bytes')
-            hex2bin($pageNum) . 
-            hex2bin($contractNum) . 
-            // hex2bin('00') . 
+            hex2bin($pageNum) .
+            hex2bin($contractNum) .
+            // hex2bin('00') .
         $eccValue = 0x7F;
         $length = strlen($data1);
 
@@ -849,7 +849,7 @@ class SocketController extends Controller {
             hex2bin('0101') .      // dword 0101H - Address Word
             hex2bin('020D') .      // dword 020AH - Command Word
             hex2bin('0002') .      // dword 0004H - Data Packet Length ('4 bytes')
-            // hex2bin('00') . 
+            // hex2bin('00') .
         $eccValue = 0x7F;
         $length = strlen($data1);
 
@@ -899,6 +899,7 @@ class SocketController extends Controller {
         $imageData = $this->convertBitmapToHex();
 
         #step2: compress by lzo
+        // $compressedData = gzcompress($imageData);
         $compressedData = $this->lzocompress($imageData);
 
         #step3: send to Sign
@@ -917,23 +918,23 @@ class SocketController extends Controller {
         }
 
         $length = str_pad(dechex(strlen($contents)), 4, '0', STR_PAD_LEFT);
-        
+
         // // Data to be sent
         $data1 = '5948' .      // dword 5948H - Command Header
             '0101' .      // dword 0101H - Address Word
             '0103' .      // dword 0103H : LZO Compression Mode- Command Word
-            $length . 
+            $length .
             $output;
 
         // Calculate the Exclusive of all bytes in $Data1 and 7Fh
         // Calculate XOR checksum of each byte with 0x7F
 
         $eccValue = 0x7F;
-        
+
         for ($i = 0; $i < strlen($data1); $i += 2) {
             $byte = hexdec($data1[$i].$data1[$i + 1]);
             $byte = str_pad(decbin($byte), 8, '0', STR_PAD_LEFT);
-            
+
             $eccValue = str_pad(decbin($eccValue), 8, '0', STR_PAD_LEFT);
 
             // echo $byte . ' ';
@@ -942,18 +943,18 @@ class SocketController extends Controller {
             $new = '';
 
             for ($j = 0; $j < 8; $j++) {
-             
+
                 $new .= (int)($byte[$j] xor $eccValue[$j]);
 
             }
-            
+
             $eccValue = bindec($new);
 
             // echo $new . ' ';
             // echo $eccValue . '|';
         }
-        
-        
+
+
         $data = $data1 . dechex($eccValue);
         $data = lzo_compress($data, LZO1X_999);
         echo $data;
@@ -963,13 +964,13 @@ class SocketController extends Controller {
         // echo $eccValue;
         // echo chr($eccValue);
         // echo $data;
-    
+
         // // Open a socket connection
         // $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         // if ($socket === false) {
         //     echo "socket_create() failed: " . socket_strerror(socket_last_error()) . "\n";
         // }
-        
+
         // // Connect to the server
         // $result = socket_connect($socket, $this->ip, $this->port);
         // if ($result === false) {
@@ -988,17 +989,17 @@ class SocketController extends Controller {
         $response['success'] = true;
         // $response['result'] = bin2hex($reply);
         return $response;
-    } 
+    }
 
     public function pack1LZO($function, $screenW, $screenH, $pNb, $str)
     {
         // Construct the packet
         $writeBuffer = [
-            0x59, 
-            0x48, 
-            0x01, 
+            0x59,
+            0x48,
             0x01,
-            intval($function / 100), 
+            0x01,
+            intval($function / 100),
             $function % 100,
             0x00, // Placeholder for length (to be calculated later)
             0x00,
@@ -1026,7 +1027,7 @@ class SocketController extends Controller {
         // foreach ($writeBuffer as $byte) {
         //     $eccValue ^= $byte;
         // }
-        
+
         // Calculate CRC16 checksum
         // $crc = $this->calculateCRC16($writeBuffer);
         $crc = $this->calculateCRC16(implode('', array_map('chr', $writeBuffer)));

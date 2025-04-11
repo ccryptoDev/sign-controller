@@ -20,7 +20,7 @@
             Edit
         </button>
         <button class="btn btn-primary" type="button" id="create">
-            <a href="{{ route('edit-message', ['id' => 0]) }}">New</a>
+            New
         </button>
         <button class="btn btn-primary" type="button" id="copy">Copy</button>
         <button class="btn btn-primary" type="button" id="library">Library</button>
@@ -131,6 +131,45 @@
 
         var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
         window.location.href = editUrl;
+    });
+
+    $('#create').on('click', function() {
+        var editUrl = '{{ url('/edit-message/') }}' + '/0';
+        window.location.href = editUrl;
+    });
+
+    $('#copy').on('click', function() {
+        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds + '/1';
+        window.location.href = editUrl;
+    });
+
+    $('#delete').on('click', function() {
+        Swal.fire({
+            text: 'Are you sure you want to delete this message?',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            customClass: {
+                confirmButton: "btn-danger",
+            },
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/delete-message/' + messageIds,
+                    type: 'GET',
+                    success: function(response) {
+                        toastr.success('The message has been deleted.');
+
+                        window.location.href = window.location.href;
+                    },
+                    error: function(xhr) {
+                        toastr.error("Something went wrong while deleting.");
+                    }
+                });
+            } else {
+                return;
+            }
+        });
     });
 
     $("#send").on("click", function () {

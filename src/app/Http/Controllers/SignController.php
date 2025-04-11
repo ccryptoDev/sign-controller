@@ -15,8 +15,10 @@ class SignController extends Controller
         return view('user.sign.editor');
     }
 
-    public function edit_message($messageID) {
+    public function edit_message($messageID, $isCopy = null) {
         $messageIds = explode(',', $messageID);
+        $isCopy = $isCopy === '1'; // convert to boolean
+
         if ($messageID) {
             $images = Image::whereIn('no', $messageIds)->orderBy('id', 'desc')->get();
             $mode = 'edit';
@@ -31,6 +33,7 @@ class SignController extends Controller
             'message_data' => isset($images[0]) ? $images[0] : $images,
             'mode' => $mode,
             'screenSettings' => $screenSettings,
+            'isCopy' => $isCopy,
         ]);
     }
 
@@ -89,9 +92,19 @@ class SignController extends Controller
             // Save a message into database (Missing validator)
             $image = new Image;
 
+            $fileName = $request->imageName . "." . $request->imageType;
+
+            // Check if a file with the same name already exists
+            if (Storage::disk("public")->exists("assets/media/signmessage/$fileName")) {
+                $fileName = $request->imageName . '_copy.' . $request->imageType;
+                // Copy the file
+                // Storage::disk("public")->copy("assets/media/signmessage/$fileName", "assets/media/signmessage/$copyFilename");
+            }
+
             $image->no = $no;
+            $image->user_id = auth()->user()->id;
             $image->type = $request->imageType;
-            $image->name = $request->imageName . "." . $request->imageType;
+            $image->name = $fileName;
             $image->path = "public/assets/media/signmessage";
             $image->keywords = $request->imageKeywords;
             // $image->message1 = $request->msg1;
@@ -105,15 +118,6 @@ class SignController extends Controller
             try {
                 $image->save();
                 $createdImage = $image->fresh();
-
-                // Save the image into the local storage
-                $fileName = $request->imageName . "." . $request->imageType;
-                // if same fileName exists
-                if (Storage::disk("public")->exists("assets/media/signmessage/$fileName")) {
-                    $fileName = $request->imageName . '_copy.' . $request->imageType;
-                    // Copy the file
-                    // Storage::disk("public")->copy("assets/media/signmessage/$fileName", "assets/media/signmessage/$copyFilename");
-                }
 
                 // Save the BMP file
                 if ($request->hasFile('imageFile')) {

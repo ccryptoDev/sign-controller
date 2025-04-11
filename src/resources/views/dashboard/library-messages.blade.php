@@ -16,15 +16,15 @@
 <div class="fluid bg-white">
     <div class="send-button d-flex justify-content-center">
         <button class="btn btn-primary" type="button" id="send">Send</button>
-        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
+        <button class="btn {{ auth()->user()->level == 2 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
             Edit
         </button>
-        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="create">
+        <button class="btn btn-primary" type="button" id="create">
             New
         </button>
-        <button class="btn btn-primary" type="button" id="copy">Copy</button>
+        <button class="btn {{ auth()->user()->level != 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="copy">Copy</button>
         <button class="btn btn-danger" type="button" id="library">Library</button>
-        <button class="btn {{ auth()->user()->level == 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="delete">Delete</button>
+        <button class="btn {{ auth()->user()->level == 2 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="delete">Delete</button>
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
@@ -130,7 +130,7 @@
         // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
         // editUrl = editUrl.replace(':id', messageId);
 
-        if (userLevel != 1) {
+        if (userLevel != 2) {
             return false;
         }
         var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
@@ -138,16 +138,52 @@
     });
 
     $('#create').on('click', function() {
-        // var messageId = firstSelectedImages[firstIndex].number;
-
-        // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
-        // editUrl = editUrl.replace(':id', messageId);
-
-        if (userLevel != 1) {
-            return false;
-        }
+        // if (userLevel != 1) {
+        //     return false;
+        // }
         var editUrl = '{{ url('/edit-message/') }}' + '/0';
         window.location.href = editUrl;
+    });
+
+    $('#copy').on('click', function() {
+        if (userLevel == 1) {
+            return false;
+        }
+        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds + '/1';
+        window.location.href = editUrl;
+    });
+
+    $('#delete').on('click', function() {
+        if (userLevel != 2) {
+            return false;
+        }
+
+        Swal.fire({
+            text: 'Are you sure you want to delete this message?',
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            customClass: {
+                confirmButton: "btn-danger",
+            },
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/delete-message/' + messageIds,
+                    type: 'GET',
+                    success: function(response) {
+                        toastr.success('The message has been deleted.');
+
+                        window.location.href = window.location.href;
+                    },
+                    error: function(xhr) {
+                        toastr.error("Something went wrong while deleting.");
+                    }
+                });
+            } else {
+                return;
+            }
+        });
     });
 
     $('#library').on('click', function () {

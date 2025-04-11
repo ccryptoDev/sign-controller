@@ -41,7 +41,20 @@ class MessageSignController extends Controller
         // });
 
         $numMessages = Setting::where('key', 'num_messages_to_keep')->value('value') ?? 30;
-        $images = Image::select('no', 'name', 'path', 'keywords')->orderBy('id','desc')->limit($numMessages)->get();
+
+        $userLevel = auth()->user()->level;
+
+        $query = Image::select('no', 'name', 'path', 'keywords', 'user_level')
+            ->orderBy('id', 'desc')
+            ->limit($numMessages);
+
+        if ($userLevel == 0) {
+            $query->where('user_id', auth()->user()->id);
+        } else {
+            $query->where('user_level', '!=', 2);
+        }
+
+        $images = $query->get();
 
         return view('dashboard.send-to-sign', compact('images'));
     }
@@ -58,8 +71,25 @@ class MessageSignController extends Controller
         return view('dashboard.library-messages', compact('images'));
     }
 
-    public function deleteMessage() {
-        return view('dashboard.on-develop');
+    public function deleteMessage($ids) {
+        $messageIds = explode(',', $ids);
+
+        // Get the images before deleting
+        $images = Image::whereIn('no', $messageIds)->get();
+
+        foreach ($images as $image) {
+            $filePath = str_replace('public/', '', $image->path) . '/' . $image->name;
+
+            // Delete the file if it exists
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+        }
+
+        // Delete the DB records
+        Image::whereIn('no', $messageIds)->delete();
+
+        return response()->json(['success' => true]);
     }
 
     /**
