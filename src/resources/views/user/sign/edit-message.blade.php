@@ -504,45 +504,42 @@
     };
 
     function updateValuesAndAlignments() {
-        if (messageData.length > 0) {
-            alignmentList = messageData.three_line_alignment;
-            alignmentList.forEach(function(alignment, index) {
-                switch (alignment) {
-                    case 'left':
-                        alignments[index] = 0;
-                        break;
-                    case 'center':
-                        alignments[index] = 1;
-                        break;
-                    case 'right':
-                        alignments[index] = 2;
-                        break;
-                    default:
-                        break;
-                }
-                // justifyAlignment(index);
-            });
+        alignmentList = messageData.three_line_alignment;
+        alignmentList.forEach(function(alignment, index) {
+            switch (alignment) {
+                case 'left':
+                    alignments[index] = 0;
+                    break;
+                case 'center':
+                    alignments[index] = 1;
+                    break;
+                case 'right':
+                    alignments[index] = 2;
+                    break;
+                default:
+                    break;
+            }
+            // justifyAlignment(index);
+        });
 
-            $('.btn-group').each(function(index) {
-                let alignmentIndex = alignments[index];
-                $(this).find('button').removeClass('bg-dark');
-                $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
-            });
+        $('.btn-group').each(function(index) {
+            let alignmentIndex = alignments[index];
+            $(this).find('button').removeClass('bg-dark');
+            $(this).find(`button:eq(${alignmentIndex})`).addClass('bg-dark');
+        });
 
-            messageData.message.forEach(function(msg, index) {
-                $('.signalMessage').eq(index).val(msg);
-                console.log($('.signalMessage').eq(index).val());
-            });
+        messageData.message.forEach(function(msg, index) {
+            $('.signalMessage').eq(index).val(msg);
+            console.log($('.signalMessage').eq(index).val());
+        });
 
-            $('#message_name').val(messageData.name.replace(".bmp", ""));
-            $('#message_ID').val(messageData.no);
-            $('#message_keywords').val(messageData.keywords);
+        $('#message_name').val(messageData.name.replace(".bmp", ""));
+        $('#message_ID').val(messageData.no);
+        $('#message_keywords').val(messageData.keywords);
 
-            message_name = $('#message_name').val();
-            message_ID = $('#message_ID').val();
-            message_keywords = $('#message_keywords').val();
-
-        }
+        message_name = $('#message_name').val();
+        message_ID = $('#message_ID').val();
+        message_keywords = $('#message_keywords').val();
     }
 
     function highlightLedGroup($target) {
@@ -754,7 +751,6 @@
             // displayLED();
             changeToImageDefaultMode(drawMode);
             if (drawMode == 0) {
-                clearLights('wrapperLed');
                 updateValuesAndAlignments();
                 displayLED();
             } else {
@@ -1009,7 +1005,9 @@
                 if (!$('#dot-mode').hasClass('btn-secondary')) $('#dot-mode').addClass('btn-secondary');
                 drawMode = 0;
                 clearLights('wrapperLed');
-                updateValuesAndAlignments();
+                if (mode == 'edit') {
+                    updateValuesAndAlignments();
+                }
                 displayLED();
             } else if (whichMode == 'dot-mode') {
                 if ($(this).hasClass('btn-secondary')) $(this).removeClass('btn-secondary');
