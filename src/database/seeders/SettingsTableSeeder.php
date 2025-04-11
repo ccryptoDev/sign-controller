@@ -20,10 +20,10 @@ class SettingsTableSeeder extends Seeder
             ['key' => 'screen_pixels_wide', 'value' => '56', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'font_pixels_high', 'value' => '10', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'font_pixels_wide', 'value' => '6', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'top_blank_rows', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'top_blank_rows', 'value' => '0', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'between_1st_2nd_row', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'between_2nd_3rd_row', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
-            ['key' => 'blank_lines_bottom', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'blank_lines_bottom', 'value' => '0', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         foreach ($settings as $setting) {
