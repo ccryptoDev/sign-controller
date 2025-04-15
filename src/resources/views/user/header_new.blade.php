@@ -54,68 +54,191 @@
                 background: transparent;
             }
 
-            .mode{
-                gap: 10px;
+            .mode {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .mode button {
+            padding: 6px 10px;
+            font-size: 13px;
+            margin: 2px;
+            flex: 0 1 auto;
+            white-space: nowrap;
+        }
+
+        .edit-msg-single-inp-wrapper {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            flex: 1 1 auto;
+        }
+
+        .edit-msg-single-inp-wrapper input {
+            width: 38px;
+            height: 38px;
+            text-align: center;
+        }
+
+        .edit-msg-single-inp-wrapper label {
+            font-size: 10px;
+            margin-left: 5px;
+        }
+
+        @media (max-width: 876px) {
+
+        .mode {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            gap: 7px;
+            justify-content: center;
+            padding: 0 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .mode::-webkit-scrollbar {
+            display: none; /* Hide scrollbar for clean look */
+        }
+
+        .mode .alignment-btns button,
+        .mode button {
+            padding: 6px 10px !important;
+            border-radius: 3px !important;
+            font-size: 8px;
+            flex-shrink: 0;
+        }
+        .mode .alignment-btns{
+            display: flex;
+            align-items: center;
+            gap: 0 !important;
+        }
+
+        .mode .alignment-btns button{
+            font-size: 12px;
+            /* border-radius: 0px !important; */
+            max-height: 24px;
+            max-width: 24px;
+        }
+        .mode .edit-msg-single-inp-wrapper{
+            max-width: auto !important;
+            max-width:75px !important;
+        }
+        .mode .alignment-btns button i{
+            font-size: 8px;
+            max-height: 15px
+        }
+
+        .edit-msg-single-inp-wrapper {
+            flex-shrink: 0;
+            margin-right: 3px;
+            gap: 4px !important;
+        }
+
+        }
+
+        /* ---- Mobile Fix (Force Single Row) ---- */
+        @media (max-width: 576px) {
+
+            .custom-header{
+                padding-inline: 10px !important;
             }
-            .mode button{
-                margin-bottom: 10px;
-                padding: 8px 16px;
+            .custom-header .page-title p{
+                font-size: 8px !important;
+                line-height: 100%;
             }
-
-            @media (max-width: 468px) {
-                .mode{
-                    align-items: flex-start;
-                    /* justify-content: space-between !important; */
-                    gap: 5px;
-                    align-items: center;
-                }
-                .mode button{
-
-                    font-size: 12px;
-
-                    text-align: center;
-
-                }
+            .custom-header .page-title a{
+                font-size: 8px !important;
+                text-align: center;
             }
-
-            @media (max-width: 568px) {
-
-
-            .edit-msg-single-inp-wrapper{
-                /* min-width: 100%; */
+            .custom-header h1{
+                font-size: 12px !important;
+            }
+            .custom-header .login-header-logo-image{
+                width: 60px;
+            }
+            .mode {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                gap: 1px;
                 justify-content: center;
-                margin-bottom: 10px;
-                margin-right: 0 !important;
+                padding: 0 5px;
+                -webkit-overflow-scrolling: touch;
+            }
 
-                input{
-                    width:38px !important;
-                    height: 38px;
-                }
-                label{
-                    font-size: 10px !important;
-                }
+            .mode::-webkit-scrollbar {
+                display: none; /* Hide scrollbar for clean look */
+            }
+
+            .mode .alignment-btns button,
+            .mode button {
+                padding: 2px 4px !important;
+                border-radius: 3px !important;
+                font-size: 5px;
+                flex-shrink: 0;
+            }
+            .mode .alignment-btns{
+                display: flex;
+                align-items: center;
+                gap: 0 !important;
+            }
+
+            .mode .alignment-btns button{
+                font-size: 8px;
+                /* border-radius: 0px !important; */
+                max-height: 15px;
+                max-width: 15px;
+            }
+            .mode .edit-msg-single-inp-wrapper{
+                max-width: auto !important;
+                max-width:25px !important;
+            }
+            .mode .alignment-btns button i{
+                font-size: 8px;
+                max-height: 15px
+            }
+
+            .edit-msg-single-inp-wrapper {
+                flex-shrink: 0;
+                margin-right: 3px;
+                gap: 4px !important;
+            }
+
+            .edit-msg-single-inp-wrapper input {
+                width: 20px !important;
+                height: 16px;
+                padding: 0 !important;
+                font-size: 7px;
+            }
+
+            .edit-msg-single-inp-wrapper label {
+                font-size: 5px !important;
+            }
+            .edit-message-card-body .message-inform label{
+                font-size: 12px;
+            }
+            .edit-message-card-body .message-inform input {
+                font-size: 12px;
+                width: 90%;
+            }
+            .edit-message-card-body .message-inform input:placeholder{
+                font-size: 12px;
             }
         }
 
-            .btn-custom-sm {
-                padding: -0.5rem 3rem !important;  /* Default padding */
-                font-size: 14px !important;    /* Default font size */
-            }
-
-            /* Smaller screens (tablets & large phones) */
-            @media (max-width: 768px) {
-                .btn-custom-sm {
-                    padding: 4px 8px;
-                    font-size: 13px;
-                }
-            }
 
             /* Extra small screens (phones) */
             @media (max-width: 480px) {
-                .btn-custom-sm {
-                    padding: 3px 6px;
-                    font-size: 12px;
-                }
+               .edit-message-card-body{
+                padding-top: 0 !important;
+                padding-bottom: 10px !important;
+               }
+               .image-highlight {
+                border: 2px solid #4A41C2;
+               }
             }
 
         </style>

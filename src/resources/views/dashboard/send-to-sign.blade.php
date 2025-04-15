@@ -4,12 +4,12 @@
     <!-- custom header  -->
     <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
-    <div class="px-4">
+    {{-- <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
-    </div>
+    </div> --}}
     <!-- end: custom-header -->
 </div>
 

@@ -3,12 +3,12 @@
     <!-- custom header  -->
     <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
-    <div class="px-4">
-        <div class="d-block d-sm-none text-center italic page-title">
+    {{-- <div class="px-4">
+        <div class="d-block text-center italic page-title">
             <h2>MESSAGES</h2>
             <p>This menu allows the user to retrieve or create messages</p>
         </div>
-    </div>
+    </div> --}}
     <!-- end: custom-header -->
 
     <div class="container">
@@ -32,7 +32,20 @@
                     id="message_3"
                     value="{{isset($message_data->draw_mode) && $mode == 'edit' && $message_data->draw_mode == 0 ? (isset($message_data->message[2]) ? $message_data->message[2] : '') : '' }}"
                 >
-                <div class="card-header mb-0 col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
+                <input class="form-control"
+                    type="hidden"
+                    name="message_name"
+                    id="message_name"
+                    placeholder="Input the message name"
+                    value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
+                >
+                <input class="form-control text-center"
+                    type="hidden"
+                    name="message_ID"
+                    id="message_ID"
+                    value="{{ isset($message_data['no']) ? $message_data['no'] : '' }}"
+                >
+                {{-- <div class="card-header mb-0 col-md-12 flex-column message-inform-form {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- mesage name and keywords -->
                     <div class="message-inform"> <!-- name -->
                         <label for="message-name">Name</label>
                         <div>
@@ -43,15 +56,10 @@
                                 value="{{ isset($message_data['name']) ? pathinfo($message_data['name'], PATHINFO_FILENAME) : '' }}"
                                 {{ isset($message_data['no']) && $message_data['no'] > 0 ? 'disabled' : '' }}
                             >
-                            <input class="form-control text-center"
-                                name="message_ID"
-                                id="message_ID"
-                                value="{{ isset($message_data['no']) ? $message_data['no'] : '' }}"
-                                disabled
-                            >
+
                         </div>
                     </div> <!-- end: name -->
-                    {{-- <div class="message-inform"> <!-- keywords -->
+                    <div class="message-inform"> <!-- keywords -->
                         <label for="message-keywords">Keywords</label>
                         <div>
                             <input class="form-control"
@@ -61,11 +69,11 @@
                                 value="{{ isset($message_data['keywords']) ? $message_data['keywords'] : '' }}"
                             >
                         </div>
-                    </div> <!-- end: keywords --> --}}
-                </div> <!-- end: message name and keywords -->
+                    </div> <!-- end: keywords -->
+                </div> <!-- end: message name and keywords --> --}}
 
-                <div class="card-body pt-0">
-                    <div class="mode d-flex flex-wrap justify-content-center gap-2"> <!-- mode -->
+                <div  class="card-body edit-message-card-body pt-0">
+                    <div class="mode"> <!-- mode -->
                         {{-- @if(isset($message_data['no']) && $message_data['no'] > 0)
                         <button class="btn btn-primary mr-1" type="button" id="saveMessage">Update</button>
                         <button class="btn btn-primary mr-1" type="button" id="saveAcopy">Save a Copy</button>
@@ -82,9 +90,9 @@
                         <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>
                         <button class="btn btn-secondary" type="button" id="dot-mode">Dot Draw</button>
                         <button class="btn btn-secondary" type="button" id="importImage">Import</button>
-                        <button class="btn btn-secondary mr-5" type="button" id="exportImage">Export</button>
+                        <button class="btn btn-secondary mr-md-5" type="button" id="exportImage">Export</button>
                         <div class="align-wrapper">
-                            <div class="btn-group text-alignment mr-2" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
+                            <div class="btn-group text-alignment mr-2 alignment-btns" role="group" data-layer="1" aria-label="Basic example"> <!-- alignment 1 -->
                                 <button class="btn btn-sm btn-icon btn-light text-left bg-dark"
                                     data-alignment="left"
                                     id="leftAlign"
@@ -367,11 +375,11 @@
 
         // Detect keyboard pop-up using window resize
         $(window).on("resize", function () {
-            if ($(window).height() < screen.height * 0.6) {
+            // if ($(window).height() < screen.height * 0.6) {
                 setTimeout(() => {
-                    $("#ledDiv")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+                    $(".card-body")[0].scrollIntoView({ behavior: "smooth", block: "center" });
                 }, 500);
-            }
+            // }
         });
 
         $(".ledGroup").on("click", function () {
@@ -461,6 +469,17 @@
     // addBlankRow(1, 25);
     // addBlackRow(10, 28, 'line');
     // addBlankRow(2, 38);
+    function createMessageName() {
+        let combined = '';
+
+        $('.signalMessage').each(function () {
+            combined += $(this).val();
+        });
+
+        message_name = combined;
+        $('#message_name').val(message_name);
+    }
+
     var convertImageToHTML = function (imageFile) {
         let img = new Image();
         img.src = URL.createObjectURL(imageFile);
@@ -1383,35 +1402,35 @@
                 }
 
                 // step 2: check if message name is defined
-                if (message_name == '') {
-                    Swal.fire({
-                        text: 'The `Name` field is required!',
-                        icon: "error",
-                        confirmButtonText: "Confirm",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        return;
-                    });
+                // if (message_name == '') {
+                //     Swal.fire({
+                //         text: 'The `Name` field is required!',
+                //         icon: "error",
+                //         confirmButtonText: "Confirm",
+                //         customClass: {
+                //             confirmButton: "btn-danger",
+                //         },
+                //     }).then(function(result) {
+                //         return;
+                //     });
 
-                    return;
-                }
+                //     return;
+                // }
 
-                if (!checkAlphanumeric(message_name)) {
-                    Swal.fire({
-                        text: 'The Name should only contain alphanumeric characters.',
-                        icon: "error",
-                        confirmButtonText: "Confirm",
-                        customClass: {
-                            confirmButton: "btn-danger",
-                        },
-                    }).then(function(result) {
-                        return;
-                    });
+                // if (!checkAlphanumeric(message_name)) {
+                //     Swal.fire({
+                //         text: 'The Name should only contain alphanumeric characters.',
+                //         icon: "error",
+                //         confirmButtonText: "Confirm",
+                //         customClass: {
+                //             confirmButton: "btn-danger",
+                //         },
+                //     }).then(function(result) {
+                //         return;
+                //     });
 
-                    return;
-                }
+                //     return;
+                // }
 
                 if (message_ID > 0 && !isSaveCopy) { // in case of edit
                     Swal.fire({
@@ -1490,6 +1509,9 @@
         $("#saveMessage").on("click", function() {
             event.preventDefault();
             beforeSave();
+            if (mode == 'create') {
+                createMessageName();
+            }
         });
 
         // Save A Copy

@@ -4,17 +4,17 @@
     <!-- custom header  -->
     <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" />
 
-    <div class="px-4">
+    {{-- <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
             <h2>Work with a Message</h2>
             <p>This menu allows the user to retrieve or edit existing messages, make new ones or send to the sign</p>
         </div>
-    </div>
+    </div> --}}
     <!-- end: custom-header -->
 </div>
 
 <div class="fluid bg-white">
-    <div class="send-button d-flex justify-content-center">
+    <div class="send-button d-flex justify-content-center  flex-wrap">
         <button class="btn btn-primary" type="button" id="send">Send</button>
         <button class="btn {{ auth()->user()->level == 2 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
             Edit

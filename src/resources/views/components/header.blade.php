@@ -2,8 +2,8 @@
     <div>
         <h1 style="color: #4A41C2">{{ $title }}</h1>
     </div>
-    <div class="d-none d-sm-block text-center italic page-title">
-        <p>{{ $description }}</p>
+    <div class=" text-center italic page-title">
+        <p class="text-center">{{ $description }}</p>
         @if(!empty($helpLink))
         <a href="#" style="color: #D30505">(Click Here for Help)</a>
         @endif
