@@ -46,12 +46,10 @@
 
             .hidden-input {
                 position: absolute;
-                left: -9999px;  /* Moves it off-screen */
-                width: 1px;
-                height: 1px;
-                border: none;
-                outline: none;
-                background: transparent;
+                left: -9999px;
+                top: auto;
+                opacity: 0;
+                pointer-events: none;
             }
 
             .mode {

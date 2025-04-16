@@ -365,22 +365,20 @@
 
     $(document).ready(function () {
         $(".signalMessage").on("focus", function () {
-            let targetDiv = $("#ledDiv");
-
-            // Wait for keyboard to fully open before scrolling
+            const input = this;
             setTimeout(() => {
-                targetDiv[0].scrollIntoView({ behavior: "smooth", block: "center" });
-            }, 500);
+                input.setSelectionRange(input.value.length, input.value.length);
+            }, 300);
         });
 
         // Detect keyboard pop-up using window resize
-        $(window).on("resize", function () {
-            // if ($(window).height() < screen.height * 0.6) {
-                setTimeout(() => {
-                    $(".card-body")[0].scrollIntoView({ behavior: "smooth", block: "center" });
-                }, 500);
-            // }
-        });
+        // $(window).on("resize", function () {
+        //     // if ($(window).height() < screen.height * 0.6) {
+        //         setTimeout(() => {
+        //             $(".card-body")[0].scrollIntoView({ behavior: "smooth", block: "center" });
+        //         }, 500);
+        //     // }
+        // });
 
         $(".ledGroup").on("click", function () {
             highlightLedGroup($(this));
@@ -576,7 +574,7 @@
         let input = $input[0]; // get the raw DOM element
 
         $input.focus();
-        input.setSelectionRange(input.value.length, input.value.length);
+        // input.setSelectionRange(input.value.length, input.value.length);
         // let $input = $("#message_" + groupIndex);
         // $input.focus();
 
