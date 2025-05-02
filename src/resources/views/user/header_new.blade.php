@@ -92,7 +92,7 @@
         .mode {
             overflow-x: auto;
             flex-wrap: nowrap;
-            gap: 7px;
+            gap: 3px;
             justify-content: center;
             padding: 0 5px;
             -webkit-overflow-scrolling: touch;
@@ -123,7 +123,16 @@
         }
         .mode .edit-msg-single-inp-wrapper{
             max-width: auto !important;
-            max-width:75px !important;
+            max-width:72px !important;
+            margin-right: 0 !important;
+        }
+        .mode .edit-msg-single-inp-wrapper input{
+            max-width: 30px;
+            height: 30px !important;
+
+        }
+        .mode .edit-msg-single-inp-wrapper label{
+            font-size: 10px !important;
         }
         .mode .alignment-btns button i{
             font-size: 8px;
@@ -159,40 +168,15 @@
                 width: 60px;
             }
             .mode {
-                overflow-x: auto;
-                flex-wrap: nowrap;
-                gap: 1px;
-                justify-content: center;
-                padding: 0 5px;
-                -webkit-overflow-scrolling: touch;
+                flex-wrap: wrap;
+
             }
 
-            .mode::-webkit-scrollbar {
-                display: none; /* Hide scrollbar for clean look */
-            }
 
-            .mode .alignment-btns button,
-            .mode button {
-                padding: 2px 4px !important;
-                border-radius: 3px !important;
-                font-size: 5px;
-                flex-shrink: 0;
-            }
-            .mode .alignment-btns{
-                display: flex;
-                align-items: center;
-                gap: 0 !important;
-            }
-
-            .mode .alignment-btns button{
-                font-size: 8px;
-                /* border-radius: 0px !important; */
-                max-height: 15px;
-                max-width: 15px;
-            }
             .mode .edit-msg-single-inp-wrapper{
                 max-width: auto !important;
-                max-width:25px !important;
+                max-width:50px !important;
+                margin-right: 24px !important;
             }
             .mode .alignment-btns button i{
                 font-size: 8px;
@@ -206,17 +190,14 @@
             }
 
             .edit-msg-single-inp-wrapper input {
-                width: 20px !important;
-                height: 16px;
+                width: 30px !important;
+                height: 30px;
                 padding: 0 !important;
-                font-size: 7px;
+                font-size: 10px;
             }
 
             .edit-msg-single-inp-wrapper label {
-                font-size: 5px !important;
-            }
-            .edit-message-card-body .message-inform label{
-                font-size: 12px;
+                font-size: 10px !important;
             }
             .edit-message-card-body .message-inform input {
                 font-size: 12px;

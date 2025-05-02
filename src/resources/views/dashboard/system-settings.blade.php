@@ -63,6 +63,14 @@
                                 </div>
                             </div>
 
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Seconds To Show:</label>
+                                    <input type="number" class="form-control" name="seconds_to_show"
+                                        value="{{ old('seconds_to_show', $screenSettings['seconds_to_show'] ?? '') }}" required>
+                                </div>
+                            </div>
+
                             <!-- Layout Settings -->
                             <h6 class="text-muted mt-4">Layout Settings</h6>
                             <div class="row">
@@ -120,6 +128,12 @@
 @if (session('success'))
     <script>
         toastr.success("{{ session('success') }}");
+    </script>
+@endif
+
+@if (!$isAdmin)
+    <script>
+        $('input').prop('readonly', true);
     </script>
 @endif
 

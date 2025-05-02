@@ -114,6 +114,7 @@ class SignController extends Controller
             $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
             $image->user_level = $request->userLevel;
+            $image->seconds_to_show = $request->seconds_to_show;
 
             try {
                 $image->save();
@@ -128,7 +129,7 @@ class SignController extends Controller
                 $response["success"] = true;
                 $response["newID"] = $createdImage->no;
             } catch (\Exception $e) {
-                
+
                 $response["success"] = false;
             }
 
@@ -154,6 +155,7 @@ class SignController extends Controller
             $image->message = $msg;
             $image->draw_mode = $request->drawMode;
             $image->three_line_alignment = $alignmentList;
+            $image->seconds_to_show = $request->seconds_to_show;
             $image->name = $request->imageName . "." . $request->imageType;
             $image->path = "public/assets/media/signmessage";
 

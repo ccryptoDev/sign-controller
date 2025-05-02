@@ -1,7 +1,7 @@
 @include('user.header_new')
 <div class="d-flex flex-column justify-content-between px-8 py-2 px-lg-24">
     <!-- custom header  -->
-    <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" />
+    {{-- <x-header title="Messages" description="This menu allows the user to retrieve or create messages" helpLink="#" /> --}}
 
     {{-- <div class="px-4">
         <div class="d-block text-center italic page-title">
@@ -81,8 +81,12 @@
                             <button class="btn btn-primary mr-1" type="button" id="saveMessage">Save</button>
                         @endif --}}
                         <div style="max-width: 100px; margin-right: 20px; gap: 10px;" class="d-flex align-items-center gap-2 edit-msg-single-inp-wrapper ">
-                            <input class="form-control" style="width: 45px; text-align: center" name="time_to_show" id="time_to_show" value="" />
-                            <label for="time_to_show" class="m-0 py-1" style="color: black; width: 70px; text-align: left; font-size: 12px;">Seconds to show image</label>
+                            <input class="form-control" style="width: 45px; text-align: center" name="seconds_to_show" id="seconds_to_show"
+                                value="{{ $mode == 'create'
+                                    ? $screenSettings['seconds_to_show']
+                                    : ($message_data['seconds_to_show'] ?? $screenSettings['seconds_to_show'])
+                                }}" />
+                            <label for="seconds_to_show" class="m-0 py-1" style="color: black; width: 70px; text-align: left; font-size: 12px;">Seconds to show image</label>
                         </div>
                         <button class="btn btn-danger" type="button" id="saveMessage">Save</button>
                         <button class="btn btn-danger" type="button" id="quit">Quit</button>
@@ -269,7 +273,7 @@
                         </div>  <!-- end: message 3 -->
                     </div><!-- end: message editbox --> --}}
 
-                    <div class="message-inform mt-2 {{ (isset($mode) && $mode == 'create') ? '' : 'd-none' }}"> <!-- keywords -->
+                    <div class="message-inform mt-2 d-none"> <!-- keywords -->
                         <label for="message-keywords">Keywords</label>
                         <div>
                             <input class="form-control"
@@ -1307,6 +1311,7 @@
             formData.append('drawMode', drawMode);
             formData.append('three_line_alignment', JSON.stringify(alignmentList)); // e.g ['center', 'left', 'right']
             formData.append('userLevel', userLevel);
+            formData.append('seconds_to_show', $('#seconds_to_show').val());
 
             $.ajax({
                 url: '/save-message',
@@ -1387,6 +1392,22 @@
                 if (!getMessage().length) {
                     Swal.fire({
                         text: 'Please edit the message',
+                        icon: "error",
+                        confirmButtonText: "Confirm",
+                        customClass: {
+                            confirmButton: "btn-danger",
+                        },
+                    }).then(function(result) {
+                        return;
+                    });
+
+                    return;
+                }
+
+                let secondsToShow = $('#seconds_to_show').val();
+                if (!$.isNumeric(secondsToShow)) {
+                    Swal.fire({
+                        text: 'Please enter a valid number in the "Seconds to Show" field.',
                         icon: "error",
                         confirmButtonText: "Confirm",
                         customClass: {

@@ -10,12 +10,20 @@ class SettingsController extends Controller
 {
     public function index()
     {
+        $isAdmin = false;
+        if (auth()->user()->level == 1 || auth()->user()->level == 2) {
+            $isAdmin = true;
+        }
         $screenSettings = Setting::pluck('value', 'key')->toArray();
-        return view('dashboard.system-settings', compact('screenSettings'));
+        return view('dashboard.system-settings', compact('screenSettings', 'isAdmin'));
     }
 
     public function update(Request $request)
     {
+        if (auth()->user()->level == 0) {
+            return back()->withErrors(['unauthorized' => 'Only admin users can update the settings.']);
+        }
+
         $validated = $request->validate([
             'num_messages_to_keep' => 'required|integer|min:1',
             'screen_pixels_high' => 'required|integer|min:1',
@@ -26,6 +34,7 @@ class SettingsController extends Controller
             'between_1st_2nd_row' => 'required|integer|min:0',
             'between_2nd_3rd_row' => 'required|integer|min:0',
             'blank_lines_bottom' => 'required|integer|min:0',
+            'seconds_to_show' => 'required|integer|min:1',
         ]);
 
         // Ensure proper alignment formula

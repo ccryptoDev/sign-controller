@@ -51,8 +51,12 @@ class MessageSignController extends Controller
         if ($userLevel == 0) {
             $query->where('user_id', auth()->user()->id);
         } elseif ($userLevel == 1) {
-            $query->where('user_level', '!=', 2);
-        } else {}
+            $query->where('user_level', 0);
+        } elseif ($userLevel == 2) {
+            $query->where('user_level', 1);
+        } else {
+            $query->whereRaw('1 = 0');
+        }
 
         $images = $query->get();
 
@@ -66,7 +70,18 @@ class MessageSignController extends Controller
         // });
 
         $numMessages = Setting::where('key', 'num_messages_to_keep')->value('value') ?? 30;
-        $images = Image::select('no', 'name', 'path', 'keywords', 'user_level')->where('user_level', 2)->orderBy('id','desc')->limit($numMessages)->get();
+        $query = Image::select('no', 'name', 'path', 'keywords', 'user_level')->orderBy('id','desc')->limit($numMessages);
+
+        $userLevel = auth()->user()->level;
+        if ($userLevel == 0 || $userLevel == 1) {
+            $query->where('user_level', 1);
+        } elseif ($userLevel == 2) {
+            $query->where('user_level', 2);
+        } else {
+            $query->whereRaw('1 = 0');
+        }
+
+        $images = $query->get();
 
         return view('dashboard.library-messages', compact('images'));
     }

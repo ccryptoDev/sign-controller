@@ -1,8 +1,8 @@
 @include('dashboard.header')
 
-<div class="fluid bg-white">
+<div class="fluid bg-white mb-3">
     <!-- custom header  -->
-    <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" />
+    {{-- <x-header title="MESSAGES" description="This menu allows the user to retrieve or create messages" helpLink="#" /> --}}
 
     {{-- <div class="px-4">
         <div class="d-block d-sm-none text-center italic page-title">
@@ -13,7 +13,7 @@
     <!-- end: custom-header -->
 </div>
 
-<div class="fluid bg-white">
+<div class="fluid bg-white pt-3">
     <div class="send-button d-flex justify-content-center flex-wrap">
         <button class="btn btn-primary" type="button" id="send">Send</button>
         <button class="btn btn-primary" type="button" id="edit">
@@ -46,7 +46,7 @@
     </div>
 
     <!-- search form -->
-    <div class="px-8 search-form">
+    <div class="px-8 search-form d-none">
         <div class="search-item">
             <label class="italic">Search for these &nbsp; names/keywords</label>
             <input class="form-control search-input"

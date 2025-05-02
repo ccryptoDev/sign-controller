@@ -24,6 +24,7 @@ class SettingsTableSeeder extends Seeder
             ['key' => 'between_1st_2nd_row', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'between_2nd_3rd_row', 'value' => '1', 'created_at' => now(), 'updated_at' => now()],
             ['key' => 'blank_lines_bottom', 'value' => '0', 'created_at' => now(), 'updated_at' => now()],
+            ['key' => 'seconds_to_show', 'value' => '5', 'created_at' => now(), 'updated_at' => now()],
         ];
 
         foreach ($settings as $setting) {
