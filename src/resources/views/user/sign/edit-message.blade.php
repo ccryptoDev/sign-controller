@@ -654,7 +654,12 @@
 
             // First, get all character arrays
             for (var i = 0; i < theWord.length; i++) {
-                var letterArray = transposeArray(charToLED(theWord.charAt(i), pixelHeight, pixelWidth));
+                var letterArray = null;
+                if ((theWord.length * pixelWidth) >= (canvasWidth - pixelWidth)) {
+                    letterArray = transposeArray(charToLED(theWord.charAt(i), 7, 4));
+                } else {
+                    letterArray = transposeArray(charToLED(theWord.charAt(i), pixelHeight, pixelWidth));
+                }
                 letterArrays.push(letterArray);
                 totalWidth += letterArray.length;
             }

@@ -47,7 +47,7 @@ class SettingsController extends Controller
             $request->font_pixels_high +
             $request->blank_lines_bottom;
 
-        if ($expectedHeight != $request->screen_pixels_high) {
+        if ($expectedHeight > $request->screen_pixels_high) {
             return back()->withErrors(['screen_pixels_high' => 'The alignment does not match the total screen height.']);
         }
 
