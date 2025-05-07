@@ -322,7 +322,7 @@ function charToLED(theChar, height = 10, width = 4){
                 basePattern = [
                     [true, false, false, true],
                     [true, true, true, true],
-                    [true, false, false, true],
+                    [true, true, true, true],
                     [true, false, false, true],
                     [true, false, false, true],
                     [true, false, false, true],
@@ -477,11 +477,11 @@ function charToLED(theChar, height = 10, width = 4){
                 basePattern = [
                     [false, false, false, false],
                     [false, false, false, false],
-                    [false, true, true, false],
+                    [false, true, false, true],
+                    [true, false, true, true],
                     [true, false, false, true],
-                    [true, true, true, true],
-                    [true, false, false, true],
-                    [false, true, true, true]
+                    [true, false, true, true],
+                    [false, true, false, true]
                 ];
                 break;
             case 'b':
@@ -1034,6 +1034,858 @@ function charToLED(theChar, height = 10, width = 4){
                     [false, false, false, false],
                     [false, false, false, false],
                     [false, false, false, false]
+                ];
+        }
+    } else if (height === 7 && width === 5) {
+        switch(theChar) {
+            case 'A':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'B':
+                basePattern = [
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false]
+                ];
+                break;
+            case 'C':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'D':
+                basePattern = [
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false]
+                ];
+                break;
+            case 'E':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            case 'F':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false]
+                ];
+                break;
+            case 'G':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, false],
+                    [true, false, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'H':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'I':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            case 'J':
+                basePattern = [
+                    [false, false, true, true, true],
+                    [false, false, false, true, false],
+                    [false, false, false, true, false],
+                    [false, false, false, true, false],
+                    [true, false, false, true, false],
+                    [true, false, false, true, false],
+                    [false, true, true, false, false]
+                ];
+                break;
+            case 'K':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, true, false],
+                    [true, false, true, false, false],
+                    [true, true, false, false, false],
+                    [true, false, true, false, false],
+                    [true, false, false, true, false],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'L':
+                basePattern = [
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            case 'M':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, true, false, true, true],
+                    [true, true, true, true, true],
+                    [true, false, true, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'N':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, true, false, false, true],
+                    [true, true, true, false, true],
+                    [true, false, true, false, true],
+                    [true, false, false, true, true],
+                    [true, false, false, true, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'O':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'P':
+                basePattern = [
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false]
+                ];
+                break;
+            case 'Q':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, true, false, true],
+                    [true, false, false, true, false],
+                    [false, true, true, false, true]
+                ];
+                break;
+            case 'R':
+                basePattern = [
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false],
+                    [true, false, true, false, false],
+                    [true, false, false, true, false],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'S':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, false],
+                    [false, true, true, true, false],
+                    [false, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'T':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case 'U':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'V':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, false, true, false],
+                    [false, true, false, true, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case 'W':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, true, false, true],
+                    [true, true, true, true, true],
+                    [true, true, false, true, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'X':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'Y':
+                basePattern = [
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, false, true, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case 'Z':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [false, false, false, false, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            // Lowercase letters
+            case 'a':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, true, true],
+                    [false, true, true, false, true]
+                ];
+                break;
+            case 'b':
+                basePattern = [
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false]
+                ];
+                break;
+            case 'c':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'd':
+                basePattern = [
+                    [false, false, false, false, true],
+                    [false, false, false, false, true],
+                    [false, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true]
+                ];
+                break;
+            case 'e':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, true, true, true, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'f':
+                basePattern = [
+                    [false, false, true, true, false],
+                    [false, true, false, false, true],
+                    [false, true, false, false, false],
+                    [true, true, true, true, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, false]
+                ];
+                break;
+            case 'g':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true],
+                    [false, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'h':
+                basePattern = [
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'i':
+                basePattern = [
+                    [false, false, true, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'j':
+                basePattern = [
+                    [false, false, false, true, false],
+                    [false, false, false, false, false],
+                    [false, false, true, true, false],
+                    [false, false, false, true, false],
+                    [false, false, false, true, false],
+                    [true, false, false, true, false],
+                    [false, true, true, false, false]
+                ];
+                break;
+            case 'k':
+                basePattern = [
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, true, false],
+                    [true, false, true, false, false],
+                    [true, true, false, false, false],
+                    [true, false, true, false, false],
+                    [true, false, false, true, false]
+                ];
+                break;
+            case 'l':
+                basePattern = [
+                    [false, true, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'm':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, false, true, false],
+                    [true, false, true, false, true],
+                    [true, false, true, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'n':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'o':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'p':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, true, true, true, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false]
+                ];
+                break;
+            case 'q':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true],
+                    [false, false, false, false, true],
+                    [false, false, false, false, true]
+                ];
+                break;
+            case 'r':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, false, true, true, false],
+                    [true, true, false, false, true],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false]
+                ];
+                break;
+            case 's':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, true, false],
+                    [true, false, false, false, false],
+                    [false, true, true, true, false],
+                    [false, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 't':
+                basePattern = [
+                    [false, true, false, false, false],
+                    [false, true, false, false, false],
+                    [true, true, true, true, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, true],
+                    [false, false, true, true, false]
+                ];
+                break;
+            case 'u':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, true, true],
+                    [false, true, true, false, true]
+                ];
+                break;
+            case 'v':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, false, true, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case 'w':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, false, false, false, true],
+                    [true, false, true, false, true],
+                    [true, false, true, false, true],
+                    [true, true, true, true, true],
+                    [false, true, false, true, false]
+                ];
+                break;
+            case 'x':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, false, false, false, true],
+                    [false, true, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, true, false],
+                    [true, false, false, false, true]
+                ];
+                break;
+            case 'y':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true],
+                    [false, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case 'z':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, true, true, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            // Numbers
+            case '0':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, true, true],
+                    [true, false, true, false, true],
+                    [true, true, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '1':
+                basePattern = [
+                    [false, false, true, false, false],
+                    [false, true, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '2':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [false, false, false, false, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            case '3':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [false, false, false, false, true],
+                    [false, false, true, true, false],
+                    [false, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '4':
+                basePattern = [
+                    [false, false, false, true, false],
+                    [false, false, true, true, false],
+                    [false, true, false, true, false],
+                    [true, false, false, true, false],
+                    [true, true, true, true, true],
+                    [false, false, false, true, false],
+                    [false, false, false, true, false]
+                ];
+                break;
+            case '5':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [false, false, false, false, true],
+                    [false, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '6':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, false],
+                    [true, false, false, false, false],
+                    [true, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '7':
+                basePattern = [
+                    [true, true, true, true, true],
+                    [false, false, false, false, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, false],
+                    [false, true, false, false, false]
+                ];
+                break;
+            case '8':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            case '9':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, true],
+                    [false, false, false, false, true],
+                    [true, false, false, false, true],
+                    [false, true, true, true, false]
+                ];
+                break;
+            // Special characters
+            case ' ':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '.':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, true, true, false, false]
+                ];
+                break;
+            case ',':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case '!':
+                basePattern = [
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, false, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case '?':
+                basePattern = [
+                    [false, true, true, true, false],
+                    [true, false, false, false, true],
+                    [false, false, false, false, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, false, false, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case ':':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, true, true, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, true, true, false, false]
+                ];
+                break;
+            case ';':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, true, true, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, true, true, false, false],
+                    [false, false, true, false, false]
+                ];
+                break;
+            case '+':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [true, true, true, true, true],
+                    [false, false, true, false, false],
+                    [false, false, true, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '-':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, true, true, true],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '*':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [true, false, true, false, true],
+                    [false, true, true, true, false],
+                    [true, true, true, true, true],
+                    [false, true, true, true, false],
+                    [true, false, true, false, true],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '/':
+                basePattern = [
+                    [false, false, false, false, true],
+                    [false, false, false, true, false],
+                    [false, false, true, false, false],
+                    [false, true, false, false, false],
+                    [true, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '\\':
+                basePattern = [
+                    [true, false, false, false, false],
+                    [false, true, false, false, false],
+                    [false, false, true, false, false],
+                    [false, false, false, true, false],
+                    [false, false, false, false, true],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '=':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, true, true, true],
+                    [false, false, false, false, false],
+                    [true, true, true, true, true],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
+                ];
+                break;
+            case '_':
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [true, true, true, true, true]
+                ];
+                break;
+            default:
+                basePattern = [
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false],
+                    [false, false, false, false, false]
                 ];
         }
     } else {

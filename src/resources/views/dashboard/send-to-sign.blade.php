@@ -222,7 +222,9 @@
     })
 
     $('#library').on('click', function () {
-        window.location.href = "{{ route('library-messages') }}";
+        const libraryMsgsUrl = "{{ url('library-messages') }}";
+        const type = 'admin';
+        window.location.href = `${libraryMsgsUrl}/${type}`;
     });
 
     function customSlick(images) {

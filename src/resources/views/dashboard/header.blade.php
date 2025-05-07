@@ -21,25 +21,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
+        .admin-library-btn {
+            color: #ffffff;
+            background-color: purple;
+            border-color: purple;
+        }
+        .admin-library-btn:hover {
+            background-color: rgb(116, 2, 116); /* or any darker shade of purple */
+            color: #ffffff;
+        }
         @media (max-width: 576px) {
 
-.custom-header{
-    padding-inline: 10px !important;
-}
-.custom-header .page-title p{
-    font-size: 8px !important;
-    line-height: 100%;
-}
-.custom-header .page-title a{
-    font-size: 8px !important;
-    text-align: center;
-}
-.custom-header h1{
-    font-size: 12px !important;
-}
-.custom-header .login-header-logo-image{
-    width: 60px;
-}
+            .custom-header{
+                padding-inline: 10px !important;
+            }
+            .custom-header .page-title p{
+                font-size: 8px !important;
+                line-height: 100%;
+            }
+            .custom-header .page-title a{
+                font-size: 8px !important;
+                text-align: center;
+            }
+            .custom-header h1{
+                font-size: 12px !important;
+            }
+            .custom-header .login-header-logo-image{
+                width: 60px;
+            }
         }
+
     </style>
 </head>

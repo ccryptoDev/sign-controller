@@ -63,27 +63,45 @@ class MessageSignController extends Controller
         return view('dashboard.send-to-sign', compact('images'));
     }
 
-    public function libraryMessages(Request $request) {
-
+    public function libraryMessages($type) {
         // $images = collect(Storage::disk('public')->files('assets/media/signmessage'))->map(function ($item) {
         //     return basename($item);
         // });
 
         $numMessages = Setting::where('key', 'num_messages_to_keep')->value('value') ?? 30;
         $query = Image::select('no', 'name', 'path', 'keywords', 'user_level')->orderBy('id','desc')->limit($numMessages);
+        $libraryBtn = 0;
 
         $userLevel = auth()->user()->level;
-        if ($userLevel == 0 || $userLevel == 1) {
-            $query->where('user_level', 1);
-        } elseif ($userLevel == 2) {
-            $query->where('user_level', 2);
+        if ($type == 'admin') {
+            if ($userLevel == 0) {
+                $query->where('user_level', 1);
+            } elseif ($userLevel == 1) {
+                $query->where('user_level', 1);
+            } elseif ($userLevel == 2) {
+                $query->where('user_level', 1);
+            } else {
+                $query->whereRaw('1 = 0');
+            }
+            $libraryBtn = 1;
+        } elseif ($type == 'inex') {
+            if ($userLevel == 0) {
+                $query->where('user_level', 2);
+            } elseif ($userLevel == 1) {
+                $query->where('user_level', 2);
+            } elseif ($userLevel == 2) {
+                $query->where('user_level', 2);
+            } else {
+                $query->whereRaw('1 = 0');
+            }
+            $libraryBtn = 2;
         } else {
             $query->whereRaw('1 = 0');
         }
 
         $images = $query->get();
 
-        return view('dashboard.library-messages', compact('images'));
+        return view('dashboard.library-messages', compact('images', 'libraryBtn', 'type'));
     }
 
     public function deleteMessage($ids) {

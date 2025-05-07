@@ -89,6 +89,7 @@
                             <label for="seconds_to_show" class="m-0 py-1" style="color: black; width: 70px; text-align: left; font-size: 12px;">Seconds to show image</label>
                         </div>
                         <button class="btn btn-danger" type="button" id="saveMessage">Save</button>
+                        <button class="btn btn-danger" type="button" id="saveAndSendMessage">Save/Send</button>
                         <button class="btn btn-danger" type="button" id="quit">Quit</button>
                         <button class="btn btn-danger" type="button" id="clearMessage">Clear</button>
                         <button class="btn btn-primary" type="button" id="line-mode">3-Line</button>

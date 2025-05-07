@@ -16,15 +16,15 @@
 <div class="fluid bg-white pt-3">
     <div class="send-button d-flex justify-content-center  flex-wrap">
         <button class="btn btn-primary" type="button" id="send">Send</button>
-        <button class="btn {{ auth()->user()->level == 2 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
+        <button class="btn {{ (auth()->user()->level == 2 || ($type == 'admin' && auth()->user()->level == 1)) ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="edit">
             Edit
         </button>
         <button class="btn btn-primary" type="button" id="create">
             New
         </button>
-        <button class="btn {{ auth()->user()->level != 1 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="copy">Copy</button>
-        <button class="btn btn-danger" type="button" id="library">Library</button>
-        <button class="btn {{ auth()->user()->level == 2 ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="delete">Delete</button>
+        <button class="btn {{ ($type == 'admin' || ($type == 'inex' && auth()->user()->level != 1)) ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="copy">Copy</button>
+        <button class="btn {{ $libraryBtn == 1 ? 'admin-library-btn' : 'btn-success' }}" type="button" id="library">Library</button>
+        <button class="btn {{ (auth()->user()->level == 2 || ($type == 'admin' && auth()->user()->level == 1)) ? 'btn-primary' : 'btn-secondary disabled disabled-btn' }}" type="button" id="delete">Delete</button>
         <button class="btn btn-primary" type="button" id="exit">
             <a href="{{ route('main-menu') }}">Exit</a>
         </button>
@@ -107,6 +107,7 @@
     // var images = {!! json_encode($images) !!};
     const userLevel = @json(auth()->user()->level);
     var images = @json($images);
+    const type = @json($type);
 
     images = images.map((image, index) => (
         {
@@ -118,8 +119,6 @@
         }
     ));
 
-    console.log(images);
-
     var firstIndex = 0, secondIndex = 0;
     var firstSelectedImages = images, secondSelectedImages = [];
     let messageIds = [];
@@ -130,11 +129,12 @@
         // var editUrl = '{{ route('edit-message', ['id' => ':id']) }}';
         // editUrl = editUrl.replace(':id', messageId);
 
-        if (userLevel != 2) {
+        if (userLevel == 2 || (type == 'admin' && userLevel == 1)) {
+            var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
+            window.location.href = editUrl;
+        } else {
             return false;
         }
-        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds;
-        window.location.href = editUrl;
     });
 
     $('#create').on('click', function() {
@@ -146,48 +146,55 @@
     });
 
     $('#copy').on('click', function() {
-        if (userLevel == 1) {
+        if (type == 'admin' || (type == 'inex' && userLevel != 1)) {
+            var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds + '/1';
+            window.location.href = editUrl;
+        } else {
             return false;
         }
-        var editUrl = '{{ url('/edit-message/') }}' + '/' + messageIds + '/1';
-        window.location.href = editUrl;
     });
 
     $('#delete').on('click', function() {
-        if (userLevel != 2) {
+        if (userLevel == 2 || (type == 'admin' && userLevel == 1)) {
+            Swal.fire({
+                text: 'Are you sure you want to delete this message?',
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                customClass: {
+                    confirmButton: "btn-danger",
+                },
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/delete-message/' + messageIds,
+                        type: 'GET',
+                        success: function(response) {
+                            toastr.success('The message has been deleted.');
+
+                            window.location.href = window.location.href;
+                        },
+                        error: function(xhr) {
+                            toastr.error("Something went wrong while deleting.");
+                        }
+                    });
+                } else {
+                    return;
+                }
+            });
+        } else {
             return false;
         }
-
-        Swal.fire({
-            text: 'Are you sure you want to delete this message?',
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Yes",
-            customClass: {
-                confirmButton: "btn-danger",
-            },
-        }).then(function(result) {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/delete-message/' + messageIds,
-                    type: 'GET',
-                    success: function(response) {
-                        toastr.success('The message has been deleted.');
-
-                        window.location.href = window.location.href;
-                    },
-                    error: function(xhr) {
-                        toastr.error("Something went wrong while deleting.");
-                    }
-                });
-            } else {
-                return;
-            }
-        });
     });
 
     $('#library').on('click', function () {
-        window.location.href = "{{ route('send-to-sign') }}";
+        if (type == 'inex') {
+            window.location.href = "{{ route('send-to-sign') }}";
+        } else {
+            let libraryType = 'inex';
+            const libraryMsgsUrl = "{{ url('library-messages') }}";
+            window.location.href = `${libraryMsgsUrl}/${libraryType}`;
+        }
     });
 
     $('.disabled-btn').on('click', function () {
