@@ -1,6 +1,7 @@
 src/node_modules
 src/node_modules__
 src/public/hot
+src/public/assets/media
 src/public/storage
 src/storage/*.key
 src/vendor
